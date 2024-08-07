@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
 using DotnetProjet5.Models;
+using DotnetProjet5.Models.ViewModels;
 
 
 namespace DotnetProjet5.Controllers
@@ -23,7 +24,19 @@ namespace DotnetProjet5.Controllers
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Vehicle.ToListAsync());
+            var vehicles = await _context.Vehicle.ToListAsync();
+            var vehicleViewModels = vehicles.Select(v => new VehicleViewModel
+            {
+                Year = v.Year,
+                Brand = v.Brand,
+                Model = v.Model,
+                Finish = v.Finish,
+                Availability = v.Availability,
+                AvailabilityDate = v.AvailabilityDate ?? DateTime.MinValue, 
+                CodeVin = v.CodeVin
+            }).ToList();
+
+            return View(vehicleViewModels);
         }
 
         // GET: Vehicles/Details/5

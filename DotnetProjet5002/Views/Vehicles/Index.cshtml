@@ -1,43 +1,51 @@
-﻿@model IEnumerable<Vehicle>
+﻿
+@using DotnetProjet5.Models.ViewModels
+@model IEnumerable<VehicleViewModel>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Liste des vehicules";
 }
 
-<h1>Index</h1>
+<h1>liste des vehicules</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create">Ajouter un véhicule</a>
 </p>
 <table class="table">
     <thead>
         <tr>
+            
             <th>
-                @Html.DisplayNameFor(model => model.Year)
+                Code VIN
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Brand)
+                Année
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Model)
+               Marque
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Finish)
+                Modèle
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Availability)
+               Finition
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.AvailabilityDate)
+               disponibilité
             </th>
-            <th></th>
+            <th>
+                date de disponibilité
+            </th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.Year)
+                @Html.DisplayFor(ModelItem=>item.CodeVin)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.YearOnly)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Brand)
@@ -51,9 +59,14 @@
             <td>
                 @Html.DisplayFor(modelItem => item.Availability)
             </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AvailabilityDate)
-            </td>
+                <td>
+                    @if (item.Availability)
+                    {
+                        @Html.DisplayFor(modelItem => item.AvailabilityDateFormatted)
+                    }
+                    else
+                  { <span>en préparation</span>}
+                </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.CodeVin">Edit</a> |
                 <a asp-action="Details" asp-route-id="@item.CodeVin">Details</a> |
