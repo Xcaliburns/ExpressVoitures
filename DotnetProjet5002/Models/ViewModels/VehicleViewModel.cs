@@ -3,8 +3,8 @@
     public class VehicleViewModel
     {
         public string CodeVin { get; set; }
-        public DateTime Year { get; set; }
-        public string YearOnly => Year.ToString("yyyy");//Formt de date presentant uniquement l'année
+        public int Year { get; set; }
+        
         public string Brand { get; set; }
         public string Model { get; set; }
         public string Finish { get; set; }
