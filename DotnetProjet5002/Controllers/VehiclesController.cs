@@ -27,7 +27,7 @@ namespace DotnetProjet5.Controllers
             var vehicles = await _context.Vehicle.ToListAsync();
             var vehicleViewModels = vehicles.Select(v => new VehicleViewModel
             {
-                Year = v.Year,
+                Year = v.Year.Year,
                 Brand = v.Brand,
                 Model = v.Model,
                 Finish = v.Finish,
@@ -68,16 +68,27 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] Vehicle vehicle)
+        public async Task<IActionResult> Create([Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] VehicleViewModel vehicleViewmodel)
         {
             if (ModelState.IsValid)
             {
+                var vehicle = new Vehicle
+                {
+                    CodeVin = vehicleViewmodel.CodeVin,
+                    Year = new DateTime(vehicleViewmodel.Year, 1, 1), // Convert Year to DateTime
+                    Brand = vehicleViewmodel.Brand,
+                    Model = vehicleViewmodel.Model,
+                    Finish = vehicleViewmodel.Finish,
+                    Availability = vehicleViewmodel.Availability,
+                    AvailabilityDate = vehicleViewmodel.AvailabilityDate
+                };
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicle);
+            return View(vehicleViewmodel);
         }
+
 
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(string id)
