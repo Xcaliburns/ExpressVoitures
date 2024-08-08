@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Models;
+using DotnetProjet5.Models.Entities;
 
 namespace DotnetProjet5.Data
 {

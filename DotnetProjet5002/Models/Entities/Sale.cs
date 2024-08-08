@@ -1,6 +1,7 @@
 ﻿using System;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
+using DotnetProjet5.Models.Entities;
 
 namespace DotnetProjet5.Models
 {

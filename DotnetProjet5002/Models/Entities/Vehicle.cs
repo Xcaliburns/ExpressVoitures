@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNetCore.Mvc.ModelBinding;
 
 
-namespace DotnetProjet5.Models
+namespace DotnetProjet5.Models.Entities
 {
     public class Vehicle
     {
