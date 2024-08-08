@@ -6,8 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
-using DotnetProjet5.Models;
 using DotnetProjet5.Models.ViewModels;
+using DotnetProjet5.Models.Entities;
 
 
 namespace DotnetProjet5.Controllers

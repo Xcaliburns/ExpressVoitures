@@ -1,10 +1,10 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
-using DotnetProjet5.Data;
+using DotnetProjet5.Models.Entities;
 using System;
 using System.Linq;
 
-namespace DotnetProjet5.Models
+namespace DotnetProjet5.Data
 {
     public class SeedData
     {

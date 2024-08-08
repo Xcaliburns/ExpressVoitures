@@ -1,7 +1,6 @@
 using DotnetProjet5.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
-using DotnetProjet5.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
