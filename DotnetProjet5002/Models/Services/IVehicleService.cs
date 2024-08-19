@@ -11,7 +11,8 @@ namespace DotnetProjet5.Models.Services
         Task CreateVehicleAsync(VehicleViewModel vehicleViewModel);
         Task UpdateVehicleAsync(VehicleViewModel vehicleViewModel);
         Task DeleteVehicleAsync(string CodeVin);
-        Task<IEnumerable<VehicleViewModel>> CalculateSellPriceAsync();
+         Task<float> CalculateTotalRepairCostAsync(string codeVin);
+        
     }
 
 }

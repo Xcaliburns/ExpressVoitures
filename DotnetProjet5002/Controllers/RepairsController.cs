@@ -22,7 +22,9 @@ namespace DotnetProjet5.Controllers
         // GET: Repairs
         public async Task<IActionResult> Index()
         {
-            return View(await _context.Repairs.ToListAsync());
+            var repairs = await _context.Repairs.ToListAsync();
+            var repairViewModels = RepairViewModel.ToViewModel(repairs);
+            return View(repairViewModels);
         }
 
         // GET: Repairs/Details/5
@@ -54,15 +56,30 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repair)
+        public async Task<IActionResult> Create( RepairViewModel repairViewModel)
         {
             if (ModelState.IsValid)
             {
+                var repair = RepairViewModel.ToEntity(repairViewModel);
+                //add the repair to the database
                 _context.Add(repair);
                 await _context.SaveChangesAsync();
+
+                //fetch the associated vehicle
+                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == repair.CodeVin);
+                if (vehicle != null)
+                {
+                    // Update the vehicle's price
+                    vehicle.SellPrice += repair.RepairCost;
+
+                    // Save the updated vehicle back to the database
+                    _context.Update(vehicle);
+                    await _context.SaveChangesAsync();
+                }
+
                 return RedirectToAction(nameof(Index));
             }
-            return View(repair);
+            return View(repairViewModel);
         }
 
         // GET: Repairs/Edit/5
