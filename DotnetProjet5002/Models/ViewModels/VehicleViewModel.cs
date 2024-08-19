@@ -20,7 +20,7 @@ namespace DotnetProjet5.ViewModels
         public DateTime PurchaseDate { get; set; }
 
         [Required]
-        [Range(0, float.MaxValue, ErrorMessage = "Please enter a valid price")]
+        [Range(0, float.MaxValue, ErrorMessage = "merci d'entrer un prix valide")]
         public float PurchasePrice { get; set; }
 
         [Required]

@@ -47,11 +47,7 @@ namespace DotnetProjet5.Controllers
                 SellPrice = vehicle.SellPrice
                 
             }).ToList();
-            // Log the SellPrice values for debugging
-            foreach (var vehicle in vehicleViewModels)
-            {
-                Console.WriteLine($"Vehicle {vehicle.CodeVin} - SellPrice: {vehicle.SellPrice}");
-            }
+             
 
             return View(vehicleViewModels);
         }

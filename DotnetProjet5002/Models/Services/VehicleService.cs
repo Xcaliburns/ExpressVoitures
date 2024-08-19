@@ -29,7 +29,13 @@ namespace DotnetProjet5.Models.Services
                 Finish = v.Finish,
                 Availability = v.Availability,
                 AvailabilityDate = v.AvailabilityDate ?? DateTime.MinValue,
-                CodeVin = v.CodeVin
+                CodeVin = v.CodeVin,
+                Description = v.Description, // Added the missing property,
+                ImageUrl = v.ImageUrl,
+                PurchaseDate = v.PurchaseDate,
+                PurchasePrice = v.PurchasePrice,
+                Selled = v.Selled,
+                SellPrice = v.SellPrice
             }).ToList();
         }
 
@@ -49,7 +55,13 @@ namespace DotnetProjet5.Models.Services
                 Finish = vehicle.Finish,
                 Availability = vehicle.Availability,
                 AvailabilityDate = vehicle.AvailabilityDate ?? DateTime.MinValue,
-                CodeVin = vehicle.CodeVin
+                CodeVin = vehicle.CodeVin,
+                Description = vehicle.Description,
+                ImageUrl = vehicle.ImageUrl,
+                PurchaseDate = vehicle.PurchaseDate,
+                PurchasePrice = vehicle.PurchasePrice,
+                Selled = vehicle.Selled,
+                SellPrice = vehicle.SellPrice
             };
         }
 
@@ -120,12 +132,12 @@ namespace DotnetProjet5.Models.Services
                     Model = vehicle.Model,
                     Finish = vehicle.Finish,
                     Description = vehicle.Description,
-                   // SellPrice = sellPrice,
                     Availability = vehicle.Availability,
                     ImageUrl = vehicle.ImageUrl,
                     AvailabilityDate = vehicle.AvailabilityDate,
                     Selled = vehicle.Selled,
-                   // Repairs = repairs
+                    SellPrice = vehicle.SellPrice
+
                 });
 
                 // Console.WriteLine($"Vehicle CodeVin: {vehicle.CodeVin}, SellPrice: {sellPrice}");
