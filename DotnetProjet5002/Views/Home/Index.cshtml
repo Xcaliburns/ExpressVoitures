@@ -1,7 +1,8 @@
-﻿@model IEnumerable<DotnetProjet5.ViewModels.VehicleViewModel>
+﻿@using DotnetProjet5.ViewModels
+@model IEnumerable<VehicleViewModel>
 
 @{
-    ViewData["Title"] = "Vehicle List";
+    ViewData["Title"] = "Liste des véhicules";
 }
 
 <h2>Vehicle List</h2>
@@ -9,39 +10,84 @@
 <table class="table">
     <thead>
         <tr>
-            <th>CodeVin</th>
-            <th>Année</th>
-            <th> Date d'achat</th>
-            <th>Prix d'achat</th>
-            <th>Marque</th>
-            <th>Modèle</th>
-            <th>Finition</th>
-            <th>Description</th>
-            <th>disponibilité</th>
-            <th>Image</th>
-            <th>Date de diponibilité</th>
-            <th>Vendue</th>
-            <th>prix de vente</th>
-
+            <th>
+                @Html.DisplayNameFor(model => model.Year)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchaseDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.PurchasePrice)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Brand)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Model)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Finish)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Description)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Availability)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailabilityDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Selled)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.SellPrice)
+            </th>
         </tr>
     </thead>
     <tbody>
-        @foreach (var vehicle in Model)
+        @foreach (var item in Model)
         {
             <tr>
-                <td>@vehicle.CodeVin</td>
-                <td>@vehicle.Year.ToShortDateString()</td>
-                <td>@vehicle.PurchaseDate.ToShortDateString()</td>
-                <td>@vehicle.PurchasePrice</td>
-                <td>@vehicle.Brand</td>
-                <td>@vehicle.Model</td>
-                <td>@vehicle.Finish</td>
-                <td>@vehicle.Description</td>
-                <td>@vehicle.Availability</td>
-                <td>@vehicle.ImageUrl</td>
-                <td>@vehicle.AvailabilityDate?.ToShortDateString()</td>
-                <td>@vehicle.Selled</td>
-                <td>@vehicle.SellPrice</td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Year)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchaseDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.PurchasePrice)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Brand)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Model)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Finish)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Description)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Availability)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ImageUrl)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.AvailabilityDate)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Selled)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.SellPrice)
+                </td>
             </tr>
         }
     </tbody>
