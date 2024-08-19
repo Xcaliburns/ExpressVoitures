@@ -12,8 +12,7 @@ namespace DotnetProjet5.Models
 
         [ForeignKey("Vehicle")]
         public string CodeVin { get; set; }
-        public Vehicle Vehicle { get; set; }
-
+        
         public string Description { get; set; }
         public float RepairCost { get; set; }
     }

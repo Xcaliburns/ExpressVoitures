@@ -1,8 +1,48 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@model IEnumerable<DotnetProjet5.ViewModels.VehicleViewModel>
+
+@{
+    ViewData["Title"] = "Vehicle List";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h2>Vehicle List</h2>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>CodeVin</th>
+            <th>Année</th>
+            <th> Date d'achat</th>
+            <th>Prix d'achat</th>
+            <th>Marque</th>
+            <th>Modèle</th>
+            <th>Finition</th>
+            <th>Description</th>
+            <th>disponibilité</th>
+            <th>Image</th>
+            <th>Date de diponibilité</th>
+            <th>Vendue</th>
+            <th>prix de vente</th>
+
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var vehicle in Model)
+        {
+            <tr>
+                <td>@vehicle.CodeVin</td>
+                <td>@vehicle.Year.ToShortDateString()</td>
+                <td>@vehicle.PurchaseDate.ToShortDateString()</td>
+                <td>@vehicle.PurchasePrice</td>
+                <td>@vehicle.Brand</td>
+                <td>@vehicle.Model</td>
+                <td>@vehicle.Finish</td>
+                <td>@vehicle.Description</td>
+                <td>@vehicle.Availability</td>
+                <td>@vehicle.ImageUrl</td>
+                <td>@vehicle.AvailabilityDate?.ToShortDateString()</td>
+                <td>@vehicle.Selled</td>
+                <td>@vehicle.SellPrice</td>
+            </tr>
+        }
+    </tbody>
+</table>

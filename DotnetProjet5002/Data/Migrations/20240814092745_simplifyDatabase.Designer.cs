@@ -4,6 +4,7 @@ using DotnetProjet5.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetProjet5.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240814092745_simplifyDatabase")]
+    partial class simplifyDatabase
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -59,14 +62,11 @@ namespace DotnetProjet5.Data.Migrations
                     b.Property<float>("PurchasePrice")
                         .HasColumnType("real");
 
-                    b.Property<float>("SellPrice")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("Selled")
-                        .HasColumnType("bit");
-
                     b.Property<DateTime>("Year")
                         .HasColumnType("datetime2");
+
+                    b.Property<bool>("selled")
+                        .HasColumnType("bit");
 
                     b.HasKey("CodeVin");
 

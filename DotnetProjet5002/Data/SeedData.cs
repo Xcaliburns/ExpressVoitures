@@ -26,10 +26,16 @@ namespace DotnetProjet5.Data
                  {
                      CodeVin = "toto",
                      Year = new DateTime(2020, 1, 1),
+                     PurchaseDate= new DateTime(2020, 1, 1),
+                     PurchasePrice= 10000,                    
                      Brand = "renault",
                      Model = "twingo",
                      Finish = "electrique",
+                     Description = "voiture neuve",
+                     ImageUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.largus.fr%2Factualite-automobile%2Frenault-twingo-electrique-2020-les-prix-de-la-nouvelle-twingo-ze-10300000.html&psig=AOvVaw0",
                      Availability = false,
+                     AvailabilityDate = new DateTime(2020, 1, 1),
+                     Selled = false
 
                  },
                   new Vehicle
@@ -39,7 +45,11 @@ namespace DotnetProjet5.Data
                       Brand = "renault",
                       Model = "twingo",
                       Finish = "electrique",
+                      Description = "voiture neuve",
+                      ImageUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.largus.fr%2Factualite-automobile%2Frenault-twingo-electrique-2020-les-prix-de-la-nouvelle-twingo-ze-10300000.html&psig=AOvVaw0",
                       Availability = false,
+                      AvailabilityDate = new DateTime(2020, 1, 1),
+                      Selled = false
 
                   }
                     );

@@ -1,70 +1,76 @@
-﻿@model DotnetProjet5.Models.Entities.Vehicle
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
-    ViewData["Title"] = "Create";
+    ViewData["Title"] = "Add Vehicle";
 }
 
-<h1>Create</h1>
+<h1>Add Vehicle</h1>
 
-<h4>Vehicle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Create">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CodeVin" class="control-label"></label>
-                <input asp-for="CodeVin" class="form-control" />
-                <span asp-validation-for="CodeVin" class="text-danger"></span>
-            </div>
-            @*  TODO revoir le type , il faut convertir l année en number et reconvertir en datetime pour la db *@
-            <div class="form-group">  
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" type="number" min="1994" id="yearInput" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
-            </div>
-            @* Pour definir le max à l année en cours *@
-            <script>
-                var currentYear = new Date().getFullYear();
-                document.getElementById('yearInput').max = currentYear;
-            </script>
-
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Finish" class="control-label"></label>
-                <input asp-for="Finish" class="form-control" />
-                <span asp-validation-for="Finish" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailabilityDate" class="control-label"></label>
-                <input asp-for="AvailabilityDate" type="date" class="form-control" />
-                <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
-            </div>
-
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+<form asp-action="Create" method="post">
+    <div class="form-group">
+        <label asp-for="CodeVin" class="control-label"></label>
+        <input asp-for="CodeVin" class="form-control" />
+        <span asp-validation-for="CodeVin" class="text-danger"></span>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div class="form-group">
+        <label asp-for="Year" class="control-label"></label>
+        <input asp-for="Year" class="form-control" />
+        <span asp-validation-for="Year" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchaseDate" class="control-label"></label>
+        <input asp-for="PurchaseDate" class="form-control" />
+        <span asp-validation-for="PurchaseDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="PurchasePrice" class="control-label"></label>
+        <input asp-for="PurchasePrice" class="form-control" />
+        <span asp-validation-for="PurchasePrice" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Brand" class="control-label"></label>
+        <input asp-for="Brand" class="form-control" />
+        <span asp-validation-for="Brand" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Model" class="control-label"></label>
+        <input asp-for="Model" class="form-control" />
+        <span asp-validation-for="Model" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Finish" class="control-label"></label>
+        <input asp-for="Finish" class="form-control" />
+        <span asp-validation-for="Finish" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Description" class="control-label"></label>
+        <input asp-for="Description" class="form-control" />
+        <span asp-validation-for="Description" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Availability" class="control-label"></label>
+        <input asp-for="Availability" class="form-control" />
+        <span asp-validation-for="Availability" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="AvailabilityDate" class="control-label"></label>
+        <input asp-for="AvailabilityDate" class="form-control" />
+        <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="ImageUrl" class="control-label"></label>
+        <input asp-for="ImageUrl" class="form-control" />
+        <span asp-validation-for="ImageUrl" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <label asp-for="Selled" class="control-label"></label>
+        <input asp-for="Selled" class="form-control" />
+        <span asp-validation-for="Selled" class="text-danger"></span>
+    </div>
+    <div class="form-group">
+        <input type="submit" value="Add" class="btn btn-primary" />
+    </div>
+</form>
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

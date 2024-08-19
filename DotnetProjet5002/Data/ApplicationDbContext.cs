@@ -13,7 +13,7 @@ namespace DotnetProjet5.Data
         }
         public DbSet<Vehicle> Vehicle { get; set; } = default!;
         public DbSet<Repair> Repairs { get; set; }
-        public DbSet<Sale> Sales { get; set; }
-        public DbSet<Purchase> Purchases { get; set; }
+        
+        
     }
 }

@@ -1,82 +1,100 @@
-﻿@using DotnetProjet5.Models.ViewModels
-@model IEnumerable<VehicleViewModel>
+﻿@model IEnumerable<DotnetProjet5.ViewModels.VehicleViewModel>
 
 @{
-    ViewData["Title"] = "Liste des vehicules";
+    ViewData["Title"] = "Index";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>liste des vehicules</h1>
+<h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Ajouter un véhicule</a>
+    <a asp-action="Create">Create New</a>
 </p>
 <table class="table">
     <thead>
         <tr>
-
             <th>
-                Code VIN
+                @Html.DisplayNameFor(model => model.Year)
             </th>
             <th>
-                Année
+                @Html.DisplayNameFor(model => model.PurchaseDate)
             </th>
             <th>
-                Marque
+                @Html.DisplayNameFor(model => model.PurchasePrice)
             </th>
             <th>
-                Modèle
+                @Html.DisplayNameFor(model => model.Brand)
             </th>
             <th>
-                Finition
+                @Html.DisplayNameFor(model => model.Model)
             </th>
             <th>
-                disponibilité
+                @Html.DisplayNameFor(model => model.Finish)
             </th>
             <th>
-                date de disponibilité
+                @Html.DisplayNameFor(model => model.Description)
             </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Availability)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ImageUrl)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.AvailabilityDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Selled)
+            </th> <th>
+                @Html.DisplayNameFor(model => model.SellPrice)
+            </th>
+            
         </tr>
     </thead>
     <tbody>
-        @foreach (var item in Model)
-        {
-            <tr>
-                <td>
-                    @Html.DisplayFor(ModelItem => item.CodeVin)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Finish)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Availability)
-                </td>
-                <td>
-                    @if (item.Availability)
-                    {
-                        @Html.DisplayFor(modelItem => item.AvailabilityDateFormatted)
-                    }
-                    else
-                    {
-                        <span>en préparation</span>
-                    }
-                </td>
-                <td>
-                    <a asp-action="Edit" asp-route-id="@item.CodeVin">Edit</a> |
-                    <a asp-action="Details" asp-route-id="@item.CodeVin">Details</a> |
-                    <a asp-action="Delete" asp-route-id="@item.CodeVin">Delete</a>|
-                    <a class="nav-link text-dark" asp-area="" asp-controller="Repairs" asp-action="Create" asp-route-codeVin="@item.CodeVin">ajouter une reparation</a>
-
-                </td>
-            </tr>
-        }
+@foreach (var item in Model) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.Year)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchaseDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PurchasePrice)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Brand)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Model)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Finish)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Description)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Availability)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.ImageUrl)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.AvailabilityDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Selled)
+            </td> <td>
+                @Html.DisplayFor(modelItem => item.SellPrice)
+            </td>
+            <td>
+                <a asp-action="Edit" asp-route-id="@item.CodeVin">Edit</a> |
+                <a asp-action="Details" asp-route-id="@item.CodeVin">Details</a> |
+                <a asp-action="Delete" asp-route-id="@item.CodeVin">Delete</a>
+            </td>
+        </tr>
+}
     </tbody>
 </table>

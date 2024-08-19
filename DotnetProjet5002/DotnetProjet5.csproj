@@ -14,11 +14,7 @@
     <PackageReference Include="Microsoft.EntityFrameworkCore.SqlServer" Version="8.0.7" />
     <PackageReference Include="Microsoft.EntityFrameworkCore.Tools" Version="8.0.7" />
     <PackageReference Include="Microsoft.VisualStudio.Web.CodeGeneration.Design" Version="8.0.3" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Models\Services\" />
-    <Folder Include="Models\Repositories\" />
+    <PackageReference Include="Moq" Version="4.20.70" />
   </ItemGroup>
 
 </Project>
