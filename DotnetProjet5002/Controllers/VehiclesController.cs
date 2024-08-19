@@ -45,9 +45,9 @@ namespace DotnetProjet5.Controllers
                 AvailabilityDate = vehicle.AvailabilityDate,
                 Selled = vehicle.Selled,
                 SellPrice = vehicle.SellPrice
-                
+
             }).ToList();
-             
+
 
             return View(vehicleViewModels);
         }
@@ -81,55 +81,57 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel )
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel)
         {
             if (ModelState.IsValid)
             {
-
                 // Calculate the total repair cost
-                float totalRepairCost = 0;
                 if (_repairService != null)
                 {
-                    var repairs = await _repairService.GetRepairsByVehicleAsync(vehicleViewModel.CodeVin);
-                    totalRepairCost = repairs.Sum(repair => repair.RepairCost);
+                    // Calculate the total repair cost using the service
+                    float totalRepairCost = await _vehicleService.CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
+
+                    // Calculate the sell price
+                    float SellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
+
+                    var vehicle = new Vehicle
+                    {
+                        CodeVin = vehicleViewModel.CodeVin,
+                        Year = vehicleViewModel.Year,
+                        PurchaseDate = vehicleViewModel.PurchaseDate,
+                        PurchasePrice = vehicleViewModel.PurchasePrice,
+                        Brand = vehicleViewModel.Brand,
+                        Model = vehicleViewModel.Model,
+                        Finish = vehicleViewModel.Finish,
+                        Description = vehicleViewModel.Description,
+                        Availability = vehicleViewModel.Availability,
+                        ImageUrl = vehicleViewModel.ImageUrl,
+                        AvailabilityDate = vehicleViewModel.AvailabilityDate,
+                        Selled = vehicleViewModel.Selled,
+                        SellPrice = SellPrice,
+                    };
+
+                    _context.Add(vehicle);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
                 }
 
-                // Calculate the sell price
-                float sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
-                var vehicle = new Vehicle
+                // Log ModelState errors
+                foreach (var modelState in ModelState.Values)
                 {
-                    CodeVin = vehicleViewModel.CodeVin,
-                    Year = vehicleViewModel.Year,
-                    PurchaseDate = vehicleViewModel.PurchaseDate,
-                    PurchasePrice = vehicleViewModel.PurchasePrice,
-                    Brand = vehicleViewModel.Brand,
-                    Model = vehicleViewModel.Model,
-                    Finish = vehicleViewModel.Finish,
-                    Description = vehicleViewModel.Description,
-                    Availability = vehicleViewModel.Availability,
-                    ImageUrl = vehicleViewModel.ImageUrl,
-                    AvailabilityDate = vehicleViewModel.AvailabilityDate,
-                    Selled = vehicleViewModel.Selled,
-                    SellPrice = sellPrice,
-                };
-
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-
-            // Log ModelState errors
-            foreach (var modelState in ModelState.Values)
-            {
-                foreach (var error in modelState.Errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
+                    foreach (var error in modelState.Errors)
+                    {
+                        Console.WriteLine(error.ErrorMessage);
+                    }
                 }
+                return View(vehicleViewModel);
             }
+
+            // Add a default return statement if ModelState is not valid
             return View(vehicleViewModel);
         }
 
-    
+
 
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(string id)

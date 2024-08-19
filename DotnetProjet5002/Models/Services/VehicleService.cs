@@ -98,6 +98,11 @@ namespace DotnetProjet5.Models.Services
             vehicle.Availability = vehicleViewModel.Availability;
             vehicle.AvailabilityDate = vehicleViewModel.AvailabilityDate;
             vehicle.Description = vehicleViewModel.Description; // Added the missing property
+            vehicle.ImageUrl = vehicleViewModel.ImageUrl;
+            vehicle.PurchaseDate = vehicleViewModel.PurchaseDate;
+            vehicle.PurchasePrice = vehicleViewModel.PurchasePrice;
+            vehicle.Selled = vehicleViewModel.Selled;
+            vehicle.SellPrice = vehicleViewModel.SellPrice;
         }
 
         public async Task DeleteVehicleAsync(string CodeVin)
@@ -109,42 +114,15 @@ namespace DotnetProjet5.Models.Services
                 await _context.SaveChangesAsync();
             }
         }
-
-        public async Task<IEnumerable<VehicleViewModel>> CalculateSellPriceAsync()
+        public async Task<float> CalculateTotalRepairCostAsync(string codeVin)
         {
-            var vehicles = await _context.Vehicle.ToListAsync();
-            var vehicleViewModels = new List<VehicleViewModel>();
-
-            foreach (var vehicle in vehicles)
-            {
-                var repairs = await _repairService.GetRepairsByVehicleAsync(vehicle.CodeVin);
-
-                float totalRepairCost = repairs.Sum(r => r.RepairCost);// filtrer les réparations par le code vin du véhicule et sommer les coûts de réparation
-                float sellPrice = vehicle.PurchasePrice + totalRepairCost + 500;
-
-                vehicleViewModels.Add(new VehicleViewModel
-                {
-                    CodeVin = vehicle.CodeVin,
-                    Year = vehicle.Year,
-                    PurchaseDate = vehicle.PurchaseDate,
-                    PurchasePrice = vehicle.PurchasePrice,
-                    Brand = vehicle.Brand,
-                    Model = vehicle.Model,
-                    Finish = vehicle.Finish,
-                    Description = vehicle.Description,
-                    Availability = vehicle.Availability,
-                    ImageUrl = vehicle.ImageUrl,
-                    AvailabilityDate = vehicle.AvailabilityDate,
-                    Selled = vehicle.Selled,
-                    SellPrice = vehicle.SellPrice
-
-                });
-
-                // Console.WriteLine($"Vehicle CodeVin: {vehicle.CodeVin}, SellPrice: {sellPrice}");
-            }
-
-            return vehicleViewModels;
+            var repairs = await _repairService.GetRepairsByVehicleAsync(codeVin);
+            return repairs.Sum(repair => repair.RepairCost);
         }
+
+
+
+
     }
 }
 
