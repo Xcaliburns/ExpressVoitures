@@ -4,6 +4,7 @@ using DotnetProjet5.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -11,9 +12,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace DotnetProjet5.Data.Migrations
 {
     [DbContext(typeof(ApplicationDbContext))]
-    partial class ApplicationDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240814065555_AddImageToVehicle")]
+    partial class AddImageToVehicle
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -21,6 +24,31 @@ namespace DotnetProjet5.Data.Migrations
                 .HasAnnotation("Relational:MaxIdentifierLength", 128);
 
             SqlServerModelBuilderExtensions.UseIdentityColumns(modelBuilder);
+
+            modelBuilder.Entity("DotnetProjet5.Models.Entities.Purchase", b =>
+                {
+                    b.Property<int>("PurchaseId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("PurchaseId"));
+
+                    b.Property<string>("CodeVIN")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.Property<DateTime>("PurchaseDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<float>("PurchasePrice")
+                        .HasColumnType("real");
+
+                    b.HasKey("PurchaseId");
+
+                    b.HasIndex("CodeVIN");
+
+                    b.ToTable("Purchases");
+                });
 
             modelBuilder.Entity("DotnetProjet5.Models.Entities.Vehicle", b =>
                 {
@@ -37,33 +65,17 @@ namespace DotnetProjet5.Data.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("Description")
-                        .IsRequired()
-                        .HasColumnType("nvarchar(max)");
-
                     b.Property<string>("Finish")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<string>("ImageUrl")
+                    b.Property<string>("Image")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("Model")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
-
-                    b.Property<DateTime>("PurchaseDate")
-                        .HasColumnType("datetime2");
-
-                    b.Property<float>("PurchasePrice")
-                        .HasColumnType("real");
-
-                    b.Property<float>("SellPrice")
-                        .HasColumnType("real");
-
-                    b.Property<bool>("Selled")
-                        .HasColumnType("bit");
 
                     b.Property<DateTime>("Year")
                         .HasColumnType("datetime2");
@@ -83,7 +95,7 @@ namespace DotnetProjet5.Data.Migrations
 
                     b.Property<string>("CodeVin")
                         .IsRequired()
-                        .HasColumnType("nvarchar(max)");
+                        .HasColumnType("nvarchar(450)");
 
                     b.Property<string>("Description")
                         .IsRequired()
@@ -94,7 +106,31 @@ namespace DotnetProjet5.Data.Migrations
 
                     b.HasKey("RepairId");
 
+                    b.HasIndex("CodeVin");
+
                     b.ToTable("Repairs");
+                });
+
+            modelBuilder.Entity("DotnetProjet5.Models.Sale", b =>
+                {
+                    b.Property<int>("SaleId")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int");
+
+                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("SaleId"));
+
+                    b.Property<DateTime>("SaleDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<string>("codeVin")
+                        .IsRequired()
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("SaleId");
+
+                    b.HasIndex("codeVin");
+
+                    b.ToTable("Sales");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
@@ -297,6 +333,39 @@ namespace DotnetProjet5.Data.Migrations
                     b.HasKey("UserId", "LoginProvider", "Name");
 
                     b.ToTable("AspNetUserTokens", (string)null);
+                });
+
+            modelBuilder.Entity("DotnetProjet5.Models.Entities.Purchase", b =>
+                {
+                    b.HasOne("DotnetProjet5.Models.Entities.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("CodeVIN")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("DotnetProjet5.Models.Repair", b =>
+                {
+                    b.HasOne("DotnetProjet5.Models.Entities.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("CodeVin")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
+                });
+
+            modelBuilder.Entity("DotnetProjet5.Models.Sale", b =>
+                {
+                    b.HasOne("DotnetProjet5.Models.Entities.Vehicle", "Vehicle")
+                        .WithMany()
+                        .HasForeignKey("codeVin")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Vehicle");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>

@@ -6,35 +6,52 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
-using DotnetProjet5.Models.ViewModels;
 using DotnetProjet5.Models.Entities;
+using DotnetProjet5.ViewModels;
 
+using DotnetProjet5.Models.Services;
 
 namespace DotnetProjet5.Controllers
 {
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IVehicleService _vehicleService;
+        private readonly IRepairService _repairService;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(ApplicationDbContext context, IVehicleService vehicleService, IRepairService repairService)
         {
             _context = context;
+            _vehicleService = vehicleService;
+            _repairService = repairService;
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
             var vehicles = await _context.Vehicle.ToListAsync();
-            var vehicleViewModels = vehicles.Select(v => new VehicleViewModel
+            var vehicleViewModels = vehicles.Select(vehicle => new VehicleViewModel
             {
-                Year = v.Year.Year,
-                Brand = v.Brand,
-                Model = v.Model,
-                Finish = v.Finish,
-                Availability = v.Availability,
-                AvailabilityDate = v.AvailabilityDate ?? DateTime.MinValue, 
-                CodeVin = v.CodeVin
+                CodeVin = vehicle.CodeVin,
+                Year = vehicle.Year,
+                PurchaseDate = vehicle.PurchaseDate,
+                PurchasePrice = vehicle.PurchasePrice,
+                Brand = vehicle.Brand,
+                Model = vehicle.Model,
+                Finish = vehicle.Finish,
+                Description = vehicle.Description,
+                Availability = vehicle.Availability,
+                ImageUrl = vehicle.ImageUrl,
+                AvailabilityDate = vehicle.AvailabilityDate,
+                Selled = vehicle.Selled,
+                SellPrice = vehicle.SellPrice
+                
             }).ToList();
+            // Log the SellPrice values for debugging
+            foreach (var vehicle in vehicleViewModels)
+            {
+                Console.WriteLine($"Vehicle {vehicle.CodeVin} - SellPrice: {vehicle.SellPrice}");
+            }
 
             return View(vehicleViewModels);
         }
@@ -60,7 +77,7 @@ namespace DotnetProjet5.Controllers
         // GET: Vehicles/Create
         public IActionResult Create()
         {
-            return View();
+            return View(new VehicleViewModel());
         }
 
         // POST: Vehicles/Create
@@ -68,27 +85,55 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] VehicleViewModel vehicleViewmodel)
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel )
         {
             if (ModelState.IsValid)
             {
+
+                // Calculate the total repair cost
+                float totalRepairCost = 0;
+                if (_repairService != null)
+                {
+                    var repairs = await _repairService.GetRepairsByVehicleAsync(vehicleViewModel.CodeVin);
+                    totalRepairCost = repairs.Sum(repair => repair.RepairCost);
+                }
+
+                // Calculate the sell price
+                float sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
                 var vehicle = new Vehicle
                 {
-                    CodeVin = vehicleViewmodel.CodeVin,
-                    Year = new DateTime(vehicleViewmodel.Year, 1, 1), // Convert Year to DateTime
-                    Brand = vehicleViewmodel.Brand,
-                    Model = vehicleViewmodel.Model,
-                    Finish = vehicleViewmodel.Finish,
-                    Availability = vehicleViewmodel.Availability,
-                    AvailabilityDate = vehicleViewmodel.AvailabilityDate
+                    CodeVin = vehicleViewModel.CodeVin,
+                    Year = vehicleViewModel.Year,
+                    PurchaseDate = vehicleViewModel.PurchaseDate,
+                    PurchasePrice = vehicleViewModel.PurchasePrice,
+                    Brand = vehicleViewModel.Brand,
+                    Model = vehicleViewModel.Model,
+                    Finish = vehicleViewModel.Finish,
+                    Description = vehicleViewModel.Description,
+                    Availability = vehicleViewModel.Availability,
+                    ImageUrl = vehicleViewModel.ImageUrl,
+                    AvailabilityDate = vehicleViewModel.AvailabilityDate,
+                    Selled = vehicleViewModel.Selled,
+                    SellPrice = sellPrice,
                 };
+
                 _context.Add(vehicle);
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicleViewmodel);
+
+            // Log ModelState errors
+            foreach (var modelState in ModelState.Values)
+            {
+                foreach (var error in modelState.Errors)
+                {
+                    Console.WriteLine(error.ErrorMessage);
+                }
+            }
+            return View(vehicleViewModel);
         }
 
+    
 
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -111,7 +156,7 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(string id, [Bind("CodeVin,Year,PurchaseDate,PurchasePrice,Brand,Model,Finish,Description,Availability,ImageUrl,AvailabilityDate,selled")] Vehicle vehicle)
         {
             if (id != vehicle.CodeVin)
             {

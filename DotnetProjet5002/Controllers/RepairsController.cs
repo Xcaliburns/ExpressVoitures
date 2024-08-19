@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
-using DotnetProjet5.Models;
+using DotnetProjet5.Models.ViewModels;
 
 namespace DotnetProjet5.Controllers
 {
@@ -22,8 +22,7 @@ namespace DotnetProjet5.Controllers
         // GET: Repairs
         public async Task<IActionResult> Index()
         {
-            var applicationDbContext = _context.Repairs.Include(r => r.Vehicle);
-            return View(await applicationDbContext.ToListAsync());
+            return View(await _context.Repairs.ToListAsync());
         }
 
         // GET: Repairs/Details/5
@@ -35,7 +34,6 @@ namespace DotnetProjet5.Controllers
             }
 
             var repair = await _context.Repairs
-                .Include(r => r.Vehicle)
                 .FirstOrDefaultAsync(m => m.RepairId == id);
             if (repair == null)
             {
@@ -46,9 +44,8 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Create
-        public IActionResult Create(string codeVin)
+        public IActionResult Create()
         {
-            ViewData["CodeVin"] = new SelectList(_context.Vehicle, "CodeVin", "CodeVin");
             return View();
         }
 
@@ -57,7 +54,7 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RepairId,CodeVin,Description,RepairCost")] Repair repair)
+        public async Task<IActionResult> Create([Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repair)
         {
             if (ModelState.IsValid)
             {
@@ -65,7 +62,6 @@ namespace DotnetProjet5.Controllers
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CodeVin"] = new SelectList(_context.Vehicle, "CodeVin", "CodeVin", repair.CodeVin);
             return View(repair);
         }
 
@@ -80,18 +76,20 @@ namespace DotnetProjet5.Controllers
             var repair = await _context.Repairs.FindAsync(id);
             if (repair == null)
             {
-                return NotFound();
+                // Gérer le cas où la table est vide
+                return NotFound("Aucun enregistrement de réparation trouvé.");
             }
-            ViewData["CodeVin"] = new SelectList(_context.Vehicle, "CodeVin", "CodeVin", repair.CodeVin);
+
             return View(repair);
         }
+
 
         // POST: Repairs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RepairId,CodeVin,Description,RepairCost")] Repair repair)
+        public async Task<IActionResult> Edit(int id, [Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repair)
         {
             if (id != repair.RepairId)
             {
@@ -118,7 +116,6 @@ namespace DotnetProjet5.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            ViewData["CodeVin"] = new SelectList(_context.Vehicle, "CodeVin", "CodeVin", repair.CodeVin);
             return View(repair);
         }
 
@@ -131,7 +128,6 @@ namespace DotnetProjet5.Controllers
             }
 
             var repair = await _context.Repairs
-                .Include(r => r.Vehicle)
                 .FirstOrDefaultAsync(m => m.RepairId == id);
             if (repair == null)
             {
@@ -150,9 +146,9 @@ namespace DotnetProjet5.Controllers
             if (repair != null)
             {
                 _context.Repairs.Remove(repair);
+                await _context.SaveChangesAsync();
             }
 
-            await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 

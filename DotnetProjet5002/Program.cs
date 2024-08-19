@@ -1,4 +1,6 @@
 using DotnetProjet5.Data;
+using DotnetProjet5.Models.Services;
+using DotnetProjet5.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 
@@ -12,6 +14,11 @@ builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
     .AddEntityFrameworkStores<ApplicationDbContext>();
+
+
+builder.Services.AddScoped<IVehicleService, VehicleService>();
+builder.Services.AddScoped<IRepairService, RepairService>();
+
 builder.Services.AddControllersWithViews();
 
 var app = builder.Build();
