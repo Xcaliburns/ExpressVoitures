@@ -18,6 +18,7 @@ builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.Requ
 
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairService, RepairService>();
+builder.Services.AddScoped<IFileUploadHelper, FileUploadHelper>();
 
 builder.Services.AddControllersWithViews();
 

@@ -1,134 +1,90 @@
-﻿//using System;
-//using System.Threading.Tasks;
-//using DotnetProjet5.Controllers;
-//using DotnetProjet5.Data;
-//using DotnetProjet5.Models.Entities;
-//using DotnetProjet5.Models.ViewModels;
-//using Microsoft.AspNetCore.Mvc;
-//using Microsoft.EntityFrameworkCore;
-//using Moq;
-//using Xunit;
+﻿using System.Threading.Tasks;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
+using Moq;
+using Xunit;
+using DotnetProjet5.Controllers;
+using DotnetProjet5.Models.Services;
+using DotnetProjet5.ViewModels;
+using DotnetProjet5.Data;
+using Microsoft.EntityFrameworkCore;
 
-//namespace DotnetProjet5.Controllers.Tests
-//{
-//    public class VehiclesControllerTests
-//    {
+namespace DotnetProjet5.UnitTests.ControllersTests
+{
+    public class VehiclesControllerTests
+    {
+        [Fact]
+        public async Task Create_Post_ReturnsRedirectToActionResult_WhenModelStateIsValid()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-//        private readonly Mock<ApplicationDbContext> _mockContext;
-//        private readonly VehiclesController _controller;
+            using var context = new ApplicationDbContext(options);
+            var mockVehicleService = new Mock<IVehicleService>();
+            var mockRepairService = new Mock<IRepairService>();
+            var mockFileUploadHelper = new Mock<IFileUploadHelper>();
 
-//        public VehiclesControllerTests()
-//        {
-//            _mockContext = new Mock<ApplicationDbContext>();
-//            _controller = new VehiclesController(_mockContext.Object);
-//        }
-//        [Fact()]
-//        public void VehiclesControllerTest()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
+            var controller = new VehiclesController(context, mockVehicleService.Object, mockRepairService.Object, mockFileUploadHelper.Object);
 
-//        [Fact]
-//        public async Task Index_ReturnsViewResult_WithListOfVehicleViewModels()
-//        {
-//            // Arrange
-//            var vehicles = new List<Vehicle>
-//            {
-//                new Vehicle { CodeVin = "123ABC", Year = new DateTime(2022, 1, 1), Brand = "TestBrand1", Model = "TestModel1", Finish = "TestFinish1", Availability = true, AvailabilityDate = DateTime.Now },
-//                new Vehicle { CodeVin = "456DEF", Year = new DateTime(2021, 1, 1), Brand = "TestBrand2", Model = "TestModel2", Finish = "TestFinish2", Availability = false, AvailabilityDate = DateTime.Now.AddDays(1) }
-//            };
+            var vehicleViewModel = new VehicleViewModel
+            {
+                CodeVin = "1234567890",
+                Brand = "TestBrand",
+                Model = "TestModel",
+                Year = new DateTime(2021, 1, 1),
+                PurchaseDate = new DateTime(2021, 1, 1),
+                PurchasePrice = 10000,
+                Description = "Test Description",
+                ImageFile = new Mock<IFormFile>().Object
+            };
 
-//            var mockSet = new Mock<DbSet<Vehicle>>();
-//            mockSet.As<IQueryable<Vehicle>>().Setup(m => m.Provider).Returns(vehicles.AsQueryable().Provider);
-//            mockSet.As<IQueryable<Vehicle>>().Setup(m => m.Expression).Returns(vehicles.AsQueryable().Expression);
-//            mockSet.As<IQueryable<Vehicle>>().Setup(m => m.ElementType).Returns(vehicles.AsQueryable().ElementType);
-//            mockSet.As<IQueryable<Vehicle>>().Setup(m => m.GetEnumerator()).Returns(vehicles.AsQueryable().GetEnumerator());
+            var mockFormFile = new Mock<IFormFile>();
 
-//            _mockContext.Setup(c => c.Vehicle).Returns(mockSet.Object);
+            // Act
+            var result = await controller.Create(vehicleViewModel, mockFormFile.Object);
 
-//            // Act
-//            var result = await _controller.Index();
+            // Assert
+            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
+            Assert.Equal("Index", redirectToActionResult.ActionName);
+        }
 
-//            // Assert
-//            var viewResult = Assert.IsType<ViewResult>(result);
-//            var model = Assert.IsAssignableFrom<List<VehicleViewModel>>(viewResult.ViewData.Model);
-//            Assert.Equal(2, model.Count);
-//            Assert.Equal("123ABC", model[0].CodeVin);
-//            Assert.Equal("456DEF", model[1].CodeVin);
-//        }
+        [Fact]
+        public async Task Create_Post_ReturnsViewResult_WhenModelStateIsInvalid()
+        {
+            // Arrange
+            var options = new DbContextOptionsBuilder<ApplicationDbContext>()
+                .UseInMemoryDatabase(databaseName: "TestDatabase")
+                .Options;
 
-//        [Fact()]
-//        public void DetailsTest()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
+            using var context = new ApplicationDbContext(options);
+            var mockVehicleService = new Mock<IVehicleService>();
+            var mockRepairService = new Mock<IRepairService>();
+            var mockFileUploadHelper = new Mock<IFileUploadHelper>();
 
-//        [Fact]
-//        public async Task Create_ValidModelState_ReturnsRedirectToActionResult()
-//        {
-//            // Arrange
-//            var vehicleViewModel = new VehicleViewModel
-//            {
-//                CodeVin = "123ABC",
-//                Year = 2022,
-//                Brand = "TestBrand",
-//                Model = "TestModel",
-//                Finish = "TestFinish",
-//                Availability = true,
-//                AvailabilityDate = DateTime.Now
-//            };
+            var controller = new VehiclesController(context, mockVehicleService.Object, mockRepairService.Object, mockFileUploadHelper.Object);
+            controller.ModelState.AddModelError("Brand", "Required");
 
-//            // Act
-//            var result = await _controller.Create(vehicleViewModel);
+            var vehicleViewModel = new VehicleViewModel
+            {
+                CodeVin = "1234567890",
+                Model = "TestModel",
+                Year = new DateTime(2021, 1, 1),
+                PurchaseDate = new DateTime(2021, 1, 1),
+                PurchasePrice = 10000,
+                Description = "Test Description",
+                ImageFile = new Mock<IFormFile>().Object
+            };
 
-//            // Assert
-//            var redirectToActionResult = Assert.IsType<RedirectToActionResult>(result);
-//            Assert.Equal("Index", redirectToActionResult.ActionName);
-//            _mockContext.Verify(m => m.Add(It.IsAny<Vehicle>()), Times.Once);
-//            _mockContext.Verify(m => m.SaveChangesAsync(default), Times.Once);
-//        }
+            var mockFormFile = new Mock<IFormFile>();
 
-//        [Fact]
-//        public async Task Create_InvalidModelState_ReturnsViewResult()
-//        {
-//            // Arrange
-//            _controller.ModelState.AddModelError("CodeVin", "Required");
-//            var vehicleViewModel = new VehicleViewModel();
+            // Act
+            var result = await controller.Create(vehicleViewModel, mockFormFile.Object);
 
-//            // Act
-//            var result = await _controller.Create(vehicleViewModel);
-
-//            // Assert
-//            var viewResult = Assert.IsType<ViewResult>(result);
-//            Assert.Equal(vehicleViewModel, viewResult.Model);
-//            _mockContext.Verify(m => m.Add(It.IsAny<Vehicle>()), Times.Never);
-//            _mockContext.Verify(m => m.SaveChangesAsync(default), Times.Never);
-//        }
-
-        
-
-//        [Fact()]
-//        public void EditTest()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
-
-//        [Fact()]
-//        public void EditTest1()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
-
-//        [Fact()]
-//        public void DeleteTest()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
-
-//        [Fact()]
-//        public void DeleteConfirmedTest()
-//        {
-//            Xunit.Assert.Fail("This test needs an implementation");
-//        }
-//    }
-//}
+            // Assert
+            var viewResult = Assert.IsType<ViewResult>(result);
+            Assert.Equal(vehicleViewModel, viewResult.Model);
+        }
+    }
+}

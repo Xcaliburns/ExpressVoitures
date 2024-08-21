@@ -1,6 +1,6 @@
 ﻿@DotnetProjet5_HostAddress = https://localhost:7240
 
-POST {{DotnetProjet5_HostAddress}}/vehicles/create/{id}
+POST {{DotnetProjet5_HostAddress}}/vehicles/create/
 Content-Type: application/json
 
 {
@@ -15,17 +15,34 @@ Content-Type: application/json
  "Availability": "true",
  "ImageUrl": "https://www.google.com",
  "AvailabilityDate": "2021-01-01",
- " selled": false,
+ "Selled": false,
+ "SellPrice":5000,
  
 }
 
 ###
 
-POST {{DotnetProjet5_HostAddress}}/vehicles/create/{id}
+POST {{DotnetProjet5_HostAddress}}/vehicles/create}
 Content-Type: application/json
 
+
+ 
 {
-  //Vehicle
+ "CodeVin" : "1HGCM82633A001234",
+ "Year": "2020-01-01",
+ "PurchaseDate": "2021-01-01",
+ "PurchasePrice": 5000,
+ "Brand": "Honda",
+ "Model": "Accord",
+ "Finish": "Black", 
+ "Description": "Good condition",
+ "Availability": "true",
+ "ImageUrl": "https://www.google.com",
+ "AvailabilityDate": "2021-01-01",
+ "Selled": false,
+ "SellPrice":5000,
+ 
 }
+
 
 ###

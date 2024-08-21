@@ -18,37 +18,20 @@ namespace DotnetProjet5.Controllers
         private readonly ApplicationDbContext _context;
         private readonly IVehicleService _vehicleService;
         private readonly IRepairService _repairService;
+        private readonly IFileUploadHelper _fileUploadHelper;
 
-        public VehiclesController(ApplicationDbContext context, IVehicleService vehicleService, IRepairService repairService)
+        public VehiclesController(ApplicationDbContext context, IVehicleService vehicleService, IRepairService repairService, IFileUploadHelper fileUploadHelper)
         {
             _context = context;
             _vehicleService = vehicleService;
             _repairService = repairService;
+            _fileUploadHelper = fileUploadHelper;
         }
 
         // GET: Vehicles
         public async Task<IActionResult> Index()
         {
-            var vehicles = await _context.Vehicle.ToListAsync();
-            var vehicleViewModels = vehicles.Select(vehicle => new VehicleViewModel
-            {
-                CodeVin = vehicle.CodeVin,
-                Year = vehicle.Year,
-                PurchaseDate = vehicle.PurchaseDate,
-                PurchasePrice = vehicle.PurchasePrice,
-                Brand = vehicle.Brand,
-                Model = vehicle.Model,
-                Finish = vehicle.Finish,
-                Description = vehicle.Description,
-                Availability = vehicle.Availability,
-                ImageUrl = vehicle.ImageUrl,
-                AvailabilityDate = vehicle.AvailabilityDate,
-                Selled = vehicle.Selled,
-                SellPrice = vehicle.SellPrice
-
-            }).ToList();
-
-
+            var vehicleViewModels = await _vehicleService.GetAllVehiclesAsync();
             return View(vehicleViewModels);
         }
 
@@ -60,14 +43,13 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.CodeVin == id);
-            if (vehicle == null)
+            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Create
@@ -77,61 +59,26 @@ namespace DotnetProjet5.Controllers
         }
 
         // POST: Vehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel)
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
-                // Calculate the total repair cost
-                if (_repairService != null)
+                await _vehicleService.CreateVehicleAsync(vehicleViewModel, imageFile);
+                return RedirectToAction(nameof(Index));
+            }
+            if (!ModelState.IsValid)
+            {
+                var errors = ModelState.Values.SelectMany(v => v.Errors);
+                foreach (var error in errors)
                 {
-                    // Calculate the total repair cost using the service
-                    float totalRepairCost = await _vehicleService.CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
-
-                    // Calculate the sell price
-                    float SellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
-
-                    var vehicle = new Vehicle
-                    {
-                        CodeVin = vehicleViewModel.CodeVin,
-                        Year = vehicleViewModel.Year,
-                        PurchaseDate = vehicleViewModel.PurchaseDate,
-                        PurchasePrice = vehicleViewModel.PurchasePrice,
-                        Brand = vehicleViewModel.Brand,
-                        Model = vehicleViewModel.Model,
-                        Finish = vehicleViewModel.Finish,
-                        Description = vehicleViewModel.Description,
-                        Availability = vehicleViewModel.Availability,
-                        ImageUrl = vehicleViewModel.ImageUrl,
-                        AvailabilityDate = vehicleViewModel.AvailabilityDate,
-                        Selled = vehicleViewModel.Selled,
-                        SellPrice = SellPrice,
-                    };
-
-                    _context.Add(vehicle);
-                    await _context.SaveChangesAsync();
-                    return RedirectToAction(nameof(Index));
+                    Console.WriteLine(error.ErrorMessage);
                 }
-
-                // Log ModelState errors
-                foreach (var modelState in ModelState.Values)
-                {
-                    foreach (var error in modelState.Errors)
-                    {
-                        Console.WriteLine(error.ErrorMessage);
-                    }
-                }
-                return View(vehicleViewModel);
             }
 
-            // Add a default return statement if ModelState is not valid
-            return View(vehicleViewModel);
+                return View(vehicleViewModel);
         }
-
-
 
         // GET: Vehicles/Edit/5
         public async Task<IActionResult> Edit(string id)
@@ -141,22 +88,20 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            if (vehicle == null)
+            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // POST: Vehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeVin,Year,PurchaseDate,PurchasePrice,Brand,Model,Finish,Description,Availability,ImageUrl,AvailabilityDate,selled")] Vehicle vehicle)
+        public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel, IFormFile imageFile)
         {
-            if (id != vehicle.CodeVin)
+            if (id != vehicleViewModel.CodeVin)
             {
                 return NotFound();
             }
@@ -165,12 +110,17 @@ namespace DotnetProjet5.Controllers
             {
                 try
                 {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
+                    if (imageFile != null)
+                    {
+                        // Assuming the image URL is set by another service before calling UpdateVehicleAsync
+                        vehicleViewModel.ImageUrl = await SaveImageFileAsync(imageFile);
+                    }
+
+                    await _vehicleService.UpdateVehicleAsync(vehicleViewModel, imageFile);
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!VehicleExists(vehicle.CodeVin))
+                    if (!await _vehicleService.VehicleExistsAsync(vehicleViewModel.CodeVin))
                     {
                         return NotFound();
                     }
@@ -181,7 +131,7 @@ namespace DotnetProjet5.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Delete/5
@@ -192,14 +142,13 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.CodeVin == id);
-            if (vehicle == null)
+            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
 
-            return View(vehicle);
+            return View(vehicleViewModel);
         }
 
         // POST: Vehicles/Delete/5
@@ -207,19 +156,24 @@ namespace DotnetProjet5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(string id)
         {
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            if (vehicle != null)
-            {
-                _context.Vehicle.Remove(vehicle);
-            }
-
-            await _context.SaveChangesAsync();
+            await _vehicleService.DeleteVehicleAsync(id);
             return RedirectToAction(nameof(Index));
         }
 
-        private bool VehicleExists(string id)
+        private async Task<string> SaveImageFileAsync(IFormFile imageFile)
         {
-            return _context.Vehicle.Any(e => e.CodeVin == id);
+            if (imageFile == null)
+            {
+                return string.Empty;
+            }
+
+            var filePath = Path.Combine("wwwroot/images", imageFile.FileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await imageFile.CopyToAsync(stream);
+            }
+
+            return filePath;
         }
     }
 }

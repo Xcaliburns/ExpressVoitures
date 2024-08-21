@@ -10,7 +10,7 @@ namespace DotnetProjet5.ViewModels
     {
         [Key]
         [Required]
-        
+
         public string CodeVin { get; set; }
 
         [Required]
@@ -20,7 +20,7 @@ namespace DotnetProjet5.ViewModels
         public DateTime PurchaseDate { get; set; }
 
         [Required]
-        [Range(0, float.MaxValue, ErrorMessage = "merci d'entrer un prix valide")]
+        [Range(0.1, float.MaxValue, ErrorMessage = "merci d'entrer un prix valide")]
         public float PurchasePrice { get; set; }
 
         [Required]
@@ -32,12 +32,14 @@ namespace DotnetProjet5.ViewModels
         public string Description { get; set; }
         public float SellPrice { get; set; }
         public bool Availability { get; set; }
-        public string ImageUrl { get; set; }
+        [Required(ErrorMessage = "veuillez ajouter une image")]
+        public IFormFile ImageFile { get; set; }
+        public string? ImageUrl { get; set; } 
         public DateTime? AvailabilityDate { get; set; }
         public bool Selled { get; set; }
 
-     
-        
-       // public List<Repair> Repairs { get; set; }
+
+
+        // public List<Repair> Repairs { get; set; }
     }
 }

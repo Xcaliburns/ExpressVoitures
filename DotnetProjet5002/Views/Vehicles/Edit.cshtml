@@ -1,17 +1,17 @@
-﻿@model DotnetProjet5.Models.Entities.Vehicle
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Edit Vehicle";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+<h1>Edit Vehicle</h1>
 
 <h4>Vehicle</h4>
 <hr />
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="CodeVin" />
             <div class="form-group">
@@ -49,25 +49,29 @@
                 <input asp-for="Description" class="form-control" />
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
-            </div>
             <div class="form-group">
-                <label asp-for="ImageUrl" class="control-label"></label>
-                <input asp-for="ImageUrl" class="form-control" />
-                <span asp-validation-for="ImageUrl" class="text-danger"></span>
+                <label asp-for="Availability" class="control-label"></label>
+                <input asp-for="Availability" class="form-control" />
+                <span asp-validation-for="Availability" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AvailabilityDate" class="control-label"></label>
                 <input asp-for="AvailabilityDate" class="form-control" />
                 <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
             </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Selled" /> @Html.DisplayNameFor(model => model.Selled)
-                </label>
+            <div class="form-group">
+                <label asp-for="SellPrice" class="control-label"></label>
+                <input asp-for="SellPrice" class="form-control" />
+                <span asp-validation-for="SellPrice" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Selled" class="control-label"></label>
+                <input asp-for="Selled" class="form-control" />
+                <span asp-validation-for="Selled" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="imageFile" class="control-label">Image</label>
+                <input type="file" name="imageFile" class="form-control" />
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
