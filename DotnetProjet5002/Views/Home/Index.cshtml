@@ -2,68 +2,45 @@
 @model IEnumerable<VehicleViewModel>
 
 @{
-    ViewData["Title"] = "Liste des véhicules";
+    ViewData["Title"] = "Nos Voitures";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Vehicle List</h2>
+<body class="container align-items-center">
+    <h1>Nos Voitures</h1>
+    <div class="d-flex justify-content-center">
+        <a asp-area="" asp-controller="Vehicles" asp-action="Create" class="btn btn-primary mb-3 d-flex">+ Ajouter une Voiture</a>
+    </div>
+    <div class="row  row-cols-1 row-cols-md-2 g-3  ">
 
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-          
-          
-            <th>
-                @Html.DisplayNameFor(model => model.Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Finish)
-            </th>
-           
-          
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFile)
-            </th>
-            
-            
-                @Html.DisplayNameFor(model => model.SellPrice)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-               
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Finish)
-                </td>
-               
-             
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImageFile)
-                </td>
-               
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.SellPrice)
-                </td>
-            </tr>
+            <div class="col ">
+                <div class="card  " style="max-width: 594px;">
+                    <div class="row ">
+                        <div class="col-md-7">
+                            <img src="@item.ImageUrl" alt="Image de @item.Model" class="img-fluid rounded-start" alt="@Html.DisplayFor(modelItem => item.Model)">
+                        </div>
+                        <div class="col-md-3 ">
+                            <div class="card-body lh-sm  ">
+                                
+                                <p class="card-text " style="font-size: 22px">@Html.DisplayFor(modelItem => item.SellPrice) €</p>
+
+                                <p class="card-text  fw-light" style="font-size: 18px">@item.Year.ToString("yyyy")</p>
+                                                                                                        
+
+                                <p class="card-text  fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => item.Brand)</p>
+                                
+                                <p class="card-text  fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => item.Model)</p>
+
+                                <p class="card-text  fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => item.Finish)</p>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
         }
-    </tbody>
-</table>
+    </div>
+</body>
+</div>

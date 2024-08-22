@@ -1,3 +1,37 @@
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Regular.woff2') format('woff2'), url('/fonts/LibreBaskerville-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Italic.woff2') format('woff2'), url('/fonts/LibreBaskerville-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Bold.woff2') format('woff2'), url('/fonts/LibreBaskerville-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+
+
+h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 44px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 54.56px;
+    text-align: center;
+    color: #796157;
+}
+
+
 html {
   font-size: 14px;
 }
