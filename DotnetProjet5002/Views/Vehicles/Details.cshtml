@@ -1,85 +1,23 @@
-﻿@model DotnetProjet5.Models.Entities.Vehicle
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
     ViewData["Title"] = "Details";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+<a asp-controller="Home" asp-action="Index" class="text-muted"><i class="fa-solid fa-arrow-left " aria-hidden="true"></i>   retour</a>
 
-<div>
-    <h4>Vehicle</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchaseDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurchaseDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.PurchasePrice)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.PurchasePrice)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Finish)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Finish)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Availability)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Availability)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.ImageUrl)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.ImageUrl)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailabilityDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailabilityDate)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Selled)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Selled)
-        </dd>
-    </dl>
-</div>
-<div>
+@{
+    ViewData["Title"] = "Détails du véhicule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<body class="container align-items-center">
+    <h1>Détails du véhicule</h1>
+    <div class="row justify-content-center">
+        @Html.Partial("_VehicleCardLargePartial", Model)
+    </div>
+</body>
     <a asp-action="Edit" asp-route-id="@Model?.CodeVin">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+   
 </div>
