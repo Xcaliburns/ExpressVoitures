@@ -2,68 +2,22 @@
 @model IEnumerable<VehicleViewModel>
 
 @{
-    ViewData["Title"] = "Liste des véhicules";
+    ViewData["Title"] = "Nos Voitures";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h2>Vehicle List</h2>
-
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Year)
-            </th>
-          
-          
-            <th>
-                @Html.DisplayNameFor(model => model.Brand)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Model)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Finish)
-            </th>
-           
-          
-            <th>
-                @Html.DisplayNameFor(model => model.ImageFile)
-            </th>
-            
-            
-                @Html.DisplayNameFor(model => model.SellPrice)
-            </th>
-        </tr>
-    </thead>
-    <tbody>
+<body class="container align-items-center">
+    <h1>Nos Voitures</h1>
+    <div class="d-flex justify-content-center mb-5 ">
+        <a asp-area="" asp-controller="Vehicles" asp-action="Create" class="btn  btn-custom  mb-3 d-flex">+ Ajouter une Voiture</a>
+    </div>
+    <div class="row  row-cols-1 row-cols-lg-2 g-3  ">
+       
+        @* TODO : onClick on a card, redirect to the details page *@
         @foreach (var item in Model)
         {
-            <tr>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Year)
-                </td>
-               
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.Brand)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Model)
-                </td>
-                <td>
-                    @Html.DisplayFor(modelItem => item.Finish)
-                </td>
-               
-             
-                <td>
-                    @Html.DisplayFor(modelItem => item.ImageFile)
-                </td>
-               
-                
-                <td>
-                    @Html.DisplayFor(modelItem => item.SellPrice)
-                </td>
-            </tr>
+            @Html.Partial("~/Views/Shared/_VehicleCardSmallPartial.cshtml", item)
         }
-    </tbody>
-</table>
+    </div>
+</body>
+</div>

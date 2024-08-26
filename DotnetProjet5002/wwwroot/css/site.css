@@ -1,3 +1,50 @@
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Regular.woff2') format('woff2'), url('/fonts/LibreBaskerville-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Italic.woff2') format('woff2'), url('/fonts/LibreBaskerville-Italic.woff') format('woff');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Bold.woff2') format('woff2'), url('/fonts/LibreBaskerville-Bold.woff') format('woff');
+    font-weight: bold;
+    font-style: normal;
+}
+
+:root {
+    --bs-baseBrown-100: #F5E4C7;
+    --bs-baseBrown-200: #EED1A3;
+    --bs-baseBrown-300: #E7BE7F;
+    --bs-baseBrown-400: #E0AB5B;
+    --bs-baseBrown-500: #D9A963;
+    --bs-baseBrown-600: #C28E4F;
+    --bs-baseBrown-700: #AB733B;
+    --bs-baseBrown-800: #945826;
+    --bs-baseBrown-900: #7D3D12;
+    
+}
+
+
+
+h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 44px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 54.56px;
+    text-align: center;
+    color: #796157;
+}
+
+
 html {
   font-size: 14px;
 }
@@ -11,6 +58,9 @@ html {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+.btn-custom {
+    background-color: var(--bs-baseBrown-500) !important;
+    
 
 html {
   position: relative;

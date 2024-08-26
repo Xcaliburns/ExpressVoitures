@@ -10,6 +10,7 @@ namespace DotnetProjet5.Models.Services
     public class VehicleService : IVehicleService
     {
         private readonly ApplicationDbContext _context;
+        
         private readonly IRepairService _repairService;
         private readonly IFileUploadHelper _fileUploadHelper;
         public VehicleService(ApplicationDbContext context, IRepairService repairService, IFileUploadHelper fileUploadHelper)
@@ -17,6 +18,7 @@ namespace DotnetProjet5.Models.Services
             _context = context;
             _repairService = repairService;
             _fileUploadHelper = fileUploadHelper;
+           
         }
 
         public async Task<List<VehicleViewModel>> GetAllVehiclesAsync()
@@ -48,6 +50,7 @@ namespace DotnetProjet5.Models.Services
                 return null;
             }
 
+         
             return new VehicleViewModel
             {
                 Year = vehicle.Year,
@@ -74,6 +77,12 @@ namespace DotnetProjet5.Models.Services
             {
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(imageFile);
             }
+
+            // Calculer le coût total des réparations
+            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
+
+            // Calculer le prix de vente
+            var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
             var vehicle = new Vehicle
             {
                 CodeVin = vehicleViewModel.CodeVin,
@@ -88,7 +97,7 @@ namespace DotnetProjet5.Models.Services
                 PurchaseDate = vehicleViewModel.PurchaseDate,
                 PurchasePrice = vehicleViewModel.PurchasePrice,
                 Selled = vehicleViewModel.Selled,
-                SellPrice = vehicleViewModel.SellPrice
+                SellPrice = sellPrice
             };
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
@@ -105,6 +114,12 @@ namespace DotnetProjet5.Models.Services
             {
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(imageFile);
             }
+
+            // Calculer le coût total des réparations
+            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
+
+            // Calculer le prix de vente
+            var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
 
             vehicle.Year = vehicleViewModel.Year;
             vehicle.Brand = vehicleViewModel.Brand;

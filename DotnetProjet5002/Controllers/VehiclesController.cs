@@ -61,23 +61,17 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)//verifier pourquoi 2 vqriables
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.CreateVehicleAsync(vehicleViewModel, imageFile);
+                await _vehicleService.CreateVehicleAsync(vehicleViewModel, imageFile);//verifier pouquoi 2 variables
                 return RedirectToAction(nameof(Index));
             }
-            if (!ModelState.IsValid)
-            {
-                var errors = ModelState.Values.SelectMany(v => v.Errors);
-                foreach (var error in errors)
-                {
-                    Console.WriteLine(error.ErrorMessage);
-                }
-            }
 
-                return View(vehicleViewModel);
+
+
+            return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Edit/5
@@ -154,12 +148,12 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
+        public async Task<IActionResult> DeleteConfirmed(string CodeVin)
         {
-            await _vehicleService.DeleteVehicleAsync(id);
+            await _vehicleService.DeleteVehicleAsync(CodeVin);
             return RedirectToAction(nameof(Index));
         }
-
+        // TODO A deplacer
         private async Task<string> SaveImageFileAsync(IFormFile imageFile)
         {
             if (imageFile == null)
