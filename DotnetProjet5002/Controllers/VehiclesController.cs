@@ -156,7 +156,7 @@ namespace DotnetProjet5.Controllers
         [ValidateAntiForgeryToken]
         [Authorize]
         public async Task<IActionResult> DeleteConfirmed(string CodeVin)
-        {
+        {  //TODO: remember to delete the image file
             await _vehicleService.DeleteVehicleAsync(CodeVin);
             return RedirectToAction(nameof(Index));
         }
