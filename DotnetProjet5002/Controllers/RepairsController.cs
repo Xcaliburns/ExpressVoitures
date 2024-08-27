@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
 using DotnetProjet5.Models.ViewModels;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetProjet5.Controllers
 {
@@ -20,6 +21,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var repairs = await _context.Repairs.ToListAsync();
@@ -28,6 +30,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -46,6 +49,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -56,6 +60,7 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create( RepairViewModel repairViewModel)
         {
             if (ModelState.IsValid)
@@ -83,6 +88,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -106,6 +112,7 @@ namespace DotnetProjet5.Controllers
         // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(int id, [Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repair)
         {
             if (id != repair.RepairId)
@@ -137,6 +144,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -157,6 +165,7 @@ namespace DotnetProjet5.Controllers
         // POST: Repairs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var repair = await _context.Repairs.FindAsync(id);

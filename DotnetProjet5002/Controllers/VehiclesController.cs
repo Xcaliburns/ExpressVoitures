@@ -10,6 +10,7 @@ using DotnetProjet5.Models.Entities;
 using DotnetProjet5.ViewModels;
 
 using DotnetProjet5.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetProjet5.Controllers
 {
@@ -53,6 +54,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View(new VehicleViewModel());
@@ -61,6 +63,7 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)//verifier pourquoi 2 vqriables
         {
             if (ModelState.IsValid)
@@ -75,6 +78,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -93,6 +97,7 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel, IFormFile imageFile)
         {
             if (id != vehicleViewModel.CodeVin)
@@ -129,6 +134,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -148,8 +154,9 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
+        [Authorize]
         public async Task<IActionResult> DeleteConfirmed(string CodeVin)
-        {
+        {  //TODO: remember to delete the image file
             await _vehicleService.DeleteVehicleAsync(CodeVin);
             return RedirectToAction(nameof(Index));
         }

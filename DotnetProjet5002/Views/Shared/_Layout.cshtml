@@ -1,4 +1,7 @@
-﻿<!DOCTYPE html>
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<IdentityUser> SignInManager
+
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="utf-8" />
@@ -19,23 +22,24 @@
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
-                    
-               
+
+
                     <ul class="navbar-nav flex-grow-3">
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">ajouter un vehicule</a>
-                        </li>
+                        @if (SignInManager.IsSignedIn(User))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">ajouter un vehicule</a>
+                            </li>
+                        }
                         <partial name="_LoginPartial" />
-
-
 
                     </ul>
                 </div>
-                </div>
             </div>
+            
         </nav>
     </header>
     <div class="container">
@@ -44,7 +48,7 @@
         </main>
     </div>
     @* TODO : stick the footer at bottom *@
-    <footer class="border-top footer text-muted">
+    <footer class="border-top  text-muted mt-auto py-3  ">
         <div class="container">
             &copy; 2024 - Express Voitures - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
         </div>
