@@ -16,7 +16,12 @@
         
         @foreach (var item in Model)
         {
-            @Html.Partial("~/Views/Shared/_VehicleCardSmallPartial.cshtml", item)
+            //TODO verifier si ce n est pas mieu de recuperer la liste des vehicules dans le controller
+            @if (item.Availability)
+            {
+                @Html.Partial("~/Views/Shared/_VehicleCardSmallPartial.cshtml", item)
+            }
+
         }
     </div>
 </body>

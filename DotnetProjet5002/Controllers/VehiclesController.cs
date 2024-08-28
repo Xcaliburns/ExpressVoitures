@@ -69,7 +69,8 @@ namespace DotnetProjet5.Controllers
             if (ModelState.IsValid)
             {
                 await _vehicleService.CreateVehicleAsync(vehicleViewModel, imageFile);//verifier pouquoi 2 variables
-                return RedirectToAction(nameof(Index));
+                
+                return RedirectToAction(nameof(CreateConfirmed));
             }
 
 
@@ -160,6 +161,12 @@ namespace DotnetProjet5.Controllers
             await _vehicleService.DeleteVehicleAsync(CodeVin);
             return RedirectToAction(nameof(Index));
         }
+
+        public IActionResult CreateConfirmed()
+        {
+            return View();
+        }
+
         // TODO A deplacer
         private async Task<string> SaveImageFileAsync(IFormFile imageFile)
         {
