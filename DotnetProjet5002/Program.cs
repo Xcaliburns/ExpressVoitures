@@ -3,6 +3,7 @@ using DotnetProjet5.Models.Services;
 using DotnetProjet5.Services;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
+using System.Globalization;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,6 +58,12 @@ builder.Services.AddScoped<IFileUploadHelper, FileUploadHelper>();
 
 
 var app = builder.Build();
+
+// Configurer la culture par défaut
+var cultureInfo = new CultureInfo("en-US");
+CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
+CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
+
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
 {

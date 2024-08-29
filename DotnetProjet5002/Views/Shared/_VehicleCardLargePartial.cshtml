@@ -2,11 +2,11 @@
 
 <div class="col">
     <div class="card border-0">
-        <div class="row">
-            <div class="col-md-9">
-                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; max-height: 356px;">
+        <div class="row mx-auto">
+            <div class=" col-md-7 ">
+                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover;width:625px; height: 356px;">
             </div>
-            <div class="col-md-3">
+            <div class=" col-md-5">
                 <div class="card-body lh-sm">
                     <p class="card-text" style="font-size: 28px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
                     <p class="card-text fw-light" style="font-size: 24px">@Model.Year.ToString("yyyy")</p>
