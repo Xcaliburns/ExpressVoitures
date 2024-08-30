@@ -11,6 +11,7 @@ using DotnetProjet5.ViewModels;
 
 using DotnetProjet5.Models.Services;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Immutable;
 
 namespace DotnetProjet5.Controllers
 {
@@ -68,8 +69,8 @@ namespace DotnetProjet5.Controllers
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.CreateVehicleAsync(vehicleViewModel, imageFile);//verifier pouquoi 2 variables
-                
+                await _vehicleService.CreateVehicleAsync(vehicleViewModel);//verifier pouquoi 2 variables
+
                 return RedirectToAction(nameof(CreateConfirmed));
             }
 
@@ -99,38 +100,54 @@ namespace DotnetProjet5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel, IFormFile imageFile)
+        public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel)
         {
             if (id != vehicleViewModel.CodeVin)
             {
                 return NotFound();
             }
 
+
             if (ModelState.IsValid)
             {
-                try
-                {
-                    if (imageFile != null)
-                    {
-                        // Assuming the image URL is set by another service before calling UpdateVehicleAsync
-                        vehicleViewModel.ImageUrl = await SaveImageFileAsync(imageFile);
-                    }
 
-                    await _vehicleService.UpdateVehicleAsync(vehicleViewModel, imageFile);
-                }
-                catch (DbUpdateConcurrencyException)
+
+                if (vehicleViewModel.ImageFile != null)
                 {
-                    if (!await _vehicleService.VehicleExistsAsync(vehicleViewModel.CodeVin))
+                    //TODO:first delete the old image file
+                    // Retrieve the existing ImageUrl from the database
+                    var existingImageUrl = _context.Vehicle
+                        .Where(v => v.CodeVin == vehicleViewModel.CodeVin)
+                        .Select(v => v.ImageUrl)
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(existingImageUrl))
                     {
-                        return NotFound();
+                        var oldImagePath = Path.Combine("wwwroot/images", Path.GetFileName(existingImageUrl));
+                        if (System.IO.File.Exists(oldImagePath))
+                        {
+                            System.IO.File.Delete(oldImagePath);
+                        }
                     }
-                    else
-                    {
-                        throw;
-                    }
+                    // Save the new image file and update the ImageUrl
+                    vehicleViewModel.ImageUrl = await SaveImageFileAsync(vehicleViewModel.ImageFile);
                 }
-                return RedirectToAction(nameof(Index));
+                else
+                {
+                    // Retrieve the existing ImageUrl from the database
+                    vehicleViewModel.ImageUrl = _context.Vehicle
+                        .Where(v => v.CodeVin == vehicleViewModel.CodeVin)
+                        .Select(v => v.ImageUrl)
+                        .FirstOrDefault();
+                }
+                await _vehicleService.UpdateVehicleAsync(vehicleViewModel);
             }
+
+
+
+
+            return RedirectToAction(nameof(Index));
+
             return View(vehicleViewModel);
         }
 
@@ -159,7 +176,8 @@ namespace DotnetProjet5.Controllers
         public async Task<IActionResult> DeleteConfirmed(string CodeVin)
         {  //TODO: remember to delete the image file
             await _vehicleService.DeleteVehicleAsync(CodeVin);
-            return RedirectToAction(nameof(Index));
+            // Redirect to Home/Index
+            return RedirectToAction("Index", "Home");
         }
 
         public IActionResult CreateConfirmed()

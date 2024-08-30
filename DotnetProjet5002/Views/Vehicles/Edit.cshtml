@@ -1,82 +1,29 @@
 ﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
-    ViewData["Title"] = "Edit Vehicle";
+    ViewData["Title"] = "Modifier un véhicule";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit Vehicle</h1>
+<h1>@ViewData["Title"]</h1>
 
-<h4>Vehicle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodeVin" />
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
+<div class="container">
+    <div class="row justify-content-center">
+        @if (Model.ImageUrl != null)
+        {
+            <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
+                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
             </div>
-            <div class="form-group">
-                <label asp-for="PurchaseDate" class="control-label"></label>
-                <input asp-for="PurchaseDate" class="form-control" />
-                <span asp-validation-for="PurchaseDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="PurchasePrice" class="control-label"></label>
-                <input asp-for="PurchasePrice" class="form-control" />
-                <span asp-validation-for="PurchasePrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Finish" class="control-label"></label>
-                <input asp-for="Finish" class="form-control" />
-                <span asp-validation-for="Finish" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
-                <span asp-validation-for="Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Availability" class="control-label"></label>
-                <input asp-for="Availability" class="form-control" />
-                <span asp-validation-for="Availability" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailabilityDate" class="control-label"></label>
-                <input asp-for="AvailabilityDate" class="form-control" />
-                <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="SellPrice" class="control-label"></label>
-                <input asp-for="SellPrice" class="form-control" />
-                <span asp-validation-for="SellPrice" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Selled" class="control-label"></label>
-                <input asp-for="Selled" class="form-control" />
-                <span asp-validation-for="Selled" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label for="imageFile" class="control-label">Image</label>
-                <input type="file" name="imageFile" class="form-control" />
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+        }
+        <div class="col-md-6 order-2 order-md-1">
+            <form asp-action="Edit" enctype="multipart/form-data">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
+                <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
+                    <input type="submit" value="Save" class="btn btn-custom" />
+                </div>
+            </form>
+        </div>
     </div>
 </div>
 

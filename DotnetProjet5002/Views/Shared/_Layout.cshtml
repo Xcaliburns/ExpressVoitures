@@ -25,7 +25,8 @@
     </style>
 </head>
 <body>
-    <header>
+    <header>        
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Express Voitures</a>
@@ -35,12 +36,12 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-end">
                     <ul class="navbar-nav flex-grow-3">
-                        <li class="nav-item">
+                        <li class="nav-item hover-bold">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Accueil</a>
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item">
+                            <li class="nav-item hover-bold">
                                 <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">ajouter un vehicule</a>
                             </li>
                         }

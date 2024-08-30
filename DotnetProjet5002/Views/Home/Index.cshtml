@@ -6,9 +6,11 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<body >
+<h1>@ViewData["Title"]</h1>
+
+<body>
     <div class="container align-items-center">
-        <h1>Nos Voitures</h1>
+        
         <div class="d-flex justify-content-center mb-5">
             <a asp-area="" asp-controller="Vehicles" asp-action="Create" class="btn btn-custom mb-3 d-flex">+ Ajouter une Voiture</a>
         </div>
@@ -16,10 +18,11 @@
             @foreach (var item in Model)
             {
                 //TODO verifier si ce n est pas mieu de recuperer la liste des vehicules dans le controller
+                //creer un getallavailablevehicles
                 @if (item.Availability)
                 {
                     @Html.Partial("~/Views/Shared/_VehicleCardSmallPartial.cshtml", item)
-                }
+                } 
             }
         </div>
     </div>
