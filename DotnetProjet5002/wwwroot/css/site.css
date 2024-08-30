@@ -60,6 +60,7 @@ html {
 }
 .btn-custom {
     background-color: var(--bs-baseBrown-500) !important;
+}
     
 
 html {
@@ -69,4 +70,9 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.hover-bold:hover {
+    font-weight: bold;
+    
 }

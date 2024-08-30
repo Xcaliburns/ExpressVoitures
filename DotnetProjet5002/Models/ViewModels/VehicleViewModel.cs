@@ -49,9 +49,9 @@ namespace DotnetProjet5.ViewModels
         [Display(Name = "Disponibilité")]
         public bool Availability { get; set; }
 
-        [Required(ErrorMessage = "Veuillez ajouter une image.")]
+        [RequiredForCreate(ErrorMessage = "Veuillez ajouter une image.")]
         [Display(Name = "Visuel")]
-        public IFormFile ImageFile { get; set; }
+        public IFormFile? ImageFile { get; set; }
 
         [Display(Name = "Chemin de l'image")]
         public string? ImageUrl { get; set; }

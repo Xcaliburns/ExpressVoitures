@@ -22,5 +22,12 @@ namespace DotnetProjet5.Services
         {
             return await _context.Repairs.Where(r => r.CodeVin == codeVin).ToListAsync();
         }
+
+        public async Task DeleteRepairsByVehicleAsync(string codeVin)
+        {
+            var repairs = await GetRepairsByVehicleAsync(codeVin);
+            _context.Repairs.RemoveRange(repairs);
+            await _context.SaveChangesAsync();
+        }
     }
 }
