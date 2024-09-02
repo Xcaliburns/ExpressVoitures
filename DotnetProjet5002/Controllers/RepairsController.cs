@@ -50,9 +50,20 @@ namespace DotnetProjet5.Controllers
 
         // GET: Repairs/Create
         [Authorize]
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult Create(string id)
         {
-            return View();
+            var vehicle = _context.Vehicle.FirstOrDefault(v => v.CodeVin == id);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+            ViewData["CodeVin"] = id;
+            var model = new RepairViewModel
+            {
+                CodeVin = id // Set the CodeVin from the vehicle
+            };
+            return View(model);
         }
 
         // POST: Repairs/Create
@@ -63,6 +74,7 @@ namespace DotnetProjet5.Controllers
         [Authorize]
         public async Task<IActionResult> Create( RepairViewModel repairViewModel)
         {
+            
             if (ModelState.IsValid)
             {
                 var repair = RepairViewModel.ToEntity(repairViewModel);
