@@ -44,15 +44,26 @@ namespace DotnetProjet5.Controllers
             {
                 return NotFound();
             }
-
-            return View(repair);
+            var repairViewModel = RepairViewModel.ToViewModel(repair);
+            return View(repairViewModel);
         }
 
         // GET: Repairs/Create
         [Authorize]
-        public IActionResult Create()
+        [HttpGet]
+        public IActionResult Create(string id)
         {
-            return View();
+            var vehicle = _context.Vehicle.FirstOrDefault(v => v.CodeVin == id);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+            ViewData["CodeVin"] = id;
+            var model = new RepairViewModel
+            {
+                CodeVin = id // Set the CodeVin from the vehicle
+            };
+            return View(model);
         }
 
         // POST: Repairs/Create
@@ -63,6 +74,7 @@ namespace DotnetProjet5.Controllers
         [Authorize]
         public async Task<IActionResult> Create( RepairViewModel repairViewModel)
         {
+            
             if (ModelState.IsValid)
             {
                 var repair = RepairViewModel.ToEntity(repairViewModel);
@@ -102,8 +114,8 @@ namespace DotnetProjet5.Controllers
                 // Gérer le cas où la table est vide
                 return NotFound("Aucun enregistrement de réparation trouvé.");
             }
-
-            return View(repair);
+            var repairViewModel = RepairViewModel.ToViewModel(repair);
+            return View(repairViewModel);
         }
 
 
@@ -113,34 +125,69 @@ namespace DotnetProjet5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Edit(int id, [Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repair)
+        public async Task<IActionResult> Edit(int id, [Bind("RepairId,CodeVin,Description,RepairCost")] RepairViewModel repairViewModel)
         {
-            if (id != repair.RepairId)
+            if (id != repairViewModel.RepairId)
             {
                 return NotFound();
             }
 
             if (ModelState.IsValid)
             {
-                try
+                using (var transaction = await _context.Database.BeginTransactionAsync())
                 {
-                    _context.Update(repair);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!RepairExists(repair.RepairId))
+                    try
                     {
-                        return NotFound();
+                        // Récupérer l'ancienne réparation sans suivi
+                        var oldRepair = await _context.Repairs.AsNoTracking().FirstOrDefaultAsync(r => r.RepairId == id);
+                        if (oldRepair == null)
+                        {
+                            return NotFound();
+                        }
+
+                        // Récupérer le véhicule associé
+                        var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == oldRepair.CodeVin);
+                        if (vehicle != null)
+                        {
+                            // Soustraire l'ancien coût de réparation du prix de vente du véhicule
+                            vehicle.SellPrice -= oldRepair.RepairCost;
+
+                            // Ajouter le nouveau coût de réparation au prix de vente du véhicule
+                            vehicle.SellPrice += repairViewModel.RepairCost;
+
+                            // Mettre à jour le véhicule dans la base de données
+                            _context.Update(vehicle);
+                        }
+
+                        // Mettre à jour la réparation
+                        var updatedRepair = RepairViewModel.ToEntity(repairViewModel);
+                        _context.Update(updatedRepair);
+                        await _context.SaveChangesAsync();
+
+                        // Commit transaction
+                        await transaction.CommitAsync();
                     }
-                    else
+                    catch (DbUpdateConcurrencyException)
                     {
+                        await transaction.RollbackAsync();
+                        if (!RepairExists(repairViewModel.RepairId))
+                        {
+                            return NotFound();
+                        }
+                        else
+                        {
+                            throw;
+                        }
+                    }
+                    catch (Exception)
+                    {
+                        await transaction.RollbackAsync();
                         throw;
                     }
                 }
                 return RedirectToAction(nameof(Index));
             }
-            return View(repair);
+            return View(repairViewModel);
         }
 
         // GET: Repairs/Delete/5
@@ -158,8 +205,8 @@ namespace DotnetProjet5.Controllers
             {
                 return NotFound();
             }
-
-            return View(repair);
+            var repairViewModel = RepairViewModel.ToViewModel(repair);
+            return View(repairViewModel);
         }
 
         // POST: Repairs/Delete/5
@@ -171,6 +218,18 @@ namespace DotnetProjet5.Controllers
             var repair = await _context.Repairs.FindAsync(id);
             if (repair != null)
             {
+                // Récupérer le véhicule associé
+                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == repair.CodeVin);
+                if (vehicle != null)
+                {
+                    // Réduire le prix de vente du véhicule du coût de la réparation
+                    vehicle.SellPrice -= repair.RepairCost;
+
+                    // Enregistrer le véhicule mis à jour dans la base de données
+                    _context.Update(vehicle);
+                }
+
+                // Supprimer la réparation de la base de données
                 _context.Repairs.Remove(repair);
                 await _context.SaveChangesAsync();
             }

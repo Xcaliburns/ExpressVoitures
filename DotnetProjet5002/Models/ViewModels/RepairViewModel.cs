@@ -1,10 +1,17 @@
-﻿namespace DotnetProjet5.Models.ViewModels
+﻿using DotnetProjet5.Models.Entities;
+using System.ComponentModel.DataAnnotations;
+
+namespace DotnetProjet5.Models.ViewModels
 {
     public class RepairViewModel
     {
         public int RepairId { get; set; }
-        public string CodeVin { get; set; } = string.Empty; // Initialize to avoid nullability issues
+
+        [Required(ErrorMessage ="le code VIN est obligatoire")]
+        public string CodeVin { get; set; }  // Initialize to avoid nullability issues
+        [Required(ErrorMessage = "la description est obligatoire")]
         public string Description { get; set; } = string.Empty; // Initialize to avoid nullability issues
+        [Required(ErrorMessage = "le coût de la réparation est obligatoire")]
         public float RepairCost { get; set; }
 
         public static RepairViewModel ToViewModel(Repair repair)
@@ -34,5 +41,7 @@
                 RepairCost = viewModel.RepairCost
             };
         }
+
+      
     }
 }
