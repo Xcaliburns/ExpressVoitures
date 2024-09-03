@@ -59,7 +59,7 @@ builder.Services.AddScoped<IFileUploadHelper, FileUploadHelper>();
 
 var app = builder.Build();
 
-// Configurer la culture par défaut
+// Configurer la culture par dï¿½faut
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
