@@ -1,6 +1,7 @@
 using DotnetProjet5.Data;
 using DotnetProjet5.Models.Services;
 using DotnetProjet5.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
@@ -55,6 +56,13 @@ builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairService, RepairService>();
 builder.Services.AddScoped<IFileUploadHelper, FileUploadHelper>();
 
+builder.Services.AddAuthorization(options =>
+{
+    options.FallbackPolicy = new AuthorizationPolicyBuilder()
+        .RequireAuthenticatedUser()
+        .Build();
+});
+
 var app = builder.Build();
 
 // Configurer la culture par défaut
@@ -93,6 +101,7 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
+
 app.MapControllerRoute(
     name: "roles",
     pattern: "roles",

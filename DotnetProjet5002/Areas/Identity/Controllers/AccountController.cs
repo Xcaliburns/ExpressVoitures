@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetProjet5.Areas.Identity.Controllers
 {
@@ -20,11 +21,11 @@ namespace DotnetProjet5.Areas.Identity.Controllers
             var user = await _userManager.FindByEmailAsync(email);
             if (user == null)
             {
-                return Json(true); // Email is not in use
+                return Json(true);
             }
             else
             {
-                return Json("Cet email est déjà utilisé. Veuillez en choisir un autre.");
+                return Json($"Cet email est déjà utilisé. Veuillez en choisir un autre.");
             }
         }
     }

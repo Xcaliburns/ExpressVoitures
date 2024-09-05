@@ -21,6 +21,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DotnetProjet5.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class RegisterModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -76,17 +77,20 @@ namespace DotnetProjet5.Areas.Identity.Pages.Account
             /// </summary>
             [Required(ErrorMessage = "veuillez entrer une adresse email")]
             [EmailAddress]
-            //TODO: Add Remote attribute to check if email is already in use
-           // [Remote(action: "IsEmailInUse", controller: "Account", areaName: "Identity", ErrorMessage = "Cet email est déjà utilisé.Veuillez en choisir un autre." )]
+            [Remote(action: "IsEmailInUse", controller: "Account", areaName: "Identity", ErrorMessage = "Cet email est déjà utilisé. Veuillez en choisir un autre.")]
             [Display(Name = "Adresse Email")]
             public string Email { get; set; }
+            //TODO: Add Remote attribute to check if email is already in use
+            // [Remote(action: "IsEmailInUse", controller: "Account", areaName: "Identity", ErrorMessage = "Cet email est déjà utilisé.Veuillez en choisir un autre." )]
+           
+           
 
             /// <summary>
             ///     This API supports the ASP.NET Core Identity default UI infrastructure and is not intended to be used
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "Le {0} doit contenir au moins {2} et auplus {1} caractères.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Le {0} doit contenir au moins {2} et au plus {1} caractères.", MinimumLength = 6)]
             [DataType(DataType.Password)]
             [Display(Name = "Mot de passe")]
             public string Password { get; set; }

@@ -1,4 +1,5 @@
 ﻿using DotnetProjet5.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
 
@@ -13,6 +14,8 @@ namespace DotnetProjet5.Controllers
         {
             _vehicleService = vehicleService;
         }
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             var vehicles = await _vehicleService.GetAllVehiclesAsync();
