@@ -14,9 +14,8 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
 builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+    .AddRoles<IdentityRole>() // Add this line to include role management
     .AddEntityFrameworkStores<ApplicationDbContext>();
-
-
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
@@ -51,15 +50,14 @@ builder.Services.ConfigureApplicationCookie(options =>
 });
 
 builder.Services.AddControllersWithViews();
+builder.Services.AddRazorPages(); // Add this line to include Razor Pages services
 builder.Services.AddScoped<IVehicleService, VehicleService>();
 builder.Services.AddScoped<IRepairService, RepairService>();
 builder.Services.AddScoped<IFileUploadHelper, FileUploadHelper>();
 
-
-
 var app = builder.Build();
 
-// Configurer la culture par défaut
+// Configurer la culture par dÃ©faut
 var cultureInfo = new CultureInfo("en-US");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
@@ -76,14 +74,12 @@ else
     app.UseHsts();
 }
 
-
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
 
     SeedData.Initialize(services);
 }
-
 
 app.UseHttpsRedirection();
 app.UseStaticFiles();
@@ -97,6 +93,19 @@ app.UseAuthorization();
 app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
-app.MapRazorPages();
+app.MapControllerRoute(
+    name: "roles",
+    pattern: "roles",
+    defaults: new { area = "Identity", controller = "Roles", action = "Index" });
+app.MapAreaControllerRoute(
+    name: "Identity",
+    areaName: "Identity",
+    pattern: "Identity/{controller=Roles}/{action=Index}/{id?}");
+
+app.MapControllerRoute(
+    name: "roles",
+    pattern: "roles/{action=Index}/{id?}",
+    defaults: new { area = "Identity", controller = "Roles" });
+app.MapRazorPages(); // Ensure this line is present to map Razor Pages
 
 app.Run();
