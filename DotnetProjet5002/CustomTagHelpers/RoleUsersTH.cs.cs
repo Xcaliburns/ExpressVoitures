@@ -7,10 +7,10 @@ namespace DotnetProjet5.CustomTagHelpers
     [HtmlTargetElement("td", Attributes = "i-role")]
     public class RoleUsersTH : TagHelper
     {
-        private UserManager<AppUser> userManager;
+        private UserManager<IdentityUser> userManager;
         private RoleManager<IdentityRole> roleManager;
 
-        public RoleUsersTH(UserManager<AppUser> usermgr, RoleManager<IdentityRole> rolemgr)
+        public RoleUsersTH(UserManager<IdentityUser> usermgr, RoleManager<IdentityRole> rolemgr)
         {
             userManager = usermgr;
             roleManager = rolemgr;

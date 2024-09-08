@@ -12,6 +12,7 @@ using Microsoft.Extensions.Logging;
 
 namespace DotnetProjet5.Areas.Identity.Pages.Account
 {
+    [AllowAnonymous]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;

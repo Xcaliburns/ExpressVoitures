@@ -31,6 +31,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles
+
         public async Task<IActionResult> Index()
         {
             var vehicleViewModels = await _vehicleService.GetAllVehiclesAsync();
@@ -38,6 +39,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Details/5
+        [AllowAnonymous]
         public async Task<IActionResult> Details(string id)
         {
             if (id == null)
@@ -55,7 +57,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Create
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public IActionResult Create()
         {
             return View(new VehicleViewModel());
@@ -64,7 +66,7 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Create
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)//verifier pourquoi 2 vqriables
         {
             if (ModelState.IsValid)
@@ -80,7 +82,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Edit/5
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Edit(string id)
         {
             if (id == null)
@@ -99,7 +101,7 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Edit/5
         [HttpPost]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel)
         {
             if (id != vehicleViewModel.CodeVin)
@@ -114,7 +116,7 @@ namespace DotnetProjet5.Controllers
 
                 if (vehicleViewModel.ImageFile != null)
                 {
-                    //TODO:first delete the old image file
+                    
                     // Retrieve the existing ImageUrl from the database
                     var existingImageUrl = _context.Vehicle
                         .Where(v => v.CodeVin == vehicleViewModel.CodeVin)
@@ -130,7 +132,7 @@ namespace DotnetProjet5.Controllers
                         }
                     }
                     // Save the new image file and update the ImageUrl
-                    vehicleViewModel.ImageUrl = await SaveImageFileAsync(vehicleViewModel.ImageFile);
+                    vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
                 }
                 else
                 {
@@ -152,7 +154,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles/Delete/5
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Delete(string id)
         {
             if (id == null)
@@ -172,34 +174,35 @@ namespace DotnetProjet5.Controllers
         // POST: Vehicles/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> DeleteConfirmed(string CodeVin)
-        {  //TODO: remember to delete the image file
+        {  
             await _vehicleService.DeleteVehicleAsync(CodeVin);
             // Redirect to Home/Index
             return RedirectToAction("Index", "Home");
         }
 
+        [Authorize(Roles = "Admin,Developer")]
         public IActionResult CreateConfirmed()
         {
             return View();
         }
 
         // TODO A deplacer
-        private async Task<string> SaveImageFileAsync(IFormFile imageFile)
-        {
-            if (imageFile == null)
-            {
-                return string.Empty;
-            }
+        //private async Task<string> SaveImageFileAsync(IFormFile imageFile)
+        //{
+        //    if (imageFile == null)
+        //    {
+        //        return string.Empty;
+        //    }
 
-            var filePath = Path.Combine("wwwroot/images", imageFile.FileName);
-            using (var stream = new FileStream(filePath, FileMode.Create))
-            {
-                await imageFile.CopyToAsync(stream);
-            }
+        //    var filePath = Path.Combine("wwwroot/images", imageFile.FileName);
+        //    using (var stream = new FileStream(filePath, FileMode.Create))
+        //    {
+        //        await imageFile.CopyToAsync(stream);
+        //    }
 
-            return filePath;
-        }
+        //    return filePath;
+        //}
     }
 }
