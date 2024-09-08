@@ -8,21 +8,22 @@
 <h1>Index</h1>
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" aria-label="Ajouter une réparation">Nouvelle Réparation</a>
 </p>
-<table class="table">
+<table class="table" aria-describedby="repair-table-description">
+    <caption id="repair-table-description">Liste des réparations</caption>
     <thead>
         <tr>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.CodeVin)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
-            <th>
+            <th scope="col">
                 @Html.DisplayNameFor(model => model.RepairCost)
             </th>
-            <th></th>
+            <th scope="col"></th>
         </tr>
     </thead>
     <tbody>
@@ -38,9 +39,9 @@
                 @Html.DisplayFor(modelItem => item.RepairCost)
             </td>
             <td>
-                <a asp-action="Edit" asp-route-id="@item.RepairId">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.RepairId">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.RepairId">Delete</a>
+                <a asp-action="Edit" asp-route-id="@item.RepairId" aria-label="Modifier la réparation @item.RepairId">Modifier</a> |
+                <a asp-action="Details" asp-route-id="@item.RepairId" aria-label="Voir les détails de la réparation @item.RepairId">Détails</a> |
+                <a asp-action="Delete" asp-route-id="@item.RepairId" aria-label="Supprimer la réparation @item.RepairId">Supprimer</a>
             </td>
         </tr>
 }

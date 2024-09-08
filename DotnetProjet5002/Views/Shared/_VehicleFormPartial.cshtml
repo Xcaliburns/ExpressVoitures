@@ -5,62 +5,74 @@
         <div class="col-12 col-md-6 mx-auto">
             <div class="form-group">
                 <label asp-for="CodeVin" class="control-label"></label>
-                <input asp-for="CodeVin" class="form-control" />
+                <input asp-for="CodeVin" class="form-control" aria-describedby="codeVinHelp" />
+                <span id="codeVinHelp" class="form-text text-muted">Entrez le code VIN du véhicule.</span>
                 <span asp-validation-for="CodeVin" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" type="date" min="1993-01-01" max="@DateTime.Now.Year-12-31" />
+                <input asp-for="Year" class="form-control" type="date" min="1993-01-01" max="@DateTime.Now.Year-12-31" aria-describedby="yearHelp" />
+                <span id="yearHelp" class="form-text text-muted">Entrez l'année de fabrication du véhicule.</span>
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PurchaseDate" class="control-label"></label>
-                <input asp-for="PurchaseDate" class="form-control" />
+                <input asp-for="PurchaseDate" class="form-control" aria-describedby="purchaseDateHelp" />
+                <span id="purchaseDateHelp" class="form-text text-muted">Entrez la date d'achat du véhicule.</span>
                 <span asp-validation-for="PurchaseDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="PurchasePrice" class="control-label"></label>
-                <input asp-for="PurchasePrice" class="form-control" />
+                <input asp-for="PurchasePrice" class="form-control" aria-describedby="purchasePriceHelp" />
+                <span id="purchasePriceHelp" class="form-text text-muted">Entrez le prix d'achat du véhicule.</span>
                 <span asp-validation-for="PurchasePrice" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
+                <input asp-for="Brand" class="form-control" aria-describedby="brandHelp" />
+                <span id="brandHelp" class="form-text text-muted">Entrez la marque du véhicule.</span>
                 <span asp-validation-for="Brand" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
+                <input asp-for="Model" class="form-control" aria-describedby="modelHelp" />
+                <span id="modelHelp" class="form-text text-muted">Entrez le modèle du véhicule.</span>
                 <span asp-validation-for="Model" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Finish" class="control-label"></label>
-                <input asp-for="Finish" class="form-control" />
+                <input asp-for="Finish" class="form-control" aria-describedby="finishHelp" />
+                <span id="finishHelp" class="form-text text-muted">Entrez la finition du véhicule.</span>
                 <span asp-validation-for="Finish" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
-                <input asp-for="Description" class="form-control" />
+                <input asp-for="Description" class="form-control" aria-describedby="descriptionHelp" />
+                <span id="descriptionHelp" class="form-text text-muted">Entrez une description du véhicule.</span>
                 <span asp-validation-for="Description" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="AvailabilityDate" class="control-label"></label>
-                <input asp-for="AvailabilityDate" class="form-control" />
+                <input asp-for="AvailabilityDate" class="form-control" aria-describedby="availabilityDateHelp" />
+                <span id="availabilityDateHelp" class="form-text text-muted">Entrez la date de disponibilité du véhicule.</span>
                 <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Availability" class="control-label"></label>
-                <input asp-for="Availability" type="checkbox" />
+                <input asp-for="Availability" type="checkbox" aria-describedby="availabilityHelp" />
+                <span id="availabilityHelp" class="form-text text-muted">Cochez si le véhicule est disponible.</span>
                 <span asp-validation-for="Availability" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="Selled" class="control-label"></label>
-                <input asp-for="Selled" type="checkbox" />
+                <input asp-for="Selled" type="checkbox" aria-describedby="selledHelp" />
+                <span id="selledHelp" class="form-text text-muted">Cochez si le véhicule est vendu.</span>
                 <span asp-validation-for="Selled" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" type="file" class="form-control" />
+                <input asp-for="ImageFile" type="file" class="form-control" aria-describedby="imageFileHelp" />
+                <span id="imageFileHelp" class="form-text text-muted">Téléchargez une image du véhicule.</span>
                 <span asp-validation-for="ImageFile" class="text-danger"></span>
             </div>
         </div>
