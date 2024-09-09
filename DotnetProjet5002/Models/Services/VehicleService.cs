@@ -69,6 +69,27 @@ namespace DotnetProjet5.Models.Services
             };
         }
 
+        public async Task<List<VehicleViewModel>> GetAllVehiclesAvailableAsync()
+        {
+            var vehicles = await _context.Vehicle.Where(v => v.Availability == true).ToListAsync();
+            return vehicles.Select(v => new VehicleViewModel
+            {
+                Year = v.Year,
+                Brand = v.Brand,
+                Model = v.Model,
+                Finish = v.Finish,
+                Availability = v.Availability,
+                AvailabilityDate = v.AvailabilityDate ?? DateTime.MinValue,
+                CodeVin = v.CodeVin,
+                Description = v.Description ?? string.Empty,
+                ImageUrl = v.ImageUrl,
+                PurchaseDate = v.PurchaseDate,
+                PurchasePrice = v.PurchasePrice,
+                Selled = v.Selled,
+                SellPrice = v.SellPrice
+            }).ToList();
+        }
+
         public async Task CreateVehicleAsync(VehicleViewModel vehicleViewModel)
         {
 

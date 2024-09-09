@@ -1,5 +1,6 @@
 ﻿@using Microsoft.AspNetCore.Identity
 @inject SignInManager<IdentityUser> SignInManager
+@inject UserManager<IdentityUser> UserManager
 
 <!DOCTYPE html>
 <html lang="en">
@@ -26,7 +27,6 @@
 </head>
 <body>
     <header>        
-
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Express Voitures</a>
@@ -41,9 +41,13 @@
                         </li>
                         @if (SignInManager.IsSignedIn(User))
                         {
-                            <li class="nav-item hover-bold">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">ajouter un vehicule</a>
-                            </li>
+                            var user = await UserManager.GetUserAsync(User);
+                            if (await UserManager.IsInRoleAsync(user, "Admin") || await UserManager.IsInRoleAsync(user, "Developer"))
+                            {
+                                <li class="nav-item hover-bold">
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Index">administration</a>
+                                </li>
+                            }
                         }
                         <partial name="_LoginPartial" />
                     </ul>
@@ -68,5 +72,3 @@
     @await RenderSectionAsync("Scripts", required: false)
 </body>
 </html>
-
-@* TODO :ajouter un lien vers la partie admin(vehicles) *@

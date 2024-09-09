@@ -8,6 +8,7 @@ namespace DotnetProjet5.Models.Services
     {
         Task<List<VehicleViewModel>> GetAllVehiclesAsync();
         Task<VehicleViewModel> GetVehicleByCodeVinAsync(string CodeVin);
+        Task<List<VehicleViewModel>> GetAllVehiclesAvailableAsync();
         Task CreateVehicleAsync(VehicleViewModel VehicleViewModel);
         Task UpdateVehicleAsync(VehicleViewModel VehicleViewModel);
         Task DeleteVehicleAsync(string CodeVin);
