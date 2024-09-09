@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>@ViewData["Title"]</h1>
+<h1 id="edit-vehicle-title">@ViewData["Title"]</h1>
 
 <div class="container">
     <div class="row justify-content-center">
@@ -16,11 +16,11 @@
             </div>
         }
         <div class="col-md-6 order-2 order-md-1">
-            <form asp-action="Edit" enctype="multipart/form-data">
+            <form asp-action="Edit" enctype="multipart/form-data" aria-labelledby="edit-vehicle-title">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
                 <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
-                    <input type="submit" value="Save" class="btn btn-custom" />
+                    <input type="submit" value="Save" class="btn btn-custom" aria-label="Save changes" />
                 </div>
             </form>
         </div>
@@ -28,7 +28,7 @@
 </div>
 
 <div>
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Index" aria-label="Back to list">Back to List</a>
 </div>
 
 @section Scripts {
