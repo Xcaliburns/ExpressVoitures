@@ -31,7 +31,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Vehicles
-
+        [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Index()
         {
             var vehicleViewModels = await _vehicleService.GetAllVehiclesAsync();
