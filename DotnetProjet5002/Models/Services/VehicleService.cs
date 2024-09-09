@@ -71,7 +71,7 @@ namespace DotnetProjet5.Models.Services
 
         public async Task<List<VehicleViewModel>> GetAllVehiclesAvailableAsync()
         {
-            var vehicles = await _context.Vehicle.Where(v => v.Availability == true).ToListAsync();
+            var vehicles = await _context.Vehicle.Where(v => v.Availability == true && v.Selled == false).ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
                 Year = v.Year,
