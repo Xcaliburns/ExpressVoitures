@@ -103,6 +103,7 @@ namespace DotnetProjet5.Models.Services
             var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
 
             // Calculer le prix de vente
+            //TODO : Deplacer le calcul du prix de vente 
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
             var vehicle = new Vehicle
             {
