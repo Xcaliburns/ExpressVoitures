@@ -16,9 +16,8 @@ namespace DotnetProjet5.ViewModels
 
         [Required]
         [Display(Name = "Année")]
-        [MinYearValidation(1993)]
-       // [MaxYearValidation(ErrorMessage = "L'année doit être inférieure ou égale à l'année en cours.")]
-        public DateTime Year { get; set; }
+        [Range(1993, int.MaxValue, ErrorMessage = "L'année doit être comprise entre 1993 et l'année en cours.")]        
+        public int Year { get; set; }
 
         [Required]
         [Display(Name = "Date d'achat")]

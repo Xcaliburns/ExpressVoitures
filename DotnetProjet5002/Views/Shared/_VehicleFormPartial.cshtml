@@ -11,7 +11,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" type="date" min="1993-01-01" max="@DateTime.Now.Year-12-31" aria-describedby="yearHelp" />
+                <input asp-for="Year" class="form-control" type="number" min="1993" max="@DateTime.Now.Year" aria-describedby="yearHelp" />
                 <span id="yearHelp" class="form-text text-muted">Entrez l'année de fabrication du véhicule.</span>
                 <span asp-validation-for="Year" class="text-danger"></span>
             </div>

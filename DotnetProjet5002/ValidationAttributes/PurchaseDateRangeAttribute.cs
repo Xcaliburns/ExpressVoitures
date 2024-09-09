@@ -11,13 +11,13 @@ namespace DotnetProjet5.ValidationAttributes
             var type = instance.GetType();
             var yearProperty = type.GetProperty("Year");
 
-            if (yearProperty != null && yearProperty.GetValue(instance) is DateTime yearDateTime)
+            if (yearProperty != null && yearProperty.GetValue(instance) is int year)
             {
                 if (value is DateTime purchaseDate)
                 {
-                    if (purchaseDate < DateTime.Now.Date || purchaseDate.Year > yearDateTime.Year)
+                    if (purchaseDate < DateTime.Now.Date || purchaseDate.Year < year)
                     {
-                        return new ValidationResult($"La date d'achat doit être comprise entre aujourd'hui et l'année du véhicule ({yearDateTime.Year}).");
+                        return new ValidationResult($"La date d'achat doit être comprise entre aujourd'hui et l'année du véhicule ({year}).");
                     }
                 }
             }

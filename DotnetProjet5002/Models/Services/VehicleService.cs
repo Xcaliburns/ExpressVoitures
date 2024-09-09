@@ -26,7 +26,7 @@ namespace DotnetProjet5.Models.Services
             var vehicles = await _context.Vehicle.ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
-                Year = v.Year,
+                Year = v.Year.Year,
                 Brand = v.Brand,
                 Model = v.Model,
                 Finish = v.Finish,
@@ -53,7 +53,7 @@ namespace DotnetProjet5.Models.Services
 
             return new VehicleViewModel
             {
-                Year = vehicle.Year,
+                Year = vehicle.Year.Year,
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
                 Finish = vehicle.Finish,
@@ -74,7 +74,7 @@ namespace DotnetProjet5.Models.Services
             var vehicles = await _context.Vehicle.Where(v => v.Availability == true && v.Selled == false).ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
-                Year = v.Year,
+                Year = v.Year.Year,
                 Brand = v.Brand,
                 Model = v.Model,
                 Finish = v.Finish,
@@ -92,8 +92,6 @@ namespace DotnetProjet5.Models.Services
 
         public async Task CreateVehicleAsync(VehicleViewModel vehicleViewModel)
         {
-
-
             if (vehicleViewModel.ImageFile != null)
             {
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
@@ -103,12 +101,14 @@ namespace DotnetProjet5.Models.Services
             var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
 
             // Calculer le prix de vente
-            //TODO : Deplacer le calcul du prix de vente 
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
+
+            // Convertir l'année en une date (1er janvier de l'année spécifiée)
+            var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
+
             var vehicle = new Vehicle
             {
                 CodeVin = vehicleViewModel.CodeVin,
-                Year = vehicleViewModel.Year,
                 Brand = vehicleViewModel.Brand,
                 Model = vehicleViewModel.Model,
                 Finish = vehicleViewModel.Finish,
@@ -119,8 +119,10 @@ namespace DotnetProjet5.Models.Services
                 PurchaseDate = vehicleViewModel.PurchaseDate,
                 PurchasePrice = vehicleViewModel.PurchasePrice,
                 Selled = vehicleViewModel.Selled,
-                SellPrice = sellPrice
+                SellPrice = sellPrice,
+                Year = yearAsDateTime // Assurez-vous que cette propriété existe dans votre modèle Vehicle
             };
+
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
         }
@@ -134,12 +136,8 @@ namespace DotnetProjet5.Models.Services
             }
             if (vehicleViewModel.ImageFile != null)
             {
-
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
             }
-            //else {
-            //    vehicle.ImageUrl=vehicleViewModel.ImageUrl ;
-            //}
 
             // Calculer le coût total des réparations
             var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
@@ -147,7 +145,9 @@ namespace DotnetProjet5.Models.Services
             // Calculer le prix de vente
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
 
-            vehicle.Year = vehicleViewModel.Year;
+            // Convertir l'année en une date (1er janvier de l'année spécifiée)
+            var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
+
             vehicle.Brand = vehicleViewModel.Brand;
             vehicle.Model = vehicleViewModel.Model;
             vehicle.Finish = vehicleViewModel.Finish;
@@ -159,6 +159,7 @@ namespace DotnetProjet5.Models.Services
             vehicle.PurchasePrice = vehicleViewModel.PurchasePrice;
             vehicle.Selled = vehicleViewModel.Selled;
             vehicle.SellPrice = sellPrice;
+            vehicle.Year = yearAsDateTime; // Assurez-vous que cette propriété existe dans votre modèle Vehicle
 
             _context.Update(vehicle);
             await _context.SaveChangesAsync();

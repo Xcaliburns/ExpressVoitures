@@ -10,7 +10,7 @@
                 <div class="col-md-3">
                     <div class="card-body lh-sm" aria-labelledby="vehicle-details-@Model.CodeVin">
                         <p id="vehicle-details-@Model.CodeVin" class="card-text text-nowrap" style="font-size: 22px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
-                        <p class="card-text fw-light" style="font-size: 18px">@Model.Year.ToString("yyyy")</p>
+                        <p class="card-text fw-light" style="font-size: 18px">@Model.Year</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Finish)</p>
