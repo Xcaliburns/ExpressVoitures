@@ -20,6 +20,8 @@ namespace DotnetProjet5.Models.ViewModels
         [Required(ErrorMessage = "le coût de la réparation est obligatoire")]
         public float RepairCost { get; set; }
 
+        public Vehicle Vehicle { get; set; }
+
         public static RepairViewModel ToViewModel(Repair repair)
         {
             return new RepairViewModel

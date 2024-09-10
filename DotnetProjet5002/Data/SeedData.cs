@@ -24,6 +24,7 @@ namespace DotnetProjet5.Data
 
                  new Vehicle
                  {
+
                      CodeVin = "toto",
                      Year = new DateTime(2020, 1, 1),
                      PurchaseDate= new DateTime(2020, 1, 1),
