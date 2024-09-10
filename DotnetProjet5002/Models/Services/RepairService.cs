@@ -18,14 +18,14 @@ namespace DotnetProjet5.Services
             _context = context;
         }
 
-        public async Task<List<Repair>> GetRepairsByVehicleAsync(string codeVin)
+        public async Task<List<Repair>> GetRepairsByVehicleAsync(int vehicleId)
         {
-            return await _context.Repairs.Where(r => r.CodeVin == codeVin).ToListAsync();
+            return await _context.Repairs.Where(r => r.VehicleId == vehicleId).ToListAsync();
         }
 
-        public async Task DeleteRepairsByVehicleAsync(string codeVin)
+        public async Task DeleteRepairsByVehicleAsync(int vehicleId)
         {
-            var repairs = await GetRepairsByVehicleAsync(codeVin);
+            var repairs = await GetRepairsByVehicleAsync(vehicleId);
             _context.Repairs.RemoveRange(repairs);
             await _context.SaveChangesAsync();
         }

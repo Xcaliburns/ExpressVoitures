@@ -7,10 +7,16 @@ namespace DotnetProjet5.Models.ViewModels
     {
         public int RepairId { get; set; }
 
-        [Required(ErrorMessage ="le code VIN est obligatoire")]
-        public string CodeVin { get; set; }  // Initialize to avoid nullability issues
+        [Required(ErrorMessage = "le code VIN est obligatoire")]
+        // Le codeVin est composé de 17 caracteres
+        [StringLength(17, MinimumLength = 17, ErrorMessage = "Le code VIN doit être composé de 17 caractères.")]
+        public string CodeVin { get; set; } = string.Empty; // Initialize to avoid nullability issues
+
+        public int VehicleId { get; set; }  // Initialize to avoid nullability issues
+
         [Required(ErrorMessage = "la description est obligatoire")]
         public string Description { get; set; } = string.Empty; // Initialize to avoid nullability issues
+
         [Required(ErrorMessage = "le coût de la réparation est obligatoire")]
         public float RepairCost { get; set; }
 
@@ -19,7 +25,8 @@ namespace DotnetProjet5.Models.ViewModels
             return new RepairViewModel
             {
                 RepairId = repair.RepairId,
-                CodeVin = repair.CodeVin,
+                VehicleId = repair.VehicleId,
+                CodeVin = repair.Vehicle?.CodeVin ?? string.Empty, // Map CodeVin from Vehicle
                 Description = repair.Description,
                 RepairCost = repair.RepairCost
             };
@@ -36,12 +43,11 @@ namespace DotnetProjet5.Models.ViewModels
             return new Repair
             {
                 RepairId = viewModel.RepairId,
-                CodeVin = viewModel.CodeVin,
+                VehicleId = viewModel.VehicleId,
                 Description = viewModel.Description,
-                RepairCost = viewModel.RepairCost
+                RepairCost = viewModel.RepairCost,
+                // Note: CodeVin is not directly mapped back to Repair entity as it belongs to Vehicle
             };
         }
-
-      
     }
 }

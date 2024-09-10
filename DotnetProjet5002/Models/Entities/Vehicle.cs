@@ -7,7 +7,9 @@ namespace DotnetProjet5.Models.Entities
 {
     public class Vehicle
     {
-        [Key]
+
+        public int VehicleId { get; set; }
+
         [Required]
         public string CodeVin { get; set; }
 
@@ -18,7 +20,7 @@ namespace DotnetProjet5.Models.Entities
         public DateTime PurchaseDate { get; set; }
 
         [Required]
-      //  [Range(0.1, float.MaxValue, ErrorMessage = "Merci d'entrer un prix valide")]
+      
         public float PurchasePrice { get; set; }
 
         [Required]
@@ -38,7 +40,7 @@ namespace DotnetProjet5.Models.Entities
 
         public DateTime? AvailabilityDate { get; set; }
 
-     //   [Range(0, float.MaxValue, ErrorMessage = "Merci d'entrer un prix valide")]
+     
         public float SellPrice { get; set; }
 
         public bool Selled { get; set; }

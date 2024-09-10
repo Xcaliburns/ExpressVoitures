@@ -4,7 +4,7 @@ namespace DotnetProjet5.Models.Services
 {
     public interface IRepairService
     {
-        Task<List<Repair>> GetRepairsByVehicleAsync(string codeVin);
-        Task DeleteRepairsByVehicleAsync(string codeVin);
+        Task<List<Repair>> GetRepairsByVehicleAsync(int vehicleId);
+        Task DeleteRepairsByVehicleAsync(int vehicleId);
     }
 }

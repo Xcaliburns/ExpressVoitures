@@ -10,15 +10,14 @@ namespace DotnetProjet5.Models.Services
     public class VehicleService : IVehicleService
     {
         private readonly ApplicationDbContext _context;
-
         private readonly IRepairService _repairService;
         private readonly IFileUploadHelper _fileUploadHelper;
+
         public VehicleService(ApplicationDbContext context, IRepairService repairService, IFileUploadHelper fileUploadHelper)
         {
             _context = context;
             _repairService = repairService;
             _fileUploadHelper = fileUploadHelper;
-
         }
 
         public async Task<List<VehicleViewModel>> GetAllVehiclesAsync()
@@ -26,7 +25,8 @@ namespace DotnetProjet5.Models.Services
             var vehicles = await _context.Vehicle.ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
-                Year = v.Year,
+                VehicleId = v.VehicleId,
+                Year = v.Year.Year,
                 Brand = v.Brand,
                 Model = v.Model,
                 Finish = v.Finish,
@@ -42,18 +42,18 @@ namespace DotnetProjet5.Models.Services
             }).ToList();
         }
 
-        public async Task<VehicleViewModel> GetVehicleByCodeVinAsync(string codeVin)
+        public async Task<VehicleViewModel> GetVehicleByIdAsync(int vehicleId)
         {
-            var vehicle = await _context.Vehicle.FirstOrDefaultAsync(m => m.CodeVin == codeVin);
+            var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == vehicleId);
             if (vehicle == null)
             {
                 return null;
             }
 
-
             return new VehicleViewModel
             {
-                Year = vehicle.Year,
+                VehicleId = vehicle.VehicleId, // Assurez-vous que cette ligne est présente
+                Year = vehicle.Year.Year,
                 Brand = vehicle.Brand,
                 Model = vehicle.Model,
                 Finish = vehicle.Finish,
@@ -74,7 +74,8 @@ namespace DotnetProjet5.Models.Services
             var vehicles = await _context.Vehicle.Where(v => v.Availability == true && v.Selled == false).ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
-                Year = v.Year,
+                VehicleId = v.VehicleId,
+                Year = v.Year.Year,
                 Brand = v.Brand,
                 Model = v.Model,
                 Finish = v.Finish,
@@ -92,22 +93,18 @@ namespace DotnetProjet5.Models.Services
 
         public async Task CreateVehicleAsync(VehicleViewModel vehicleViewModel)
         {
-
-
             if (vehicleViewModel.ImageFile != null)
             {
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
             }
 
-            // Calculer le coût total des réparations
-            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
-
-            // Calculer le prix de vente
+            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.VehicleId);
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
+            var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
+
             var vehicle = new Vehicle
             {
                 CodeVin = vehicleViewModel.CodeVin,
-                Year = vehicleViewModel.Year,
                 Brand = vehicleViewModel.Brand,
                 Model = vehicleViewModel.Model,
                 Finish = vehicleViewModel.Finish,
@@ -118,35 +115,30 @@ namespace DotnetProjet5.Models.Services
                 PurchaseDate = vehicleViewModel.PurchaseDate,
                 PurchasePrice = vehicleViewModel.PurchasePrice,
                 Selled = vehicleViewModel.Selled,
-                SellPrice = sellPrice
+                SellPrice = sellPrice,
+                Year = yearAsDateTime
             };
+
             _context.Add(vehicle);
             await _context.SaveChangesAsync();
         }
 
         public async Task UpdateVehicleAsync(VehicleViewModel vehicleViewModel)
         {
-            var vehicle = await _context.Vehicle.FindAsync(vehicleViewModel.CodeVin);
+            var vehicle = await _context.Vehicle.FindAsync(vehicleViewModel.VehicleId);
             if (vehicle == null)
             {
                 throw new Exception("Vehicle not found");
             }
             if (vehicleViewModel.ImageFile != null)
             {
-
                 vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
             }
-            //else {
-            //    vehicle.ImageUrl=vehicleViewModel.ImageUrl ;
-            //}
 
-            // Calculer le coût total des réparations
-            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.CodeVin);
-
-            // Calculer le prix de vente
+            var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.VehicleId);
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
+            var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
 
-            vehicle.Year = vehicleViewModel.Year;
             vehicle.Brand = vehicleViewModel.Brand;
             vehicle.Model = vehicleViewModel.Model;
             vehicle.Finish = vehicleViewModel.Finish;
@@ -158,20 +150,18 @@ namespace DotnetProjet5.Models.Services
             vehicle.PurchasePrice = vehicleViewModel.PurchasePrice;
             vehicle.Selled = vehicleViewModel.Selled;
             vehicle.SellPrice = sellPrice;
+            vehicle.Year = yearAsDateTime;
 
             _context.Update(vehicle);
             await _context.SaveChangesAsync();
         }
 
-        public async Task DeleteVehicleAsync(string codeVin)
+        public async Task DeleteVehicleAsync(int vehicleId)
         {
-
-            // I have to delete all the repairs of the vehicle first
-            await _repairService.DeleteRepairsByVehicleAsync(codeVin);
-            var vehicle = await _context.Vehicle.FindAsync(codeVin);
+            await _repairService.DeleteRepairsByVehicleAsync(vehicleId);
+            var vehicle = await _context.Vehicle.FindAsync(vehicleId);
             if (vehicle != null)
             {
-                // Delete the image file if it exists
                 if (!string.IsNullOrEmpty(vehicle.ImageUrl))
                 {
                     var imagePath = Path.Combine("wwwroot/images", Path.GetFileName(vehicle.ImageUrl));
@@ -181,25 +171,20 @@ namespace DotnetProjet5.Models.Services
                     }
                 }
 
-                // Delete the vehicle from the database
                 _context.Vehicle.Remove(vehicle);
                 await _context.SaveChangesAsync();
-
-
             }
-
         }
 
-        public async Task<float> CalculateTotalRepairCostAsync(string codeVin)
+        public async Task<float> CalculateTotalRepairCostAsync(int vehicleId)
         {
-            var repairs = await _repairService.GetRepairsByVehicleAsync(codeVin);
+            var repairs = await _repairService.GetRepairsByVehicleAsync(vehicleId);
             return repairs.Sum(repair => repair.RepairCost);
         }
 
-
-        public async Task<bool> VehicleExistsAsync(string codeVin)
+        public async Task<bool> VehicleExistsAsync(int vehicleId)
         {
-            return await _context.Vehicle.AnyAsync(e => e.CodeVin == codeVin);
+            return await _context.Vehicle.AnyAsync(e => e.VehicleId == vehicleId);
         }
     }
 }

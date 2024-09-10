@@ -11,9 +11,12 @@ namespace DotnetProjet5.Models
         public int RepairId { get; set; }
 
         [ForeignKey("Vehicle")]
-        public string CodeVin { get; set; }
+        public int VehicleId { get; set; }
         
         public string Description { get; set; }
         public float RepairCost { get; set; }
+
+        // Navigation property
+        public Vehicle Vehicle { get; set; }
     }
 }

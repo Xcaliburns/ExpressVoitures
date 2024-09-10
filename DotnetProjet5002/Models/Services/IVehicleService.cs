@@ -7,13 +7,13 @@ namespace DotnetProjet5.Models.Services
     public interface IVehicleService
     {
         Task<List<VehicleViewModel>> GetAllVehiclesAsync();
-        Task<VehicleViewModel> GetVehicleByCodeVinAsync(string CodeVin);
+        Task<VehicleViewModel> GetVehicleByIdAsync(int vehicleId);
         Task<List<VehicleViewModel>> GetAllVehiclesAvailableAsync();
         Task CreateVehicleAsync(VehicleViewModel VehicleViewModel);
         Task UpdateVehicleAsync(VehicleViewModel VehicleViewModel);
-        Task DeleteVehicleAsync(string CodeVin);
-        Task<float> CalculateTotalRepairCostAsync(string codeVin);
-        Task<bool> VehicleExistsAsync(string codeVin);
+        Task DeleteVehicleAsync(int vehicleId);
+        Task<float> CalculateTotalRepairCostAsync(int vehicleId);
+        Task<bool> VehicleExistsAsync(int vehicleId);
 
     }
 

@@ -40,14 +40,9 @@ namespace DotnetProjet5.Controllers
 
         // GET: Vehicles/Details/5
         [AllowAnonymous]
-        public async Task<IActionResult> Details(string id)
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
             if (vehicleViewModel == null)
             {
                 return NotFound();
@@ -67,30 +62,22 @@ namespace DotnetProjet5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)//verifier pourquoi 2 vqriables
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)
         {
             if (ModelState.IsValid)
             {
-                await _vehicleService.CreateVehicleAsync(vehicleViewModel);//verifier pouquoi 2 variables
-
+                await _vehicleService.CreateVehicleAsync(vehicleViewModel);
                 return RedirectToAction(nameof(CreateConfirmed));
             }
-
-
 
             return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Edit/5
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> Edit(string id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
             if (vehicleViewModel == null)
             {
                 return NotFound();
@@ -102,24 +89,19 @@ namespace DotnetProjet5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> Edit(string id, VehicleViewModel vehicleViewModel)
+        public async Task<IActionResult> Edit(int vehicleid, VehicleViewModel vehicleViewModel)
         {
-            if (id != vehicleViewModel.CodeVin)
+            if (vehicleid != vehicleViewModel.VehicleId)
             {
                 return NotFound();
             }
 
-
             if (ModelState.IsValid)
             {
-
-
                 if (vehicleViewModel.ImageFile != null)
                 {
-                    
-                    // Retrieve the existing ImageUrl from the database
                     var existingImageUrl = _context.Vehicle
-                        .Where(v => v.CodeVin == vehicleViewModel.CodeVin)
+                        .Where(v => v.VehicleId == vehicleViewModel.VehicleId)
                         .Select(v => v.ImageUrl)
                         .FirstOrDefault();
 
@@ -131,38 +113,29 @@ namespace DotnetProjet5.Controllers
                             System.IO.File.Delete(oldImagePath);
                         }
                     }
-                    // Save the new image file and update the ImageUrl
+
                     vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
                 }
                 else
                 {
-                    // Retrieve the existing ImageUrl from the database
                     vehicleViewModel.ImageUrl = _context.Vehicle
-                        .Where(v => v.CodeVin == vehicleViewModel.CodeVin)
+                        .Where(v => v.VehicleId == vehicleViewModel.VehicleId)
                         .Select(v => v.ImageUrl)
                         .FirstOrDefault();
                 }
+
                 await _vehicleService.UpdateVehicleAsync(vehicleViewModel);
+                return RedirectToAction(nameof(Index));
             }
-
-
-
-
-            return RedirectToAction(nameof(Index));
 
             return View(vehicleViewModel);
         }
 
         // GET: Vehicles/Delete/5
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicleViewModel = await _vehicleService.GetVehicleByCodeVinAsync(id);
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
             if (vehicleViewModel == null)
             {
                 return NotFound();
@@ -175,10 +148,9 @@ namespace DotnetProjet5.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> DeleteConfirmed(string CodeVin)
-        {  
-            await _vehicleService.DeleteVehicleAsync(CodeVin);
-            // Redirect to Home/Index
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            await _vehicleService.DeleteVehicleAsync(id);
             return RedirectToAction("Index", "Home");
         }
 
@@ -187,22 +159,5 @@ namespace DotnetProjet5.Controllers
         {
             return View();
         }
-
-        // TODO A deplacer
-        //private async Task<string> SaveImageFileAsync(IFormFile imageFile)
-        //{
-        //    if (imageFile == null)
-        //    {
-        //        return string.Empty;
-        //    }
-
-        //    var filePath = Path.Combine("wwwroot/images", imageFile.FileName);
-        //    using (var stream = new FileStream(filePath, FileMode.Create))
-        //    {
-        //        await imageFile.CopyToAsync(stream);
-        //    }
-
-        //    return filePath;
-        //}
     }
 }

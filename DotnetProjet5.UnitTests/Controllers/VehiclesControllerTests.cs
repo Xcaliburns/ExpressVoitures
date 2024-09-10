@@ -33,7 +33,7 @@ namespace DotnetProjet5.UnitTests.ControllersTests
                 CodeVin = "1234567890",
                 Brand = "TestBrand",
                 Model = "TestModel",
-                Year = new DateTime(2021, 1, 1),
+                Year = 2021,
                 PurchaseDate = new DateTime(2021, 1, 1),
                 PurchasePrice = 10000,
                 Description = "Test Description",
@@ -70,7 +70,7 @@ namespace DotnetProjet5.UnitTests.ControllersTests
             {
                 CodeVin = "1234567890",
                 Model = "TestModel",
-                Year = new DateTime(2021, 1, 1),
+                Year = 2022,
                 PurchaseDate = new DateTime(2021, 1, 1),
                 PurchasePrice = 10000,
                 Description = "Test Description",

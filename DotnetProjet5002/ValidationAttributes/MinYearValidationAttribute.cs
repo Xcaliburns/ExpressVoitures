@@ -6,23 +6,18 @@ namespace DotnetProjet5.ValidationAttributes
 {
     public class MinYearValidationAttribute : ValidationAttribute
     {
-        private readonly int _minYear;
-
-        public MinYearValidationAttribute(int minYear)
-        {
-            _minYear = minYear;
-        }
-
-        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        public override bool IsValid(object value)
         {
             if (value is int year)
             {
-                if (year < _minYear)
-                {
-                    return new ValidationResult($"L'année doit être supérieure ou égale à {_minYear}.");
-                }
+                return year <= DateTime.Now.Year;
             }
-            return ValidationResult.Success;
+            return false;
+        }
+
+        public override string FormatErrorMessage(string name)
+        {
+            return $"L'année doit être inférieure ou égale à l'année en cours ({DateTime.Now.Year}).";
         }
     }
 }
