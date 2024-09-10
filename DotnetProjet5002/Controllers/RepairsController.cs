@@ -58,10 +58,10 @@ namespace DotnetProjet5.Controllers
             {
                 return NotFound();
             }
-            ViewData["CodeVin"] = id;
+           
             var model = new RepairViewModel
             {
-                VehicleId = id // Set the CodeVin from the vehicle
+                Vehicle = vehicle
             };
             return View(model);
         }
