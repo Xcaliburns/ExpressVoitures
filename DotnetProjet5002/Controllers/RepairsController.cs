@@ -51,9 +51,9 @@ namespace DotnetProjet5.Controllers
         // GET: Repairs/Create
         [Authorize]
         [HttpGet]
-        public IActionResult Create(string id)
+        public IActionResult Create(int id)
         {
-            var vehicle = _context.Vehicle.FirstOrDefault(v => v.CodeVin == id);
+            var vehicle = _context.Vehicle.FirstOrDefault(v => v.VehicleId== id);
             if (vehicle == null)
             {
                 return NotFound();
@@ -61,7 +61,7 @@ namespace DotnetProjet5.Controllers
             ViewData["CodeVin"] = id;
             var model = new RepairViewModel
             {
-                CodeVin = id // Set the CodeVin from the vehicle
+                VehicleId = id // Set the CodeVin from the vehicle
             };
             return View(model);
         }
@@ -83,7 +83,7 @@ namespace DotnetProjet5.Controllers
                 await _context.SaveChangesAsync();
 
                 //fetch the associated vehicle
-                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == repair.CodeVin);
+                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repair.VehicleId);
                 if (vehicle != null)
                 {
                     // Update the vehicle's price
@@ -146,7 +146,7 @@ namespace DotnetProjet5.Controllers
                         }
 
                         // Récupérer le véhicule associé
-                        var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == oldRepair.CodeVin);
+                        var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == oldRepair.VehicleId);
                         if (vehicle != null)
                         {
                             // Soustraire l'ancien coût de réparation du prix de vente du véhicule
@@ -219,7 +219,7 @@ namespace DotnetProjet5.Controllers
             if (repair != null)
             {
                 // Récupérer le véhicule associé
-                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.CodeVin == repair.CodeVin);
+                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repair.VehicleId);
                 if (vehicle != null)
                 {
                     // Réduire le prix de vente du véhicule du coût de la réparation
