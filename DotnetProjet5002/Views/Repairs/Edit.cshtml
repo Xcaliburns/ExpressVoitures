@@ -14,6 +14,7 @@
         <form asp-action="Edit" aria-labelledby="form-title">
             <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
             <input type="hidden" asp-for="RepairId" />
+            <input type="hidden" asp-for="VehicleId"/>
            
             <div class="form-group">
                 <label asp-for="Description" class="control-label"></label>
