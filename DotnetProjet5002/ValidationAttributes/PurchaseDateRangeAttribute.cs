@@ -15,7 +15,7 @@ namespace DotnetProjet5.ValidationAttributes
             {
                 if (value is DateTime purchaseDate)
                 {
-                    if (purchaseDate < DateTime.Now.Date || purchaseDate.Year < year)
+                    if (purchaseDate> DateTime.Now.Date || purchaseDate.Year < year)
                     {
                         return new ValidationResult($"La date d'achat doit être comprise entre aujourd'hui et l'année du véhicule ({year}).");
                     }

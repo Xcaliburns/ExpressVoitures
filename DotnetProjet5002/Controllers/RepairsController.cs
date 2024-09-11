@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
 using DotnetProjet5.Models.ViewModels;
+using DotnetProjet5.Models;
 using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetProjet5.Controllers
@@ -49,6 +50,7 @@ namespace DotnetProjet5.Controllers
         }
 
         // GET: Repairs/Create
+        //TODO ajouter les role
         [Authorize]
         [HttpGet]
         public IActionResult Create(int id)
@@ -61,6 +63,7 @@ namespace DotnetProjet5.Controllers
            
             var model = new RepairViewModel
             {
+                VehicleId = vehicle.VehicleId,
                 Vehicle = vehicle
             };
             return View(model);
@@ -72,24 +75,30 @@ namespace DotnetProjet5.Controllers
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
-        public async Task<IActionResult> Create( RepairViewModel repairViewModel)
+        public async Task<IActionResult> Create(RepairViewModel repairViewModel)
         {
-            
             if (ModelState.IsValid)
             {
-                var repair = RepairViewModel.ToEntity(repairViewModel);
-                //add the repair to the database
+                var repair = new Repair
+                {
+                    Description = repairViewModel.Description,
+                    RepairCost = repairViewModel.RepairCost,
+                    VehicleId = repairViewModel.VehicleId,
+                    Vehicle = repairViewModel.Vehicle
+                };
+
+                // Ajoutez la réparation à la base de données
                 _context.Add(repair);
                 await _context.SaveChangesAsync();
 
-                //fetch the associated vehicle
-                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repair.VehicleId);
+                // Récupérez le véhicule associé en utilisant repairViewModel.VehicleId
+                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repairViewModel.VehicleId);
                 if (vehicle != null)
                 {
-                    // Update the vehicle's price
+                    // Mettez à jour le prix de vente du véhicule
                     vehicle.SellPrice += repair.RepairCost;
 
-                    // Save the updated vehicle back to the database
+                    // Enregistrez le véhicule mis à jour dans la base de données
                     _context.Update(vehicle);
                     await _context.SaveChangesAsync();
                 }

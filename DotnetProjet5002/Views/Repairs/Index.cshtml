@@ -14,9 +14,7 @@
     <caption id="repair-table-description">Liste des réparations</caption>
     <thead>
         <tr>
-            <th scope="col">
-                @Html.DisplayNameFor(model => model.CodeVin)
-            </th>
+           
             <th scope="col">
                 @Html.DisplayNameFor(model => model.Description)
             </th>
@@ -29,9 +27,7 @@
     <tbody>
 @foreach (var item in Model) {
         <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.CodeVin)
-            </td>
+           
             <td>
                 @Html.DisplayFor(modelItem => item.Description)
             </td>
