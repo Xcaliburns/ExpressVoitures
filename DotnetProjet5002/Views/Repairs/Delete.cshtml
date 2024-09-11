@@ -1,40 +1,56 @@
-﻿@model DotnetProjet5.Models.Repair
+﻿@model DotnetProjet5.Models.ViewModels.RepairViewModel
 
 @{
     ViewData["Title"] = "Delete";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Delete</h1>
+<h1 class="text-danger">Supprimer la réparation</h1>
 
-<h3>Are you sure you want to delete this?</h3>
-<div>
-    <h4>Repair</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Vehicle.CodeVin)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Vehicle.Model)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Description)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Description)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.RepairCost)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.RepairCost)
-        </dd>
-    </dl>
-    
-    <form asp-action="Delete" aria-labelledby="delete-form-title">
-        <input type="hidden" asp-for="RepairId" />
-        <input type="submit" value="Delete" class="btn btn-danger" aria-label="Confirm Delete" /> |
-        <a asp-action="Index" aria-label="Back to List">Back to List</a>
-    </form>
+<h3 class="text-warning">Etes vous sur de vouloir supprimer cette Réparation?</h3>
+<div class="card">
+    <div class="card-body">
+        <h4 class="card-title">Réparation à supprimer</h4>
+        <hr />
+        <dl class="row">
+            <dt class="col-sm-2">
+                <label for="vehicleBrand">Marque</label>
+            </dt>
+            <dd class="col-sm-10">
+                <span id="vehicleBrand">@Html.DisplayFor(model => model.Vehicle.Brand)</span>
+            </dd>
+            <dt class="col-sm-2">
+                <label for="vehicleModel">Modèle</label>
+            </dt>
+            <dd class="col-sm-10">
+                <span id="vehicleModel">@Html.DisplayFor(model => model.Vehicle.Model)</span>
+            </dd>
+            <dt class="col-sm-2">
+                <label for="vehicleYear">Année</label>
+            </dt>
+            <dd class="col-sm-10">
+                <span id="vehicleYear">@Html.DisplayFor(model => model.Vehicle.Year.Year)</span>
+            </dd>
+            <dt class="col-sm-2">
+                <label for="description">@Html.DisplayNameFor(model => model.Description)</label>
+            </dt>
+            <dd class="col-sm-10">
+                <span id="description">@Html.DisplayFor(model => model.Description)</span>
+            </dd>
+            <dt class="col-sm-2">
+                <label for="repairCost">Prix de la réparation</label>
+            </dt>
+            <dd class="col-sm-10">
+                <span id="repairCost">@Html.DisplayFor(model => model.RepairCost)</span>
+            </dd>
+        </dl>
+
+        <form asp-action="Delete" aria-labelledby="delete-form-title">
+            <input type="hidden" asp-for="RepairId" />
+            <div class="form-group">
+                <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
+                <a asp-action="Index" class="btn btn-secondary" aria-label="Retour">Retour</a>
+            </div>
+        </form>
+    </div>
 </div>

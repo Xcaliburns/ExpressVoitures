@@ -216,11 +216,13 @@ namespace DotnetProjet5.Controllers
             }
 
             var repair = await _context.Repairs
+                .Include(r => r.Vehicle) // Include the related Vehicle entity
                 .FirstOrDefaultAsync(m => m.RepairId == id);
             if (repair == null)
             {
                 return NotFound();
             }
+
             var repairViewModel = RepairViewModel.ToViewModel(repair);
             return View(repairViewModel);
         }

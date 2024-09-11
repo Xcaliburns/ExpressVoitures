@@ -26,7 +26,7 @@ namespace DotnetProjet5.Models.ViewModels
                 VehicleId = repair.VehicleId,
                 Description = repair.Description,
                 RepairCost = repair.RepairCost,
-               
+                Vehicle= repair.Vehicle
             };
         }
 
