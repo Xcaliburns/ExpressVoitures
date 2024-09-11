@@ -2,20 +2,18 @@
 
 <div class="col">
     <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir les détails du véhicule @Model.Model">
-        <div class="card border-0">
+        <div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.VehicleId">
             <div class="row">
                 <div class="col-md-7">
-                    <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover;width:594px; height: 316px;">
+                    <img src="@Model.ImageUrl" alt="Photo de la voiture @Model.Brand @Model.Model, année @Model.Year" class="img-fluid rounded" style="object-fit: cover;width:594px; height: 316px;">
                 </div>
                 <div class="col-md-3">
-                    <div class="card-body lh-sm" aria-labelledby="vehicle-details-@Model.VehicleId">
+                    <div class="card-body lh-sm">
                         <p id="vehicle-details-@Model.VehicleId" class="card-text text-nowrap" style="font-size: 22px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Model.Year</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Finish)</p>
-                        <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.VehicleId)</p>
-
                     </div>
                 </div>
             </div>

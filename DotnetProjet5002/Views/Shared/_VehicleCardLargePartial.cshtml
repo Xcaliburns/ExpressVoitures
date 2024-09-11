@@ -1,14 +1,14 @@
 ﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 <div class="col">
-    <div class="card border-0">
+    <div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.VehicleId">
         <div class="row mx-auto">
             <div class="col-md-7">
-                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover;width:625px; height: 356px;">
+                <img src="@Model.ImageUrl" alt="Photo de la voiture @Model.Brand @Model.Model, année @Model.Year" class="img-fluid rounded" style="object-fit: cover;width:625px; height: 356px;">
             </div>
             <div class="col-md-5">
-                <div class="card-body lh-sm" aria-labelledby="vehicle-details">
-                    <p id="vehicle-details" class="card-text" style="font-size: 28px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
+                <div class="card-body lh-sm">
+                    <p id="vehicle-details-@Model.VehicleId" class="card-text" style="font-size: 28px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
                     <p class="card-text fw-light" style="font-size: 24px">@Model.Year</p>
                     <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
                     <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
