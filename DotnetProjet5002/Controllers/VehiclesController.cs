@@ -151,7 +151,13 @@ namespace DotnetProjet5.Controllers
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             await _vehicleService.DeleteVehicleAsync(id);
-            return RedirectToAction("Index", "Home");
+            return RedirectToAction(nameof(DeleteConfirmation));
+        }
+
+        [Authorize(Roles = "Admin,Developer")]
+        public IActionResult DeleteConfirmation()
+        {
+            return View();
         }
 
         [Authorize(Roles = "Admin,Developer")]

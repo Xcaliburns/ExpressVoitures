@@ -80,8 +80,8 @@
         </dd>
     </dl>
 
-    <form asp-action="Delete" aria-labelledby="delete-title">
-        <input type="hidden" asp-for="CodeVin" />
+    <form asp-action="DeleteConfirmed" aria-labelledby="delete-title">
+        <input type="hidden" asp-for="VehicleId" />
         <input type="submit" value="Delete" class="btn btn-danger" aria-label="Confirm deletion" /> |
         <a asp-action="Index" aria-label="Back to list">Back to List</a>
     </form>
