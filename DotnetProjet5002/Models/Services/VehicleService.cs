@@ -139,6 +139,7 @@ namespace DotnetProjet5.Models.Services
             var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
             var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
 
+            vehicle.VehicleId = vehicleViewModel.VehicleId;
             vehicle.CodeVin = vehicleViewModel.CodeVin;
             vehicle.Brand = vehicleViewModel.Brand;
             vehicle.Model = vehicleViewModel.Model;
