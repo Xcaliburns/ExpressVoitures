@@ -26,6 +26,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Folder Include="Areas\Identity\Views\Account\" />
     <Folder Include="wwwroot\images\" />
   </ItemGroup>
 

@@ -1,5 +1,14 @@
-﻿z
-    For more information on enabling MVC for empty projects, visit https://go.microsoft.com/fwlink/?LinkID=397860
-*@
-@{
+﻿@{
+    ViewData["Title"] = "Delete Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
+
+<h1>Vehicle Deleted</h1>
+<p>The vehicle has been successfully deleted.</p>
+<p>Details:</p>
+<ul>
+    <li>Brand: @ViewBag.Brand</li>
+    <li>Model: @ViewBag.Model</li>
+    <li>Year: @ViewBag.Year</li>
+</ul>
+<a asp-action="Index" class="btn btn-primary">Back to List</a>
