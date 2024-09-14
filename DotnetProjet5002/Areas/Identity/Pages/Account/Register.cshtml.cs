@@ -136,6 +136,17 @@ namespace DotnetProjet5.Areas.Identity.Pages.Account
                 {
                     _logger.LogInformation("l'utilisateur a créé un compte avec mot de passe.");
 
+                    // Assign the "User" role to the new user
+                    var roleResult = await _userManager.AddToRoleAsync(user, "User");
+                    if (!roleResult.Succeeded)
+                    {
+                        foreach (var error in roleResult.Errors)
+                        {
+                            ModelState.AddModelError(string.Empty, error.Description);
+                        }
+                        return Page();
+                    }
+
                     var userId = await _userManager.GetUserIdAsync(user);
                     var code = await _userManager.GenerateEmailConfirmationTokenAsync(user);
                     code = WebEncoders.Base64UrlEncode(Encoding.UTF8.GetBytes(code));
