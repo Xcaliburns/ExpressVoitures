@@ -77,7 +77,7 @@ namespace DotnetProjet5.Areas.Identity.Pages.Account
             /// </summary>
             [Required(ErrorMessage = "veuillez entrer une adresse email")]
             [EmailAddress]
-            [Remote(action: "IsEmailInUse", controller: "Account", areaName: "Identity", ErrorMessage = "Cet email est déjà utilisé. Veuillez en choisir un autre.")]
+            //[Remote(action: "IsEmailInUse", controller: "Account", areaName: "Identity", ErrorMessage = "Cet email est déjà utilisé. Veuillez en choisir un autre.")]
             [Display(Name = "Adresse Email")]
             public string Email { get; set; }
             //TODO: Add Remote attribute to check if email is already in use
@@ -118,6 +118,14 @@ namespace DotnetProjet5.Areas.Identity.Pages.Account
             ExternalLogins = (await _signInManager.GetExternalAuthenticationSchemesAsync()).ToList();
             if (ModelState.IsValid)
             {
+                // Vérifiez si l'email est déjà utilisé
+                var existingUser = await _userManager.FindByEmailAsync(Input.Email);
+                if (existingUser != null)
+                {
+                    ModelState.AddModelError("Input.Email", "Cet email est déjà utilisé. Veuillez en choisir un autre.");
+                    return Page();
+                }
+
                 var user = CreateUser();
 
                 await _userStore.SetUserNameAsync(user, Input.Email, CancellationToken.None);
