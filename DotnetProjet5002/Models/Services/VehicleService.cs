@@ -160,10 +160,13 @@ namespace DotnetProjet5.Models.Services
 
         public async Task DeleteVehicleAsync(int vehicleId)
         {
-            await _repairService.DeleteRepairsByVehicleAsync(vehicleId);
             var vehicle = await _context.Vehicle.FindAsync(vehicleId);
             if (vehicle != null)
             {
+
+                await _repairService.DeleteRepairsByVehicleAsync(vehicleId);
+            
+         
                 if (!string.IsNullOrEmpty(vehicle.ImageUrl))
                 {
                     var imagePath = Path.Combine("wwwroot/images", Path.GetFileName(vehicle.ImageUrl));
@@ -172,6 +175,7 @@ namespace DotnetProjet5.Models.Services
                         System.IO.File.Delete(imagePath);
                     }
                 }
+
 
                 _context.Vehicle.Remove(vehicle);
                 await _context.SaveChangesAsync();

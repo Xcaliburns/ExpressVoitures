@@ -33,7 +33,7 @@
 }
 
 
-
+ /*Custom Font*/
 h1 {
     font-family: 'Libre Baskerville', serif;
     font-size: 44px;
@@ -44,6 +44,14 @@ h1 {
     color: #796157;
 }
 
+/*Custom Margin-top*/
+.custom-mt {
+    margin-top: 100px; 
+}
+/*Custom margin-left*/
+.custom-margin-left {
+    margin-left: 25%; 
+}
 
 html {
   font-size: 14px;

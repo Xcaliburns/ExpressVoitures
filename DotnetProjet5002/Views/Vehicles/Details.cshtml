@@ -5,25 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<a asp-controller="Home" asp-action="Index" class="text-muted"><i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour</a>
+
 
 @{
     ViewData["Title"] = "Détails du véhicule";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<body>
-    <main class="container align-items-center" aria-labelledby="vehicle-details-title">
-
-        <h1 id="vehicle-details-title" class="mb-5">Détails du véhicule</h1>
+<body >
+    <main class="container align-items-center custom-mt" aria-labelledby="vehicle-details-title">
         <div class="row justify-content-center">
+            <a asp-controller="Home" asp-action="Index" class="text-muted text-start custom-margin-left">
+                <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour
+            </a>
             @Html.Partial("_VehicleCardLargePartial", Model)
         </div>
 
-        <nav aria-label="Vehicle actions">
-            <a asp-action="Edit" asp-route-id="@Model?.VehicleId" class="btn btn-primary" aria-label="Edit vehicle">Edit</a> |
-            <a asp-action="Delete" asp-route-id="@Model?.VehicleId" class="btn btn-danger" aria-label="Delete vehicle">Delete</a> |
-        </nav>
+        @*   <nav aria-label="Vehicle actions">
+        <a asp-action="Edit" asp-route-id="@Model?.VehicleId" class="btn btn-primary" aria-label="Edit vehicle">Edit</a> |
+        <a asp-action="Delete" asp-route-id="@Model?.VehicleId" class="btn btn-danger" aria-label="Delete vehicle">Delete</a> |
+        </nav> *@
 
     </main>
 </body>

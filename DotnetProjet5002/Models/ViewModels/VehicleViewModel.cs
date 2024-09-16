@@ -21,7 +21,7 @@ namespace DotnetProjet5.ViewModels
 
         [Required(ErrorMessage ="l'année est est requise")]
         [Display(Name = "Année")]
-        [Range(1993, int.MaxValue, ErrorMessage = "L'année doit être comprise entre 1993 et l'année en cours.")]        
+        [Range(1990, int.MaxValue, ErrorMessage = "L'année doit être comprise entre 1990 et l'année en cours.")]        
         public int Year { get; set; }
 
         [Required]

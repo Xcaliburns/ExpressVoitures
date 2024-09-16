@@ -148,10 +148,23 @@ namespace DotnetProjet5.Controllers
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
-        public async Task<IActionResult> DeleteConfirmed(int id)
+        public async Task<IActionResult> DeleteConfirmed(int VehicleId)
         {
-            await _vehicleService.DeleteVehicleAsync(id);
-            return RedirectToAction(nameof(DeleteConfirmation));
+            var vehicle = await _context.Vehicle.FindAsync(VehicleId);
+            if (vehicle == null)
+            {
+                return NotFound();
+            }
+
+            // Set ViewBag properties before deleting the vehicle
+            ViewBag.Brand = vehicle.Brand;
+            ViewBag.Model = vehicle.Model;
+            ViewBag.Year = vehicle.Year.Year;
+
+            // Call the DeleteVehicleAsync method to delete the vehicle
+            await _vehicleService.DeleteVehicleAsync(VehicleId);
+
+            return View("DeleteConfirmation");
         }
 
         [Authorize(Roles = "Admin,Developer")]
