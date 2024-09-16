@@ -170,6 +170,9 @@ namespace DotnetProjet5.Controllers
         [Authorize(Roles = "Admin,Developer")]
         public IActionResult DeleteConfirmation()
         {
+            ViewBag.Brand = TempData["Brand"];
+            ViewBag.Model = TempData["Model"];
+            ViewBag.Year = TempData["Year"];
             return View();
         }
 
