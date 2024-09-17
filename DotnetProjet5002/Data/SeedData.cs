@@ -22,37 +22,67 @@ namespace DotnetProjet5.Data
                 }
                 context.Vehicle.AddRange(
 
-                 new Vehicle
-                 {
+                new Vehicle
+                {
+                    CodeVin = "toto5555555555555",
+                    Year = new DateTime(2020, 1, 1),
+                    PurchaseDate = new DateTime(2020, 1, 1),
+                    PurchasePrice = 10000,
+                    Brand = "renault",
+                    Model = "twingo",
+                    Finish = "electrique",
+                    Description = "voiture neuve",
+                    ImageUrl = "https://www.example.com/twingo.jpg",
+                    Availability = true,
+                    AvailabilityDate = new DateTime(2020, 1, 1),
+                    Selled = false
+                },
+                    new Vehicle
+                    {
+                        CodeVin = "toto6666666666666",
+                        Year = new DateTime(2019, 1, 1),
+                        PurchaseDate = new DateTime(2019, 1, 1),
+                        PurchasePrice = 15000,
+                        Brand = "peugeot",
+                        Model = "208",
+                        Finish = "diesel",
+                        Description = "voiture d'occasion",
+                        ImageUrl = "https://www.example.com/208.jpg",
+                        Availability = true,
+                        AvailabilityDate = new DateTime(2019, 1, 1),
+                        Selled = false
+                    },
+                    new Vehicle
+                    {
+                        CodeVin = "toto7777777777777",
+                        Year = new DateTime(2018, 1, 1),
+                        PurchaseDate = new DateTime(2018, 1, 1),
+                        PurchasePrice = 20000,
+                        Brand = "citroen",
+                        Model = "c3",
+                        Finish = "hybride",
+                        Description = "voiture hybride",
+                        ImageUrl = "https://www.example.com/c3.jpg",
+                        Availability = true,
+                        AvailabilityDate = new DateTime(2018, 1, 1),
+                        Selled = false
+                    },
+                    new Vehicle
+                    {
+                        CodeVin = "toto8888888888888",
+                        Year = new DateTime(2021, 1, 1),
+                        PurchaseDate = new DateTime(2021, 1, 1),
+                        PurchasePrice = 25000,
+                        Brand = "tesla",
+                        Model = "model 3",
+                        Finish = "electrique",
+                        Description = "voiture électrique",
+                        ImageUrl = "https://www.example.com/model3.jpg",
+                        Availability = true,
+                        AvailabilityDate = new DateTime(2021, 1, 1),
+                        Selled = false
+                    }
 
-                     CodeVin = "toto",
-                     Year = new DateTime(2020, 1, 1),
-                     PurchaseDate= new DateTime(2020, 1, 1),
-                     PurchasePrice= 10000,                    
-                     Brand = "renault",
-                     Model = "twingo",
-                     Finish = "electrique",
-                     Description = "voiture neuve",
-                     ImageUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.largus.fr%2Factualite-automobile%2Frenault-twingo-electrique-2020-les-prix-de-la-nouvelle-twingo-ze-10300000.html&psig=AOvVaw0",
-                     Availability = false,
-                     AvailabilityDate = new DateTime(2020, 1, 1),
-                     Selled = false
-
-                 },
-                  new Vehicle
-                  {
-                      CodeVin = "titi",
-                      Year = new DateTime(2022, 1, 1),
-                      Brand = "renault",
-                      Model = "twingo",
-                      Finish = "electrique",
-                      Description = "voiture neuve",
-                      ImageUrl = "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.largus.fr%2Factualite-automobile%2Frenault-twingo-electrique-2020-les-prix-de-la-nouvelle-twingo-ze-10300000.html&psig=AOvVaw0",
-                      Availability = false,
-                      AvailabilityDate = new DateTime(2020, 1, 1),
-                      Selled = false
-
-                  }
                     );
                 context.SaveChanges();
             }

@@ -1,14 +1,12 @@
-﻿﻿@{
+﻿@{
     ViewData["Title"] = "Delete Confirmation";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Vehicle Deleted</h1>
-<p>The vehicle has been successfully deleted.</p>
-<p>Details:</p>
-<ul>
-    <li>Brand: @ViewBag.Brand</li>
-    <li>Model: @ViewBag.Model</li>
-    <li>Year: @ViewBag.Year</li>
-</ul>
-<a asp-action="Index" class="btn btn-primary">Back to List</a>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+        <h1 >@ViewBag.Year @ViewBag.Brand @ViewBag.Model</h1>
+        <p class="mb-5">a bien été supprimée</p>
+        <a asp-action="Index" class="btn btn-custom mt-5">retour à l'accueil</a>
+    </div>
+</div>

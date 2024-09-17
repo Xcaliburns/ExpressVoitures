@@ -11,9 +11,12 @@ namespace DotnetProjet5.Models.ViewModels
         public int VehicleId { get; set; }  // Initialize to avoid nullability issues
 
         [Required(ErrorMessage = "la description est obligatoire")]
+        [Display(Name = "Description")]
         public string Description { get; set; } = string.Empty; // Initialize to avoid nullability issues
 
         [Required(ErrorMessage = "le coût de la réparation est obligatoire")]
+        [Range(0.01, float.MaxValue, ErrorMessage = "le coût de la réparation doit être supérieur à 0")]
+        [Display(Name = "Prix de la réparation")]
         public float RepairCost { get; set; }
 
         public Vehicle?Vehicle { get; set; }

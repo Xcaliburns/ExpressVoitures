@@ -28,7 +28,7 @@ namespace DotnetProjet5.ViewModels
         [Display(Name = "Date d'achat")]
         [MaxDate(ErrorMessage = "La date  peut  être aujourd'hui au plus tard.")]
         [PurchaseDateRange(ErrorMessage = "La date d'achat doit être comprise entre aujourd'hui et l'année du véhicule.")]
-        public DateTime PurchaseDate { get; set; } = new DateTime(1993, 1, 1);
+        public DateTime PurchaseDate { get; set; } = new DateTime(1990, 1, 1);
 
         [Required(ErrorMessage ="le prix est requis")]
         [Display(Name = "Prix d'achat")]

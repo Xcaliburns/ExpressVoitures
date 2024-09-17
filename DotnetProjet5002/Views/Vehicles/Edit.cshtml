@@ -5,16 +5,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 id="edit-vehicle-title">@ViewData["Title"]</h1>
+<h1 class="custom-mt" id="edit-vehicle-title">@ViewData["Title"]</h1>
 
 <div class="container">
     <div class="row justify-content-center">
-        @if (Model.ImageUrl != null)
-        {
-            <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
-                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
-            </div>
-        }
         <div class="col-md-6 order-2 order-md-1">
             <form asp-action="Edit" enctype="multipart/form-data" aria-labelledby="edit-vehicle-title">
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
@@ -24,11 +18,17 @@
                 </div>
             </form>
         </div>
+        @if (Model.ImageUrl != null)
+        {
+            <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
+                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
+            </div>
+        }
     </div>
 </div>
 
 <div>
-    <a asp-action="Index" aria-label="Back to list">Back to List</a>
+    <a class="text-black" asp-action="Index" asp-controller="Vehicles" aria-label="retour à la liste">retour à la liste de vehicules</a>
 </div>
 
 @section Scripts {

@@ -3,8 +3,10 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="d-flex flex-column align-items-center justify-content-center" style="height: 50vh;">
-    <h1 id="confirmation-title">Merci !</h1>
-    <p id="confirmation-message">Votre voiture a bien été publiée</p>
-    <a class="btn btn-custom" asp-area="" asp-controller="Home" asp-action="Index" aria-labelledby="confirmation-title confirmation-message">Retourner à l'accueil</a>
+<div class="d-flex justify-content-center align-items-center vh-100">
+    <div class="text-center">
+        <h1 class="text-center" id="confirmation-title">Merci !</h1>
+        <p class="mb-5" id="message-de-confirmation">Vôtre voiture a bien été puliée</p>
+        <a class="btn btn-custom mt-5" asp-area="" asp-controller="Home" asp-action="Index" aria-labelledby="confirmation-title confirmation-message">Retourner à l'accueil</a>
+    </div>
 </div>
