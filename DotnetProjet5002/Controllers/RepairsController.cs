@@ -9,9 +9,12 @@ using DotnetProjet5.Data;
 using DotnetProjet5.Models.ViewModels;
 using DotnetProjet5.Models;
 using Microsoft.AspNetCore.Authorization;
+using DotnetProjet5.Models.Entities;
 
 namespace DotnetProjet5.Controllers
 {
+
+    [Authorize(Roles = "Admin,Developer")]
     public class RepairsController : Controller
     {
         private readonly ApplicationDbContext _context;
@@ -23,35 +26,27 @@ namespace DotnetProjet5.Controllers
 
         // GET: Repairs
         [Authorize]
-        public async Task<IActionResult> Index()
+        public async Task<IActionResult> Index(int vehicleId)
         {
-            var repairs = await _context.Repairs.ToListAsync();
-            var repairViewModels = RepairViewModel.ToViewModel(repairs);
-            return View(repairViewModels);
+            var repairs = await _context.Repairs
+            .Where(r => r.VehicleId == vehicleId)
+            .Select(r => new RepairViewModel
+            {
+                RepairId = r.RepairId,
+                Description = r.Description,
+                RepairCost = r.RepairCost,
+                VehicleId = r.VehicleId,
+                Vehicle = r.Vehicle
+            })
+            .ToListAsync();
+
+            ViewBag.VehicleId = vehicleId; // Passer l'ID du véhicule à la vue
+            ViewBag.Vehicle = _context.Vehicle.FirstOrDefault(v => v.VehicleId == vehicleId); // Passer le véhicule à la vue
+            return View(repairs);
         }
 
-        // GET: Repairs/Details/5
-        [Authorize]
-        public async Task<IActionResult> Details(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var repair = await _context.Repairs
-                .FirstOrDefaultAsync(m => m.RepairId == id);
-            if (repair == null)
-            {
-                return NotFound();
-            }
-            var repairViewModel = RepairViewModel.ToViewModel(repair);
-            return View(repairViewModel);
-        }
-
-        // GET: Repairs/Create
-        //TODO ajouter les role
-        [Authorize]
+      
+        // GET: Repairs/Create     
         [HttpGet]
         public IActionResult Create(int id)
         {
@@ -103,13 +98,13 @@ namespace DotnetProjet5.Controllers
                     await _context.SaveChangesAsync();
                 }
 
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
             }
             return View(repairViewModel);
         }
 
         // GET: Repairs/Edit/5
-        [Authorize]
+       
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -126,7 +121,6 @@ namespace DotnetProjet5.Controllers
             var repairViewModel = RepairViewModel.ToViewModel(repair);
             return View(repairViewModel);
         }
-
 
         // POST: Repairs/Edit/5
         // To protect from overposting attacks, enable the specific properties you want to bind to.
@@ -201,13 +195,14 @@ namespace DotnetProjet5.Controllers
                         throw;
                     }
                 }
-                return RedirectToAction(nameof(Index));
+                // Redirigez vers l'action Index avec le vehicleId
+                return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
             }
             return View(repairViewModel);
         }
 
         // GET: Repairs/Delete/5
-        [Authorize]
+       
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -230,7 +225,7 @@ namespace DotnetProjet5.Controllers
         // POST: Repairs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-        [Authorize]
+        
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var repair = await _context.Repairs.FindAsync(id);
