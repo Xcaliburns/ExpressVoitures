@@ -7,16 +7,16 @@
 
     // Assuming the Model is not empty and all repairs are for the same vehicle
     var firstRepair = Model.FirstOrDefault();
-    var vehicleBrand = firstRepair?.Vehicle?.Brand ?? "Unknown";
-    var vehicleModel = firstRepair?.Vehicle?.Model ?? "Unknown";
-    var vehicleYear = firstRepair?.Vehicle?.Year.Year ?? 0;
+    var vehicleBrand = ViewBag.Vehicle.Brand ?? "Unkown";
+    var vehicleModel = ViewBag.Vehicle?.Model ?? "Unknown";
+    var vehicleYear = ViewBag.Vehicle?.Year.Year ?? 0;
 }
 
-<h1 class="custom-mt">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@vehicleYear)</h1>
+<h1 class="custom-mt mb-5">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@vehicleYear)</h1>
 
 <p>
     
-    <a asp-action="Create" asp-controller="Repairs" asp-route-id="@vehicleId" class="btn btn-custom" aria-label="Ajouter une réparation">Nouvelle Réparation</a>
+    <a asp-action="Create" asp-controller="Repairs" asp-route-id="@vehicleId" class="btn btn-custom mb-5" aria-label="Ajouter une réparation">Nouvelle Réparation</a>
 </p>
 <table class="table" aria-describedby="liste des réparations">
     <caption class="overflow-hidden" id="repair-table-description">Liste des réparations</caption>
@@ -42,9 +42,9 @@
                     @Html.DisplayFor(modelItem => item.RepairCost)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" aria-label="Modifier la réparation @item.RepairId">Modifier</a> |
+                    <a asp-action="Edit" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Modifier la réparation @item.RepairId">Modifier</a> |
 
-                    <a asp-action="Delete" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" aria-label="Supprimer la réparation @item.RepairId">Supprimer</a>
+                    <a asp-action="Delete" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Supprimer la réparation @item.RepairId">Supprimer</a>
                 </td>
             </tr>
         }

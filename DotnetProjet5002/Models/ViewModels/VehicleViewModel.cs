@@ -12,8 +12,7 @@ namespace DotnetProjet5.ViewModels
 
         public int VehicleId { get; set; }
 
-        [Required (AllowEmptyStrings = false,ErrorMessage = "le code VIN est requis")]
-        
+        [Required (AllowEmptyStrings = false,ErrorMessage = "le code VIN est requis")]        
         [StringLength(17, MinimumLength = 17, ErrorMessage = "Le code VIN doit être composé de 17 caractères.")]
         [UniqueVIN]
         [Display(Name = "Code VIN")]

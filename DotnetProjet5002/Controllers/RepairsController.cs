@@ -39,9 +39,9 @@ namespace DotnetProjet5.Controllers
                 Vehicle = r.Vehicle
             })
             .ToListAsync();
-
+            ViewBag.vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == vehicleId); // Passer le véhicule à la vue
             ViewBag.VehicleId = vehicleId; // Passer l'ID du véhicule à la vue
-            ViewBag.Vehicle = _context.Vehicle.FirstOrDefault(v => v.VehicleId == vehicleId); // Passer le véhicule à la vue
+            
             return View(repairs);
         }
 
@@ -247,7 +247,7 @@ namespace DotnetProjet5.Controllers
                 await _context.SaveChangesAsync();
             }
 
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction(nameof(Index), new { vehicleId = repair.VehicleId });
         }
 
         private bool RepairExists(int id)
