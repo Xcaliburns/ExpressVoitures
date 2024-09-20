@@ -1,20 +1,20 @@
 @font-face {
     font-family: 'Libre Baskerville';
-    src: url('../fonts/LibreBaskerville-Regular.woff2') format('woff2'), url('/fonts/LibreBaskerville-Regular.woff') format('woff');
+    src: url('../fonts/LibreBaskerville-Regular.ttf') format('ttf'), url('/fonts/LibreBaskerville-Regular.ttf') format('ttf');
     font-weight: 400;
     font-style: normal;
 }
 
 @font-face {
     font-family: 'Libre Baskerville';
-    src: url('../fonts/LibreBaskerville-Italic.woff2') format('woff2'), url('/fonts/LibreBaskerville-Italic.woff') format('woff');
+    src: url('../fonts/LibreBaskerville-Italic.ttf') format('ttf'), url('/fonts/LibreBaskerville-Italic.ttf') format('ttf');
     font-weight: 400;
     font-style: italic;
 }
 
 @font-face {
     font-family: 'Libre Baskerville';
-    src: url('../fonts/LibreBaskerville-Bold.woff2') format('woff2'), url('/fonts/LibreBaskerville-Bold.woff') format('woff');
+    src: url('../fonts/LibreBaskerville-Bold.ttf') format('ttf'), url('/fonts/LibreBaskerville-Bold.ttf') format('ttf');
     font-weight: bold;
     font-style: normal;
 }
@@ -41,7 +41,7 @@ h1 {
     font-weight: 400;
     line-height: 54.56px;
     text-align: center;
-    color: #796157;
+    color: var(--bs-baseBrown-900);
 }
 
 /*Custom Margin-top*/
@@ -69,8 +69,27 @@ html {
 .btn-custom {
     background-color: var(--bs-baseBrown-500) !important;
 }
-    
 
+.file-button-custom {
+    width: 372px;
+    height: 147px;
+    padding: 0.5rem 1rem;
+    font-size: 1.25rem;
+    border-radius: 0.3rem;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+   /* .file-button-custom:hover {
+        background-color: var(--bs-baseBrown-500);
+        color: white;
+
+    }*/
 html {
   position: relative;
   min-height: 100%;

@@ -14,7 +14,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" type="number"value="1990" min="1990" max="@DateTime.Now.Year" aria-describedby="yearHelp yearError" aria-invalid="true" />
+                <input asp-for="Year" class="form-control" type="number" value="1990" min="1990" max="@DateTime.Now.Year" aria-describedby="yearHelp yearError" aria-invalid="true" />
                 <span id="yearHelp" class="form-text text-muted">Entrez l'année de fabrication du véhicule.</span>
                 <span id="yearError" asp-validation-for="Year" class="text-danger" role="alert"></span>
             </div>
@@ -54,30 +54,45 @@
                 <span id="descriptionHelp" class="form-text text-muted">Entrez une description du véhicule.</span>
                 <span id="descriptionError" asp-validation-for="Description" class="text-danger" role="alert"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="AvailabilityDate" class="control-label"></label>
                 <input asp-for="AvailabilityDate" class="form-control" type="date" aria-describedby="availabilityDateHelp availabilityDateError" aria-invalid="true" />
                 <span id="availabilityDateHelp" class="form-text text-muted">Entrez la date de disponibilité du véhicule.</span>
                 <span id="availabilityDateError" asp-validation-for="AvailabilityDate" class="text-danger" role="alert"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="Availability" class="control-label"></label>
                 <input asp-for="Availability" type="checkbox" aria-describedby="availabilityHelp availabilityError" aria-invalid="true" />
                 <span id="availabilityHelp" class="form-text text-muted">Cochez si le véhicule est disponible.</span>
                 <span id="availabilityError" asp-validation-for="Availability" class="text-danger" role="alert"></span>
             </div>
-            <div class="form-group">
+            <div class="form-group mb-2">
                 <label asp-for="Selled" class="control-label"></label>
                 <input asp-for="Selled" type="checkbox" aria-describedby="selledHelp selledError" aria-invalid="true" />
                 <span id="selledHelp" class="form-text text-muted">Cochez si le véhicule est vendu.</span>
                 <span id="selledError" asp-validation-for="Selled" class="text-danger" role="alert"></span>
             </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" type="file" class="form-control" aria-describedby="imageFileHelp imageFileError" aria-invalid="true" />
-                <span id="imageFileHelp" class="form-text text-muted">Téléchargez une image du véhicule.</span>
-                <span id="imageFileError" asp-validation-for="ImageFile" class="text-danger" role="alert"></span>
+         
+<div class="form-group mb-2">
+    <label asp-for="ImageFile" class="control-label"></label>
+    <div class="flex flex-column">
+        <label for="file-upload" class="file-button-custom flex flex-row align-content-center justify-content-center">
+            <div class="btn btn-outline-dark m-2 justify-content-center align-content-center" style="height:64px; width:64px;">
+                <i class="fa-solid fa-plus fa-2xl"></i>
             </div>
+            <div class="text-muted">Ajoutez une image</div>
+            <img id="file-thumbnail" class="img-thumbnail mt-2" style="display:none; max-width: 100px; max-height: 100px;" />
+        </label>
+        <input id="file-upload" asp-for="ImageFile" type="file" class="d-none" aria-describedby="imageFileHelp imageFileError" aria-invalid="true" />
+    </div>
+    <span id="imageFileError" asp-validation-for="ImageFile" class="text-danger" role="alert"></span>
+    <div id="scriptError" class="text-danger" style="display:none;">Erreur de chargement du fichier JavaScript.</div>
+    <script src="~/js/UpDateFileName.js" onerror="document.getElementById('scriptError').style.display = 'block'; console.error('Erreur de chargement du fichier UpDateFileName.js');"></script>
+</div>
+
+            
+
+
         </div>
     </div>
 </div>
