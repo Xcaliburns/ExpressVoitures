@@ -5,52 +5,63 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="text-danger">Supprimer la réparation</h1>
+<h1 class="custom-mt mb-5 text-center ">Supprimer la réparation</h1>
 
-<h3 class="text-warning">Etes vous sur de vouloir supprimer cette Réparation?</h3>
-<div class="card">
-    <div class="card-body">
-        <h4 class="card-title">Réparation à supprimer</h4>
-        <hr />
-        <dl class="row">
-            <dt class="col-sm-2">
-                <label for="vehicleBrand">Marque</label>
-            </dt>
-            <dd class="col-sm-10">
-                <span id="vehicleBrand">@Html.DisplayFor(model => model.Vehicle.Brand)</span>
-            </dd>
-            <dt class="col-sm-2">
-                <label for="vehicleModel">Modèle</label>
-            </dt>
-            <dd class="col-sm-10">
-                <span id="vehicleModel">@Html.DisplayFor(model => model.Vehicle.Model)</span>
-            </dd>
-            <dt class="col-sm-2">
-                <label for="vehicleYear">Année</label>
-            </dt>
-            <dd class="col-sm-10">
-                <span id="vehicleYear">@Html.DisplayFor(model => model.Vehicle.Year.Year)</span>
-            </dd>
-            <dt class="col-sm-2">
-                <label for="description">@Html.DisplayNameFor(model => model.Description)</label>
-            </dt>
-            <dd class="col-sm-10">
-                <span id="description">@Html.DisplayFor(model => model.Description)</span>
-            </dd>
-            <dt class="col-sm-2">
-                <label for="repairCost">Prix de la réparation</label>
-            </dt>
-            <dd class="col-sm-10">
-                <span id="repairCost">@Html.DisplayFor(model => model.RepairCost)</span>
-            </dd>
-        </dl>
+<h3 class="text-warning text-center">Etes vous sur de vouloir supprimer cette Réparation?</h3>
 
-        <form asp-action="Delete" aria-labelledby="delete-form-title">
-            <input type="hidden" asp-for="RepairId" />
-            <div class="form-group">
-                <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
-                <a asp-action="Index" class="btn btn-secondary" aria-label="Retour">Retour</a>
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <div class="card">
+            <div class="card-body">
+                <h4 class="card-title">Réparation à supprimer</h4>
+                <hr />
+                <dl class="row">
+                    <dt class="col-sm-4">
+                        <label for="vehicleBrand">Marque</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span id="vehicleBrand">@Html.DisplayFor(model => model.Vehicle.Brand)</span>
+                    </dd>
+                    <dt class="col-sm-4">
+                        <label for="vehicleModel">Modèle</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span id="vehicleModel">@Html.DisplayFor(model => model.Vehicle.Model)</span>
+                    </dd>
+                    <dt class="col-sm-4">
+                        <label for="vehicleYear">Année</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span id="vehicleYear">@Html.DisplayFor(model => model.Vehicle.Year.Year)</span>
+                    </dd>
+                    <dt class="col-sm-4">
+                        <label for="description">@Html.DisplayNameFor(model => model.Description)</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span id="description">@Html.DisplayFor(model => model.Description)</span>
+                    </dd>
+                    <dt class="col-sm-4">
+                        <label for="repairCost">Prix de la réparation</label>
+                    </dt>
+                    <dd class="col-sm-8">
+                        <span id="repairCost">@Html.DisplayFor(model => model.RepairCost) €</span>
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete" aria-labelledby="formulaire de suppression">
+                    <input type="hidden" asp-for="RepairId" />
+                    <div class="form-group text-center">
+                        <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
+                        <a asp-action="Index" asp-controller="Repairs" class="btn btn-custom ml-2" aria-label="Retour">Retour</a>
+                    </div>
+                </form>
             </div>
-        </form>
+        </div>
     </div>
 </div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

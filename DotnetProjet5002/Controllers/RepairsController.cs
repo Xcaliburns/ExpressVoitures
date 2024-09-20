@@ -225,27 +225,28 @@ namespace DotnetProjet5.Controllers
         // POST: Repairs/Delete/5
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
-
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
             var repair = await _context.Repairs.FindAsync(id);
-            if (repair != null)
+            if (repair == null)
             {
-                // Récupérer le véhicule associé
-                var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repair.VehicleId);
-                if (vehicle != null)
-                {
-                    // Réduire le prix de vente du véhicule du coût de la réparation
-                    vehicle.SellPrice -= repair.RepairCost;
-
-                    // Enregistrer le véhicule mis à jour dans la base de données
-                    _context.Update(vehicle);
-                }
-
-                // Supprimer la réparation de la base de données
-                _context.Repairs.Remove(repair);
-                await _context.SaveChangesAsync();
+                return NotFound("Repair not found.");
             }
+
+            // Récupérer le véhicule associé
+            var vehicle = await _context.Vehicle.FirstOrDefaultAsync(v => v.VehicleId == repair.VehicleId);
+            if (vehicle != null)
+            {
+                // Réduire le prix de vente du véhicule du coût de la réparation
+                vehicle.SellPrice -= repair.RepairCost;
+
+                // Enregistrer le véhicule mis à jour dans la base de données
+                _context.Update(vehicle);
+            }
+
+            // Supprimer la réparation de la base de données
+            _context.Repairs.Remove(repair);
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index), new { vehicleId = repair.VehicleId });
         }

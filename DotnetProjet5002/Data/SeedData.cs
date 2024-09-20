@@ -1,6 +1,8 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using DotnetProjet5.Models.Entities;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.AspNetCore.Identity;
 using System;
 using System.Linq;
 
@@ -8,12 +10,11 @@ namespace DotnetProjet5.Data
 {
     public class SeedData
     {
-        public static void Initialize(IServiceProvider serviceProvider)
+        public static async Task Initialize(IServiceProvider serviceProvider)
         {
-
             using (var context = new ApplicationDbContext(
-             serviceProvider.GetRequiredService<
-                 DbContextOptions<ApplicationDbContext>>()))
+                serviceProvider.GetRequiredService<
+                    DbContextOptions<ApplicationDbContext>>()))
             {
                 // Look for any vehicle.
                 if (context.Vehicle.Any())
@@ -21,22 +22,21 @@ namespace DotnetProjet5.Data
                     return;   // DB has been seeded
                 }
                 context.Vehicle.AddRange(
-
-                new Vehicle
-                {
-                    CodeVin = "toto5555555555555",
-                    Year = new DateTime(2020, 1, 1),
-                    PurchaseDate = new DateTime(2020, 1, 1),
-                    PurchasePrice = 10000,
-                    Brand = "renault",
-                    Model = "twingo",
-                    Finish = "electrique",
-                    Description = "voiture neuve",
-                    ImageUrl = "https://www.example.com/twingo.jpg",
-                    Availability = true,
-                    AvailabilityDate = new DateTime(2020, 1, 1),
-                    Selled = false
-                },
+                    new Vehicle
+                    {
+                        CodeVin = "toto5555555555555",
+                        Year = new DateTime(2020, 1, 1),
+                        PurchaseDate = new DateTime(2020, 1, 1),
+                        PurchasePrice = 10000,
+                        Brand = "renault",
+                        Model = "twingo",
+                        Finish = "electrique",
+                        Description = "voiture neuve",
+                        ImageUrl = "https://www.example.com/twingo.jpg",
+                        Availability = true,
+                        AvailabilityDate = new DateTime(2020, 1, 1),
+                        Selled = false
+                    },
                     new Vehicle
                     {
                         CodeVin = "toto6666666666666",
@@ -82,11 +82,44 @@ namespace DotnetProjet5.Data
                         AvailabilityDate = new DateTime(2021, 1, 1),
                         Selled = false
                     }
-
-                    );
+                );
                 context.SaveChanges();
             }
+
+            
+            await CreateDefaultAdmin(serviceProvider);
         }
 
+        private static async Task CreateDefaultAdmin(IServiceProvider serviceProvider)
+        {
+            var userManager = serviceProvider.GetRequiredService<UserManager<IdentityUser>>();
+            var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
+
+            string adminRole = "Admin";
+            string adminEmail = "admin@example.com";
+            string adminPassword = "Admin@123";
+
+            // Check if the admin role exists, if not, create it
+            if (!await roleManager.RoleExistsAsync(adminRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(adminRole));
+            }
+
+            // Check if the admin user exists, if not, create it
+            var adminUser = await userManager.FindByEmailAsync(adminEmail);
+            if (adminUser == null)
+            {
+                adminUser = new IdentityUser
+                {
+                    UserName = adminEmail,
+                    Email = adminEmail
+                };
+                var result = await userManager.CreateAsync(adminUser, adminPassword);
+                if (result.Succeeded)
+                {
+                    await userManager.AddToRoleAsync(adminUser, adminRole);
+                }
+            }
+        }
     }
 }

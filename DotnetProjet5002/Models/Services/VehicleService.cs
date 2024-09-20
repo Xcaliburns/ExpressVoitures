@@ -71,7 +71,8 @@ namespace DotnetProjet5.Models.Services
 
         public async Task<List<VehicleViewModel>> GetAllVehiclesAvailableAsync()
         {
-            var vehicles = await _context.Vehicle.Where(v => v.Availability == true && v.Selled == false).ToListAsync();
+            
+            var vehicles = await _context.Vehicle.Where(v => (v.Availability == true || (v.AvailabilityDate ?? DateTime.MaxValue) <= DateTime.Now) && v.Selled == false).ToListAsync();
             return vehicles.Select(v => new VehicleViewModel
             {
                 VehicleId = v.VehicleId,

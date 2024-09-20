@@ -85,8 +85,9 @@ else
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-
-    SeedData.Initialize(services);
+    // Create defaultvehicle list and default admin user
+    await SeedData.Initialize(services);
+    
 }
 
 app.UseHttpsRedirection();

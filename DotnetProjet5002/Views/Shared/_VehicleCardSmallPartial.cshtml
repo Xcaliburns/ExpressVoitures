@@ -14,6 +14,11 @@
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
                         <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Finish)</p>
+                        @if(Model.Selled)
+                        {
+                            <p class="card-text fw-bolder text-danger " style="font-size: 25px">Vendu</p>
+                        }
+                       
                     </div>
                 </div>
             </div>
