@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     if (input) {
         input.addEventListener('change', function() {
             if (input.files.length > 0) {
-                UpDateFileName();
+                updateFileName();
             }
         });
     } else {
@@ -12,20 +12,15 @@ document.addEventListener('DOMContentLoaded', function() {
     }
 });
 
-function UpDateFileName() {
+function updateFileName() {
     var input = document.getElementById('file-upload');
-    var file = input.files.length > 0 ? input.files[0] : null;
-    var thumbnailElement = document.getElementById('file-thumbnail');
-    
-    if (file && thumbnailElement) {
-        var reader = new FileReader();
-        reader.onload = function(e) {
-            thumbnailElement.src = e.target.result;
-            thumbnailElement.style.display = 'block';
-        };
-        reader.readAsDataURL(file);
-        console.log("UpDateFileName.js loaded successfully.");
+    var fileName = input.files.length > 0 ? input.files[0].name : '';
+    var fileNameElement = document.getElementById('file-name');
+    if (fileNameElement) {
+        // Display the file name safely
+        fileNameElement.textContent = fileName;
+        console.log("File name updated successfully.");
     } else {
-        console.error("File or thumbnail element not found.");
+        console.error("File name element not found.");
     }
 }

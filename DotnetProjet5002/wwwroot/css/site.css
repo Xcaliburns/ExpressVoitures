@@ -103,3 +103,6 @@ body {
     font-weight: bold;
     
 }
+.form-control {
+    border: 1px solid black;
+}

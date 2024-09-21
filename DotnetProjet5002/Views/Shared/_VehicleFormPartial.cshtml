@@ -72,27 +72,64 @@
                 <span id="selledHelp" class="form-text text-muted">Cochez si le véhicule est vendu.</span>
                 <span id="selledError" asp-validation-for="Selled" class="text-danger" role="alert"></span>
             </div>
-         
-<div class="form-group mb-2">
-    <label asp-for="ImageFile" class="control-label"></label>
-    <div class="flex flex-column">
-        <label for="file-upload" class="file-button-custom flex flex-row align-content-center justify-content-center">
-            <div class="btn btn-outline-dark m-2 justify-content-center align-content-center" style="height:64px; width:64px;">
-                <i class="fa-solid fa-plus fa-2xl"></i>
+
+
+            <div class="form-group mb-5">
+                <label asp-for="ImageFile" class="control-label"></label>
+                <div class="input-group">
+                    <label for="file-upload" class="file-button-custom flex flex-row align-content-center justify-content-center">
+                        <div class="btn btn-outline-dark m-2 justify-content-center align-content-center" style="height:64px; width:64px;">
+                            <i class="fa-solid fa-plus fa-2xl"></i>
+                        </div>
+                        <div class="text-muted">Ajoutez une image</div>
+                    </label>
+                    <input id="file-upload" asp-for="ImageFile" type="file" class="d-none" aria-describedby="imageFileHelp imageFileError" aria-invalid="true" />
+                </div>
+                <span id="file-name" class="form-text text-muted mt-2"></span> <!-- Element to display the file name -->
+                <span id="imageFileError" asp-validation-for="ImageFile" class="text-danger" role="alert"></span>
             </div>
-            <div class="text-muted">Ajoutez une image</div>
-            <img id="file-thumbnail" class="img-thumbnail mt-2" style="display:none; max-width: 100px; max-height: 100px;" />
-        </label>
-        <input id="file-upload" asp-for="ImageFile" type="file" class="d-none" aria-describedby="imageFileHelp imageFileError" aria-invalid="true" />
-    </div>
-    <span id="imageFileError" asp-validation-for="ImageFile" class="text-danger" role="alert"></span>
-    <div id="scriptError" class="text-danger" style="display:none;">Erreur de chargement du fichier JavaScript.</div>
-    <script src="~/js/UpDateFileName.js" onerror="document.getElementById('scriptError').style.display = 'block'; console.error('Erreur de chargement du fichier UpDateFileName.js');"></script>
-</div>
 
             
-
-
         </div>
     </div>
 </div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        var input = document.getElementById('file-upload');
+        var fileNameElement = document.getElementById('file-name');
+        var imageFileError = document.getElementById('imageFileError');
+        var form = document.querySelector('form');
+
+        if (input) {
+            input.addEventListener('change', function () {
+                if (input.files.length > 0) {
+                    var file = input.files[0];
+                    var validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+                    if (validImageTypes.includes(file.type)) {
+                        fileNameElement.textContent = file.name;
+                        imageFileError.textContent = ''; // Clear any previous error message
+                    } else {
+                        fileNameElement.textContent = '';
+                        imageFileError.textContent = 'Veuillez sélectionner un fichier image valide (JPEG, PNG, GIF).';
+                    }
+                }
+            });
+        } else {
+            console.error("File input element not found.");
+        }
+
+        form.addEventListener('submit', function (event) {
+            if (input.files.length > 0) {
+                var file = input.files[0];
+                var validImageTypes = ['image/jpeg', 'image/png', 'image/gif'];
+
+                if (!validImageTypes.includes(file.type)) {
+                    event.preventDefault();
+                    imageFileError.textContent = 'Veuillez sélectionner un fichier image valide (JPEG, PNG, GIF).';
+                }
+            }
+        });
+    });
+</script>
