@@ -5,19 +5,25 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<body>
-    <h1 id="form-title">@ViewData["Title"]</h1>
+@if (Model != null)
+{
+    <body>
+        <h1 id="form-title">@ViewData["Title"]</h1>
 
-    <div class="row-cols-1 justify-content-center">
-        <div class="col-md-6" style="box-shadow: 0px 4px 16px 0px #0000000F; width: 100%; margin: auto;">
-
-            <form asp-action="Create" enctype="multipart/form-data" aria-labelledby="form-title">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
-                <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
-                    <input type="submit" value="Publier" class="btn btn-custom" aria-label="Publier le formulaire" />
-                </div>
-            </form>
+        <div class="row-cols-1 justify-content-center">
+            <div class="col-md-6" style="box-shadow: 0px 4px 16px 0px #0000000F; width: 100%; margin: auto;">
+                <form asp-action="Create" enctype="multipart/form-data" aria-labelledby="form-title">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
+                    <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
+                        <input type="submit" value="Publier" class="btn btn-custom" aria-label="Publier le formulaire" />
+                    </div>
+                </form>
+            </div>
         </div>
-    </div>
-</body>
+    </body>
+}
+else
+{
+    <p>Les détails du véhicule ne sont pas disponibles.</p>
+}

@@ -1,31 +1,37 @@
 ﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
-    ViewData["Title"] = "Delete";
+    ViewData["Title"] = "Supprimer un véhicule";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="d-flex justify-content-center align-items-center vh-100">
-    <div class="text-center">
-        <h1 id="delete-title">Supprimer un véhicule</h1>
+@if (Model != null)
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center">
+            <h1 id="delete-title">Supprimer un véhicule</h1>
 
-        <h3>Etes vous sûre de vouloir supprimer ce véhicule ?</h3>
-        <div>
-
-            <div class="row justify-content-center text-start">
-                @Html.Partial("_VehicleCardLargePartial", Model)
-            </div>
-            <div class="row justify-content-start mt-3">
-                <div class="col-auto">
-                    <form asp-action="delete" aria-labelledby="delete-title">
-                        <input type="hidden" asp-for="VehicleId" />
-                        <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
-                    </form>
+            <h3>Etes vous sûre de vouloir supprimer ce véhicule ?</h3>
+            <div>
+                <div class="row justify-content-center text-start">
+                    @Html.Partial("_VehicleCardLargePartial", Model)
                 </div>
-                <div class="col-auto">
-                    <a asp-action="Index" class="btn btn-secondary" aria-label="Back to list">Retour</a>
+                <div class="row justify-content-start mt-3">
+                    <div class="col-auto">
+                        <form asp-action="delete" aria-labelledby="delete-title">
+                            <input type="hidden" asp-for="VehicleId" />
+                            <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
+                        </form>
+                    </div>
+                    <div class="col-auto">
+                        <a asp-action="Index" class="btn btn-secondary" aria-label="Back to list">Retour</a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
+}
+else
+{
+    <p>Les détails du véhicule ne sont pas disponibles.</p>
+}

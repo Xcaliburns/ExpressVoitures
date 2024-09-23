@@ -6,19 +6,18 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="custom-mt">@ViewData["Title"]</h1>
+<h1 class="custom-mt" role="heading" aria-level="1">@ViewData["Title"]</h1>
 
 <body>
-    <div class="container align-items-center">
+    <div class="container align-items-center" role="main">
 
-        <div class="d-flex justify-content-center mb-5">
+        @* Montre que c'est la bannière' *@
+        <div class="d-flex justify-content-center mb-5" role="banner">
         </div>
-        <div class="row row-cols-1 row-cols-lg-2 g-3">
+        <div class="row row-cols-1 row-cols-lg-2 g-3" role="list">
             @foreach (var item in Model)
             {
-
-                @Html.Partial("~/Views/Shared/_VehicleCardSmallPartial.cshtml", item)
-
+                <partial name="~/Views/Shared/_VehicleCardSmallPartial.cshtml" model="item" />
             }
         </div>
     </div>

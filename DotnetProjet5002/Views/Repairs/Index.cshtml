@@ -5,21 +5,26 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
     int vehicleId = ViewBag.VehicleId;
 
-    // Assuming the Model is not empty and all repairs are for the same vehicle
     var firstRepair = Model.FirstOrDefault();
-    var vehicleBrand = ViewBag.Vehicle.Brand ?? "Unkown";
-    var vehicleModel = ViewBag.Vehicle?.Model ?? "Unknown";
-    var vehicleYear = ViewBag.Vehicle?.Year.Year ?? 0;
+    var vehicleBrand = "Unknown";
+    var vehicleModel = "Unknown";
+    var vehicleYear = 0;
+
+    if (firstRepair != null && ViewBag.Vehicle != null)
+    {
+        vehicleBrand = ViewBag.Vehicle.Brand ?? "Unknown";
+        vehicleModel = ViewBag.Vehicle.Model ?? "Unknown";
+        vehicleYear = ViewBag.Vehicle.Year?.Year ?? 0;
+    }
 }
 
-<h1 class="custom-mt mb-5">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@vehicleYear)</h1>
+<h1 class="custom-mt mb-5" role="heading" aria-level="1">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@vehicleYear)</h1> @* Titre principal avec rôle et niveau d'accessibilité *@
 
 <p>
-
-    <a asp-action="Create" asp-controller="Repairs" asp-route-id="@vehicleId" class="btn btn-custom mb-5" aria-label="Ajouter une réparation">Nouvelle Réparation</a>
+    <a asp-action="Create" asp-controller="Repairs" asp-route-id="@vehicleId" class="btn btn-custom mb-5" aria-label="Ajouter une réparation">Nouvelle Réparation</a> @* Bouton avec étiquette pour l'accessibilité *@
 </p>
-<table class="table" aria-describedby="liste des réparations">
-    <caption class="overflow-hidden" id="repair-table-description">Liste des réparations</caption>
+<table class="table" aria-describedby="repair-table-description">
+    <caption class="overflow-hidden" id="repair-table-description">Liste des réparations</caption> @* Description de la table pour l'accessibilité *@
     <thead>
         <tr>
             <th scope="col">
@@ -42,17 +47,15 @@
                     @Html.DisplayFor(modelItem => item.RepairCost)
                 </td>
                 <td>
-                    <a asp-action="Edit" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Modifier la réparation @item.RepairId">Modifier</a> |
-
-                    <a asp-action="Delete" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Supprimer la réparation @item.RepairId">Supprimer</a>
+                    <a asp-action="Edit" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Modifier la réparation @item.RepairId">Modifier</a> @* Lien avec étiquette pour l'accessibilité *@ |
+                    <a asp-action="Delete" asp-route-id="@item.RepairId" asp-route-vehicleId="@vehicleId" class="text-black" aria-label="Supprimer la réparation @item.RepairId">Supprimer</a> @* Lien avec étiquette pour l'accessibilité *@
                 </td>
             </tr>
         }
-
     </tbody>
 </table>
 <div class="mt-3">
-    <a asp-controller="vehicles" asp-action="Index" class="text-muted">
+    <a asp-controller="vehicles" asp-action="Index" class="text-muted" aria-label="Retour à la liste des véhicules"> @* Lien avec étiquette pour l'accessibilité *@
         <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour à la liste des véhicules
     </a>
 </div>

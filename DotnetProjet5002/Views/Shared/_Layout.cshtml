@@ -3,11 +3,11 @@
 @inject UserManager<IdentityUser> UserManager
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="fr">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - express Voitures</title>
+    <title>@ViewData["Title"] - Express Voitures</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
@@ -44,10 +44,10 @@
                         @if (SignInManager.IsSignedIn(User))
                         {
                             var user = await UserManager.GetUserAsync(User);
-                            if (await UserManager.IsInRoleAsync(user, "Admin") || await UserManager.IsInRoleAsync(user, "Developer"))
+                            if (user != null && (await UserManager.IsInRoleAsync(user, "Admin") || await UserManager.IsInRoleAsync(user, "Developer")))
                             {
                                 <li class="nav-item hover-bold">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Index">administration</a>
+                                    <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Index">Administration</a>
                                 </li>
                             }
                         }
@@ -65,7 +65,7 @@
   
     <footer class="border-top text-muted mt-auto py-3">
         <div class="container">
-            &copy; 2024 - Express Voitures - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2024 - Express Voitures - <a asp-area="" asp-controller="Home" asp-action="Privacy">Confidentialité</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

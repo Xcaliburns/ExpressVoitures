@@ -5,34 +5,31 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-
-
 @{
     ViewData["Title"] = "Détails du véhicule";
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<body >
+@* TODO régler le probleme de direction avec le bouton retour(ou creer un details special pour home)*@
+<body>
     <main class="container align-items-center custom-mt" aria-labelledby="vehicle-details-title">
         <div class="row justify-content-center">
+            @* Lien de retour avec description accessible pour les lecteurs d'écran *@
             <a asp-controller="vehicles" asp-action="Index" class="text-muted text-start custom-margin-left col-12 offset-md-6">
                 <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour
             </a>
             @Html.Partial("_VehicleCardLargePartial", Model)
 
             <div class="mt-2 col-md-12 offset-md-5">
+                @* Bouton de modification avec description accessible pour les lecteurs d'écran *@
                 <a asp-action="Edit" asp-route-id="@Model.VehicleId" class="btn btn-primary" aria-label="Modifier @Model.Model">Modifier</a>
+                @* Bouton de détails avec description accessible pour les lecteurs d'écran *@
                 <a asp-action="Details" asp-route-id="@Model.VehicleId" class="btn btn-info" aria-label="Détails @Model.Model">Détails</a>
+                @* Bouton de suppression avec description accessible pour les lecteurs d'écran *@
                 <a asp-action="Delete" asp-controller="Vehicles" asp-route-id="@Model.VehicleId" class="btn btn-danger" aria-label="Supprimer @Model.Model">Supprimer</a>
+                @* Bouton pour ajouter une réparation avec description accessible pour les lecteurs d'écran *@
                 <a asp-action="Create" asp-controller="Repairs" asp-route-id="@Model.VehicleId" class="btn btn-secondary" aria-label="Ajouter une réparation à @Model.Model">Ajouter une réparation</a>
             </div>
         </div>
-         
-
-        @*   <nav aria-label="Vehicle actions">
-        <a asp-action="Edit" asp-route-id="@Model?.VehicleId" class="btn btn-primary" aria-label="Edit vehicle">Edit</a> |
-        <a asp-action="Delete" asp-route-id="@Model?.VehicleId" class="btn btn-danger" aria-label="Delete vehicle">Delete</a> |
-        </nav> *@
-
     </main>
 </body>

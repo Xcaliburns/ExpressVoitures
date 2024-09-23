@@ -5,15 +5,15 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="custom-mt mb-5 text-center ">Supprimer la réparation</h1>
+<h1 class="custom-mt mb-5 text-center" role="heading" aria-level="1">Supprimer la réparation</h1> @* Titre principal avec rôle et niveau d'accessibilité *@
 
-<h3 class="text-warning text-center">Etes vous sur de vouloir supprimer cette Réparation?</h3>
+<h3 class="text-warning text-center" role="alert">Etes vous sur de vouloir supprimer cette Réparation?</h3> @* Message d'alerte avec rôle d'accessibilité *@
 
 <div class="d-flex justify-content-center">
     <div class="col-md-6">
-        <div class="card">
+        <div class="card" role="region" aria-labelledby="repair-to-delete-title"> @* Région avec étiquette pour l'accessibilité *@
             <div class="card-body">
-                <h4 class="card-title">Réparation à supprimer</h4>
+                <h4 class="card-title" id="repair-to-delete-title" role="heading" aria-level="2">Réparation à supprimer</h4> @* Titre de section avec rôle et niveau d'accessibilité *@
                 <hr />
                 <dl class="row">
                     <dt class="col-sm-4">
@@ -48,11 +48,11 @@
                     </dd>
                 </dl>
 
-                <form asp-action="Delete" aria-labelledby="formulaire de suppression">
+                <form asp-action="Delete" aria-labelledby="delete-form-title"> @* Formulaire avec étiquette pour l'accessibilité *@
                     <input type="hidden" asp-for="RepairId" />
                     <div class="form-group text-center">
-                        <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" />
-                        <a asp-action="Index" asp-controller="Repairs" class="btn btn-custom ml-2" aria-label="Retour">Retour</a>
+                        <input type="submit" value="Supprimer" class="btn btn-danger" aria-label="Confirmer la suppression" /> @* Bouton avec étiquette pour l'accessibilité *@
+                        <a asp-action="Index" asp-controller="Repairs" class="btn btn-custom ml-2" aria-label="Retour">Retour</a> @* Lien avec étiquette pour l'accessibilité *@
                     </div>
                 </form>
             </div>

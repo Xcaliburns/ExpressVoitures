@@ -5,31 +5,45 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1 class="custom-mt" id="edit-vehicle-title">@ViewData["Title"]</h1>
+@if (Model != null)
+{
+    <h1 class="custom-mt" id="edit-vehicle-title">@ViewData["Title"]</h1>
 
-<div class="container">
-    <div class="row justify-content-center">
-        <div class="col-md-6 order-2 order-md-1">
-            <form asp-action="Edit" enctype="multipart/form-data" aria-labelledby="edit-vehicle-title">
-                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-                @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
-                <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
-                    <input type="submit" value="Save" class="btn btn-custom" aria-label="Save changes" />
-                </div>
-            </form>
-        </div>
-        @if (Model.ImageUrl != null)
-        {
-            <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
-                <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 order-2 order-md-1">
+                <form asp-action="Edit" enctype="multipart/form-data" aria-labelledby="edit-vehicle-title">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
+                    <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
+                        <input type="submit" value="Save" class="btn btn-custom" aria-label="Save changes" />
+                    </div>
+                </form>
             </div>
-        }
+            @if (Model.ImageUrl != null)
+            {
+                <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
+                    <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
+                </div>
+            }
+        </div>
     </div>
-</div>
 
-<div>
-    <a class="text-black" asp-action="Index" asp-controller="Vehicles" aria-label="retour à la liste">retour à la liste de vehicules</a>
-</div>
+    <div>
+        <a class="text-black" asp-action="Index" asp-controller="Vehicles" aria-label="retour à la liste">retour à la liste de vehicules</a>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <h1 id="edit-vehicle-title">Les détails du véhicule ne sont pas disponibles.</h1>
+                <a class="text-black" asp-action="Index" asp-controller="Vehicles" aria-label="retour à la liste">retour à la liste de vehicules</a>
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
