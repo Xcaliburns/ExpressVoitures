@@ -14,7 +14,7 @@
         @* Montre que c'est la bannière' *@
         <div class="d-flex justify-content-center mb-5" role="banner">
         </div>
-        <div class="row row-cols-1 row-cols-lg-2 g-3" role="list">
+        <div class="row row-cols-1 row-cols-lg-2 g-3" role="list" alt="liste des véhicules disponibles">
             @foreach (var item in Model)
             {
                 <partial name="~/Views/Shared/_VehicleCardSmallPartial.cshtml" model="item" />
