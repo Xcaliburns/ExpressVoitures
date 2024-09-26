@@ -14,11 +14,11 @@
     {
         vehicleBrand = ViewBag.Vehicle.Brand ?? "Unknown";
         vehicleModel = ViewBag.Vehicle.Model ?? "Unknown";
-        vehicleYear = ViewBag.Vehicle.Year?.Year ?? 0;
+        vehicleYear = ViewBag.Vehicle.Year ?? "Unkown";
     }
 }
 
-<h1 class="custom-mt mb-5" role="heading" aria-level="1">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@(vehicleYear != 0 ? vehicleYear.ToString() : "Unknown"))</h1> @* Titre principal avec rôle et niveau d'accessibilité *@
+<h1 class="custom-mt mb-5" role="heading" aria-level="1">Liste des réparations pour le véhicule @vehicleBrand @vehicleModel (@vehicleYear)</h1> @* Titre principal avec rôle et niveau d'accessibilité *@
 
 <p>
     <a asp-action="Create" asp-controller="Repairs" asp-route-id="@vehicleId" class="btn btn-custom mb-5" aria-label="Ajouter une réparation">Nouvelle Réparation</a> @* Bouton avec étiquette pour l'accessibilité *@

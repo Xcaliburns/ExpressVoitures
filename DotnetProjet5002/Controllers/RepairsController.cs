@@ -42,6 +42,7 @@ namespace DotnetProjet5.Controllers
             // Passer le véhicule et l'ID du véhicule à la vue
             ViewBag.Vehicle = vehicle;
             ViewBag.VehicleId = vehicleId;
+            ViewBag.VehicleYear = vehicle.Year;
 
             return View(repairs);
         }
