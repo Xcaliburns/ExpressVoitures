@@ -7,7 +7,6 @@ namespace DotnetProjet5.Models.ViewModels
     {
         public int RepairId { get; set; }
 
-        
         public int VehicleId { get; set; }  // Initialize to avoid nullability issues
 
         [Required(ErrorMessage = "la description est obligatoire")]
@@ -19,7 +18,10 @@ namespace DotnetProjet5.Models.ViewModels
         [Display(Name = "Prix de la réparation")]
         public float RepairCost { get; set; }
 
-        public Vehicle?Vehicle { get; set; }
+        public Vehicle? Vehicle { get; set; }
+
+        // Add this property to hold the list of repairs
+        public List<RepairViewModel> Repairs { get; set; } = new List<RepairViewModel>();
 
         public static RepairViewModel ToViewModel(Repair repair)
         {
@@ -29,7 +31,7 @@ namespace DotnetProjet5.Models.ViewModels
                 VehicleId = repair.VehicleId,
                 Description = repair.Description,
                 RepairCost = repair.RepairCost,
-                Vehicle= repair.Vehicle
+                Vehicle = repair.Vehicle
             };
         }
 

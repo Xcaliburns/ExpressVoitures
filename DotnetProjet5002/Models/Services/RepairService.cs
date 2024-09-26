@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using DotnetProjet5.Data;
 using DotnetProjet5.Models.Services;
+using DotnetProjet5.Models.ViewModels;
 
 namespace DotnetProjet5.Services
 {
@@ -28,6 +29,51 @@ namespace DotnetProjet5.Services
             var repairs = await GetRepairsByVehicleAsync(vehicleId);
             _context.Repairs.RemoveRange(repairs);
             await _context.SaveChangesAsync();
+        }
+
+        public async Task<List<RepairViewModel>> GetRepairsByVehicleIdAsync(int vehicleId)
+        {
+            return await _context.Repairs
+                .Where(r => r.VehicleId == vehicleId)
+                .Select(r => new RepairViewModel
+                {
+                    RepairId = r.RepairId,
+                    Description = r.Description,
+                    RepairCost = r.RepairCost,
+                    VehicleId = r.VehicleId,
+                    Vehicle = r.Vehicle
+                })
+                .ToListAsync();
+        }
+
+        public async Task AddRepairAsync(Repair repair) 
+        {
+            _context.Repairs.Add(repair);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<Vehicle> GetVehicleByIdAsync(int vehicleId)
+        {           
+            
+                return await _context.Vehicle.FindAsync(vehicleId);
+
+        }
+
+        public async Task<Repair> GetRepairByIdAsync(int id)
+        {
+            return await _context.Repairs
+                .Include(r => r.Vehicle) 
+                .FirstOrDefaultAsync(r => r.RepairId == id);
+        }
+        public async Task UpdateRepairAsync(Repair repair)
+        {
+            _context.Repairs.Update(repair);
+            await _context.SaveChangesAsync();
+        }
+
+        public async Task<bool> RepairExistsAsync(int id)
+        {
+            return await _context.Repairs.AnyAsync(e => e.RepairId == id);
         }
     }
 }

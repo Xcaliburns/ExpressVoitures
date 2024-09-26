@@ -7,7 +7,6 @@ namespace DotnetProjet5.Controllers
 {
     public class HomeController : Controller
     {
-
         private readonly IVehicleService _vehicleService;
 
         public HomeController(IVehicleService vehicleService)
@@ -21,13 +20,6 @@ namespace DotnetProjet5.Controllers
             var vehicles = await _vehicleService.GetAllVehiclesAvailableAsync();
             return View(vehicles);
         }
-
-        //[AllowAnonymous]
-        //public async Task<IActionResult> GetAllVehiclesAvailableAsync()
-        //{
-        //    var vehicles = await _vehicleService.GetAllVehiclesAvailableAsync();
-        //    return View(vehicles);
-        //}
 
         public IActionResult Error()
         {
