@@ -46,9 +46,7 @@
                             var user = await UserManager.GetUserAsync(User);
                             if (user != null && (await UserManager.IsInRoleAsync(user, "Admin") || await UserManager.IsInRoleAsync(user, "Developer")))
                             {
-                                <li class="nav-item hover-bold">
-                                    <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Index">Administration</a>
-                                </li>
+                               
                                 <li class="nav-item hover-bold">
                                     <a class="nav-link text-dark" asp-area="" asp-controller="Vehicles" asp-action="Create">Ajouter une voiture</a>
                                 </li>
