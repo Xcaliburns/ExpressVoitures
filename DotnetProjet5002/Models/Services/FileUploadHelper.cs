@@ -22,23 +22,33 @@ namespace DotnetProjet5.Models.Services
                 return string.Empty;
             }
 
-
-            // Générer un nom de fichier unique
+            // Generate a unique file name
             var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
             var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
             var filePath = Path.Combine(uploadsFolder, uniqueFileName);
-            // Créer le répertoire de stockage s'il n'existe pas
+
+            // Create the directory if it doesn't exist
             if (!Directory.Exists(uploadsFolder))
             {
                 Directory.CreateDirectory(uploadsFolder);
             }
-            // Télécharger le fichier
+
+            // Upload the file
             using (var stream = new FileStream(filePath, FileMode.Create))
             {
                 await file.CopyToAsync(stream);
             }
-            // Retourner l'URL relative du fichier
+
+            // Return the relative URL of the file
             return $"/images/{uniqueFileName}";
+        }
+
+        public async Task DeleteFileIfExistsAsync(string filePath)
+        {
+            if (System.IO.File.Exists(filePath))
+            {
+                await Task.Run(() => System.IO.File.Delete(filePath));
+            }
         }
     }
 }

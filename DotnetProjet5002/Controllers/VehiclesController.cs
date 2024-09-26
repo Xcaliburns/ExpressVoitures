@@ -1,17 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using DotnetProjet5.Data;
-using DotnetProjet5.Models.Entities;
 using DotnetProjet5.ViewModels;
 
 using DotnetProjet5.Models.Services;
 using Microsoft.AspNetCore.Authorization;
-using System.Collections.Immutable;
 
 namespace DotnetProjet5.Controllers
 {
@@ -108,10 +100,7 @@ namespace DotnetProjet5.Controllers
                     if (!string.IsNullOrEmpty(existingImageUrl))
                     {
                         var oldImagePath = Path.Combine("wwwroot/images", Path.GetFileName(existingImageUrl));
-                        if (System.IO.File.Exists(oldImagePath))
-                        {
-                            System.IO.File.Delete(oldImagePath);
-                        }
+                        await _fileUploadHelper.DeleteFileIfExistsAsync(oldImagePath);
                     }
 
                     vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
