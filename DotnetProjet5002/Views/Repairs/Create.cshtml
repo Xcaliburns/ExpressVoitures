@@ -12,7 +12,7 @@
         <section aria-labelledby="vehicle-info-title"> @* Section avec étiquette pour l'accessibilité *@
             <h2 id="vehicle-info-title" role="heading" aria-level="2">Informations sur le véhicule à réparer</h2> @* Titre de section avec rôle et niveau d'accessibilité *@
             <div class="col">
-                <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir les détails du véhicule @Model.Vehicle.Model"> @* Lien avec étiquette pour l'accessibilité *@
+                <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir la liste des reparations @Model.Vehicle.Model"> @* Lien avec étiquette pour l'accessibilité *@
                     <div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.Vehicle.VehicleId"> @* Région avec étiquette pour l'accessibilité *@
                         <div class="row">
                             <div class="col-md-7">
@@ -35,7 +35,7 @@
         <div class="mt-3">
             <a href="@Url.Action("Index", "Repairs", new { vehicleId = Model.VehicleId })" class="btn btn-custom" aria-label="Voir la liste des réparations du véhicule">Voir la liste des réparations du véhicule</a> @* Lien avec étiquette pour l'accessibilité *@
         </div>
-        <form asp-action="Create" method="post" aria-labelledby="form-title"> @* Formulaire avec étiquette pour l'accessibilité *@
+        <form asp-action="Create" asp-controller="Repairs" method="post" aria-labelledby="form-title"> @* Formulaire avec étiquette pour l'accessibilité *@
             <fieldset>
                 <legend id="form-title" role="heading" aria-level="2">Détails de la réparation</legend> @* Légende avec rôle et niveau d'accessibilité *@
                 <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
@@ -59,7 +59,7 @@
 </div>
 
 <div>
-    <a class="text-black" asp-action="Index" asp-controller="vehicles" aria-label="Retour à la liste des véhicules">Retour à la liste des véhicules</a> @* Lien avec étiquette pour l'accessibilité *@
+    <a class="text-black" asp-action="Index" asp-controller="Home" aria-label="Retour à la liste des véhicules">Retour à la liste des véhicules</a> @* Lien avec étiquette pour l'accessibilité *@
 </div>
 
 @section Scripts {

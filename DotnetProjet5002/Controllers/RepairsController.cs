@@ -27,17 +27,26 @@ namespace DotnetProjet5.Controllers
             _vehicleService = vehicleService;
         }
 
-      
 
-        // GET: Repairs
-        
+
+        // GET: Repairs/5
+
         public async Task<IActionResult> Index(int vehicleId)
         {
-            List<RepairViewModel> repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId);
+            // Utiliser le service de réparation pour obtenir les réparations par ID de véhicule
+            var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId);
+
+            // Utiliser le service de véhicule pour obtenir le véhicule par ID
+            var vehicle = await _vehicleService.GetVehicleByIdAsync(vehicleId);
+
+            // Passer le véhicule et l'ID du véhicule à la vue
+            ViewBag.Vehicle = vehicle;
+            ViewBag.VehicleId = vehicleId;
+
             return View(repairs);
         }
 
-      
+
         // GET: Repairs/Create     
         [HttpGet]
         public async Task<IActionResult> Create(int id)
@@ -81,27 +90,29 @@ namespace DotnetProjet5.Controllers
         {
             if (ModelState.IsValid)
             {
+                // Retrieve the associated vehicle using the vehicle service
+                var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
+                if (vehicle == null)
+                {
+                    return NotFound("Vehicle not found.");
+                }
+
                 var repair = new Repair
                 {
                     Description = repairViewModel.Description,
                     RepairCost = repairViewModel.RepairCost,
                     VehicleId = repairViewModel.VehicleId,
-                    Vehicle = repairViewModel.Vehicle ?? new Vehicle() // Ensure Vehicle is not null
+                    Vehicle = repairViewModel.Vehicle // Ensure Vehicle is not null
                 };
 
                 // Use the repair service to add the repair
                 await _repairService.AddRepairAsync(repair);
 
-                // Retrieve the associated vehicle using the vehicle service
-                var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
-                if (vehicle != null)
-                {
-                    // Update the vehicle's sell price
-                    vehicle.SellPrice += repair.RepairCost;
+                // Update the vehicle's sell price
+                vehicle.SellPrice += repair.RepairCost;
 
-                    // Use the vehicle service to update the vehicle
-                    await _vehicleService.UpdateVehicleAsync(vehicle);
-                }
+                // Use the vehicle service to update the vehicle
+                await _vehicleService.UpdateVehicleAsync(vehicle);
 
                 return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
             }
