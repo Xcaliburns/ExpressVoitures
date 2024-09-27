@@ -61,6 +61,7 @@ namespace DotnetProjet5.ViewModels
         [Display(Name = "Chemin de l'image")]
         public string? ImageUrl { get; set; }
 
+        [Required(ErrorMessage = "la date de disponibilté est requise")]
         [Display(Name = "Date de disponibilité")]
         public DateTime? AvailabilityDate { get; set; }
 
@@ -71,5 +72,14 @@ namespace DotnetProjet5.ViewModels
 
         [Display(Name = "Vendu")]
         public bool Selled { get; set; }
+
+        // New property for formatted date
+        public string FormattedAvailabilityDate
+        {
+            get
+            {
+                return AvailabilityDate?.ToString("dd/MM/yyyy");
+            }
+        }
     }
 }

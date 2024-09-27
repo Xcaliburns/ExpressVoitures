@@ -1,0 +1,30 @@
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
+
+<div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.VehicleId">
+    <div class="row">
+        <div class="col-md-7 position-relative">
+            <img src="@Model.ImageUrl" alt="Photo de la voiture @Model.Brand @Model.Model, année @Model.Year" class="img-fluid rounded" style="object-fit: cover;width:594px; height: 316px;">
+            @if (Model.Selled)
+            {
+                <div class="position-absolute top-0 start-0 w-100 h-100 py-5 bg-dark text-danger d-flex align-items-center justify-content-center rounded" style="font-size: 25px; opacity: 0.8;">
+                    Vendue
+                </div>
+            }
+            @if (Model.AvailabilityDate > DateTime.Now)
+            {
+                <div class="position-absolute top-0 start-0 w-100 h-100 py-5 bg-dark text-white d-flex align-items-center justify-content-center rounded" style="font-size: 20px; opacity: 0.8;">
+                    Disponible à partir du @Model.FormattedAvailabilityDate
+                </div>
+            }
+        </div>
+        <div class="col-md-3">
+            <div class="card-body lh-sm">
+                <p id="vehicle-details-@Model.VehicleId" class="card-text text-nowrap" style="font-size: 22px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
+                <p class="card-text fw-light" style="font-size: 18px">@Model.Year</p>
+                <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
+                <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
+                <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Finish)</p>
+            </div>
+        </div>
+    </div>
+</div>

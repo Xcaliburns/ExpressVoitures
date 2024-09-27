@@ -19,7 +19,7 @@
                     <div class="col-md-6 text-center">
                         @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
                         {
-                            <a asp-action="Create" class="btn btn-custom mt-3" aria-label="Ajouter une nouvelle voiture">Ajouter une Voiture</a>
+                            <a asp-action="Create" asp-controller="vehicles" class="btn btn-custom mt-3" aria-label="Ajouter une nouvelle voiture">Ajouter une Voiture</a>
                         }
                     </div>
                 </div>

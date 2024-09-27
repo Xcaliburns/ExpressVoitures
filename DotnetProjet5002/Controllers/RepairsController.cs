@@ -245,6 +245,7 @@ namespace DotnetProjet5.Controllers
             }
 
             // Utiliser le service de réparation pour supprimer la réparation
+            id= repair.VehicleId;
             await _repairService.DeleteRepairsByVehicleAsync(repair.VehicleId);
 
             return RedirectToAction(nameof(Index), new { vehicleId = repair.VehicleId });

@@ -114,7 +114,7 @@ namespace DotnetProjet5.Controllers
                 }
 
                 await _vehicleService.UpdateVehicleAsync(vehicleViewModel);
-                return RedirectToAction(nameof(Index));
+                return RedirectToAction("Index","Home");
             }
 
             return View(vehicleViewModel);

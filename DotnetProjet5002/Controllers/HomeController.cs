@@ -17,7 +17,7 @@ namespace DotnetProjet5.Controllers
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var vehicles = await _vehicleService.GetAllVehiclesAvailableAsync();
+            var vehicles = await _vehicleService.GetAllVehiclesAsync();
             return View(vehicles);
         }
 
