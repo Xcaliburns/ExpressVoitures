@@ -33,6 +33,11 @@ namespace DotnetProjet5.Controllers
 
         public async Task<IActionResult> Index(int vehicleId)
         {
+
+            if (vehicleId == null)
+            {
+                return BadRequest("Invalid vehicle ID.");
+            }
             // Utiliser le service de réparation pour obtenir les réparations par ID de véhicule
             var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId);
 

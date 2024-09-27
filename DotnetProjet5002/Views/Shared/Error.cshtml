@@ -1,26 +1,89 @@
 ﻿@model DotnetProjet5.Models.ErrorViewModel
 
 @{
-    ViewData["Title"] = "Error";
+    ViewData["Title"] = "Erreur";
 }
 
-<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewData["Title"]</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            text-align: center;
+            padding: 50px;
+        }
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}
+        .error-container {
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        }
 
-<h3>Development Mode</h3>
-<p>
-    Swapping to <strong>Development</strong> environment will display more detailed information about the error that occurred.
-</p>
-<p>
-    <strong>The Development environment shouldn't be enabled for deployed applications.</strong>
-    It can result in displaying sensitive information from exceptions to end users.
-    For local debugging, enable the <strong>Development</strong> environment by setting the <strong>ASPNETCORE_ENVIRONMENT</strong> environment variable to <strong>Development</strong>
-    and restarting the app.
-</p>
+        .error-title {
+            font-size: 36px;
+            color: #dc3545;
+            margin-top: 20px;
+        }
+
+        .error-message {
+            font-size: 24px;
+            margin-top: 10px;
+        }
+
+        .request-id {
+            font-size: 18px;
+            margin-top: 20px;
+        }
+
+        .dev-mode {
+            font-size: 16px;
+            margin-top: 30px;
+            color: #6c757d;
+        }
+
+        .error-image {
+            width: 150px;
+            height: 150px;
+            margin-top: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="error-container">
+        <img src="~/images/errorImage.jpg" alt="Erreur" class="error-image" />
+        <h1 class="error-title">Oups! Quelque chose s'est mal passé.</h1>
+        <h2 class="error-message">Nous sommes désolés, une erreur s'est produite lors du traitement de votre demande.</h2>
+
+        @if (Model.ShowRequestId)
+        {
+            <p class="request-id">
+                <strong>ID de la demande :</strong> <code>@Model.RequestId</code>
+            </p>
+        }
+
+        <p class="dev-mode">
+            Si le problème persiste, veuillez contacter le support technique.
+        </p>
+@* 
+        <h3>Mode Développement</h3>
+        <p class="dev-mode">
+            Passer à l'environnement <strong>Développement</strong> affichera des informations plus détaillées sur l'erreur qui s'est produite.
+        </p> *@
+       @*  <p class="dev-mode">
+            <strong>L'environnement Développement ne doit pas être activé pour les applications déployées.</strong>
+            Cela peut entraîner l'affichage d'informations sensibles provenant des exceptions aux utilisateurs finaux.
+            Pour le débogage local, activez l'environnement <strong>Développement</strong> en définissant la variable d'environnement <strong>ASPNETCORE_ENVIRONMENT</strong> sur <strong>Development</strong>
+            et redémarrez l'application.
+        </p> *@
+    </div>
+</body>
+</html>

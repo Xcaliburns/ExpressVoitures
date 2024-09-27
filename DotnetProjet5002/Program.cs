@@ -66,7 +66,7 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 // Configurer la culture par défaut
-var cultureInfo = new CultureInfo("en-US");
+var cultureInfo = new CultureInfo("fr-FR");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 
@@ -74,13 +74,22 @@ CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 if (app.Environment.IsDevelopment())
 {
     app.UseMigrationsEndPoint();
+    //Comment in development mode
+    app.UseExceptionHandler("/Home/Error");
 }
 else
-{
-    app.UseExceptionHandler("/Home/Error");
+{   //Uncomment The next line  for development 
+    // app.UseExceptionHandler("/Home/Error");
+
+    //The next line is for production only comment it for development
+    app.UseExceptionHandler("/Home/CustomError");
+
     // The default HSTS value is 30 days. You may want to change this for production scenarios, see https://aka.ms/aspnetcore-hsts.
     app.UseHsts();
 }
+
+// Middleware pour gérer les erreurs 404
+app.UseStatusCodePagesWithReExecute("/Home/NotFound", "?statusCode={0}");
 
 using (var scope = app.Services.CreateScope())
 {
