@@ -10,8 +10,16 @@
                     Vendue
                 </div>
             }
+            @if(Model.Availability==false)
+            {
+            <div class="position-absolute top-0 start-0 w-100 h-100 py-5 bg-dark text-white d-flex align-items-center justify-content-center rounded" style="font-size: 20px; opacity: 0.8;">
+                Temporairement indisponible
+            </div>
+            }
             @if (Model.AvailabilityDate > DateTime.Now)
             {
+               
+               
                 <div class="position-absolute top-0 start-0 w-100 h-100 py-5 bg-dark text-white d-flex align-items-center justify-content-center rounded" style="font-size: 20px; opacity: 0.8;">
                     Disponible à partir du @Model.FormattedAvailabilityDate
                 </div>

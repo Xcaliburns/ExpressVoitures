@@ -49,6 +49,7 @@ namespace DotnetProjet5.ViewModels
         [Display(Name = "Description")]
         public string? Description { get; set; }
 
+
         [Display(Name = "Prix de vente")]
         public float SellPrice { get; set; }
 
@@ -67,7 +68,7 @@ namespace DotnetProjet5.ViewModels
 
 
         [Display(Name = "Disponibilité")]
-        public bool Availability { get; set; }
+        public bool Availability { get; set; } =true;
 
 
         [Display(Name = "Vendu")]

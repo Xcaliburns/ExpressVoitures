@@ -9,7 +9,7 @@
         <div class="text-center">
             <h1 id="delete-confirmation-title">@ViewBag.Year @ViewBag.Brand @ViewBag.Model</h1>
             <p class="mb-5">a bien été supprimée</p>
-            <a asp-action="Index" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour à l'accueil</a>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour à l'accueil</a>
         </div>
     </div>
 }
@@ -18,7 +18,7 @@ else
     <div class="d-flex justify-content-center align-items-center vh-100">
         <div class="text-center">
             <h1 id="delete-confirmation-title">Les détails du véhicule ne sont pas disponibles.</h1>
-            <a asp-action="Index" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour </a>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour </a>
         </div>
     </div>
 }
