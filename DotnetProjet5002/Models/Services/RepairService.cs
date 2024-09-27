@@ -31,6 +31,13 @@ namespace DotnetProjet5.Services
             await _context.SaveChangesAsync();
         }
 
+        public async Task DeleteRepairByIdAsync(int repairId)
+        {
+            var repair = await GetRepairByIdAsync(repairId);
+            _context.Repairs.Remove(repair);
+            await _context.SaveChangesAsync();
+        }
+
         public async Task<List<RepairViewModel>> GetRepairsByVehicleIdAsync(int vehicleId)
         {
             return await _context.Repairs
@@ -61,8 +68,7 @@ namespace DotnetProjet5.Services
 
         public async Task<Repair> GetRepairByIdAsync(int id)
         {
-            return await _context.Repairs
-                .Include(r => r.Vehicle) 
+            return await _context.Repairs               
                 .FirstOrDefaultAsync(r => r.RepairId == id);
         }
         public async Task UpdateRepairAsync(Repair repair)

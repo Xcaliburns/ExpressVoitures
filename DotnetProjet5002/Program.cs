@@ -66,7 +66,7 @@ builder.Services.AddAuthorization(options =>
 var app = builder.Build();
 
 // Configurer la culture par défaut
-var cultureInfo = new CultureInfo("fr-FR");
+var cultureInfo = new CultureInfo("en-EN");
 CultureInfo.DefaultThreadCurrentCulture = cultureInfo;
 CultureInfo.DefaultThreadCurrentUICulture = cultureInfo;
 

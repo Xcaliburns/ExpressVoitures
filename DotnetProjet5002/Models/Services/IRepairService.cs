@@ -10,6 +10,7 @@ namespace DotnetProjet5.Models.Services
         Task<List<RepairViewModel>> GetRepairsByVehicleIdAsync(int vehicleId);
         Task AddRepairAsync(Repair repair);
         Task DeleteRepairsByVehicleAsync(int vehicleId);
+        Task DeleteRepairByIdAsync(int repairId);
         Task<Repair> GetRepairByIdAsync(int id);
         Task UpdateRepairAsync(Repair repair);
         Task<bool> RepairExistsAsync(int id);

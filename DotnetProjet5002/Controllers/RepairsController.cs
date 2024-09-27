@@ -31,22 +31,27 @@ namespace DotnetProjet5.Controllers
 
         // GET: Repairs/5
 
-        public async Task<IActionResult> Index(int vehicleId)
+        public async Task<IActionResult> Index(int? vehicleId)
         {
-
             if (vehicleId == null)
             {
-                return BadRequest("Invalid vehicle ID.");
+                return RedirectToAction("Index", "Home");
             }
+
             // Utiliser le service de réparation pour obtenir les réparations par ID de véhicule
-            var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId);
+            var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId.Value);
 
             // Utiliser le service de véhicule pour obtenir le véhicule par ID
-            var vehicle = await _vehicleService.GetVehicleByIdAsync(vehicleId);
+            var vehicle = await _vehicleService.GetVehicleByIdAsync(vehicleId.Value);
+
+            if (vehicle == null)
+            {
+                return NotFound("Vehicule non trouvé.");
+            }
 
             // Passer le véhicule et l'ID du véhicule à la vue
             ViewBag.Vehicle = vehicle;
-            ViewBag.VehicleId = vehicleId;
+            ViewBag.VehicleId = vehicleId.Value;
             ViewBag.VehicleYear = vehicle.Year;
 
             return View(repairs);
@@ -250,8 +255,8 @@ namespace DotnetProjet5.Controllers
             }
 
             // Utiliser le service de réparation pour supprimer la réparation
-            id= repair.VehicleId;
-            await _repairService.DeleteRepairsByVehicleAsync(repair.VehicleId);
+            
+            await _repairService.DeleteRepairByIdAsync(id);
 
             return RedirectToAction(nameof(Index), new { vehicleId = repair.VehicleId });
         }

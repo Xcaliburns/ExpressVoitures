@@ -26,8 +26,7 @@ namespace DotnetProjet5.Controllers
         [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Index()
         {
-            var vehicleViewModels = await _vehicleService.GetAllVehiclesAsync();
-            return View(vehicleViewModels);
+            return RedirectToAction("Index", "Home");
         }
 
         // GET: Vehicles/Details/5
