@@ -90,7 +90,7 @@ namespace DotnetProjet5.Areas.Identity.Pages.Account
             ///     directly from your code. This API may change or be removed in future releases.
             /// </summary>
             [Required]
-            [StringLength(100, ErrorMessage = "Le {0} doit contenir au moins {2} et au plus {1} caractères.", MinimumLength = 6)]
+            [StringLength(100, ErrorMessage = "Le {0} doit contenir au moins {2} et au plus {1} caractères.", MinimumLength = 12)]
             [DataType(DataType.Password)]
             [Display(Name = "Mot de passe")]
             public string Password { get; set; }
