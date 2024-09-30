@@ -14,7 +14,7 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = true)
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false) // Désactiver la confirmation de compte par email
     .AddRoles<IdentityRole>() // Add this line to include role management
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
@@ -94,9 +94,8 @@ app.UseStatusCodePagesWithReExecute("/Home/NotFound", "?statusCode={0}");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    // Create defaultvehicle list and default admin user
+    // Create default vehicle list and default admin user
     await SeedData.Initialize(services);
-    
 }
 
 app.UseHttpsRedirection();
