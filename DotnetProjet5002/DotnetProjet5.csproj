@@ -11,9 +11,7 @@
     <Content Remove="wwwroot\js\imageUploadValidation.js" />
   </ItemGroup>
 
-  <ItemGroup>
-    <_ContentIncludedByDefault Remove="wwwroot\js\imageUploadValidation.js" />
-  </ItemGroup>
+ 
 
   <ItemGroup>
     <PackageReference Include="FontAwesome" Version="4.7.0" />
