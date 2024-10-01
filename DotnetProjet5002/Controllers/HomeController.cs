@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using System.Diagnostics;
 using System.Threading.Tasks;
 
+
 namespace DotnetProjet5.Controllers
 {
     public class HomeController : Controller

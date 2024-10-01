@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using System.Globalization;
+using Microsoft.Extensions.Logging;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -36,7 +37,7 @@ builder.Services.Configure<IdentityOptions>(options =>
     // User settings.
     options.User.AllowedUserNameCharacters =
     "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789-._@+";
-    options.User.RequireUniqueEmail = false;
+    options.User.RequireUniqueEmail = true;
 });
 
 builder.Services.ConfigureApplicationCookie(options =>
@@ -62,6 +63,11 @@ builder.Services.AddAuthorization(options =>
         .RequireAuthenticatedUser()
         .Build();
 });
+
+// Configure logging
+builder.Logging.ClearProviders();
+builder.Logging.AddConsole();
+builder.Logging.AddDebug();
 
 var app = builder.Build();
 
@@ -111,19 +117,19 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "roles",
-    pattern: "roles",
-    defaults: new { area = "Identity", controller = "Roles", action = "Index" });
-app.MapAreaControllerRoute(
-    name: "Identity",
-    areaName: "Identity",
-    pattern: "Identity/{controller=Roles}/{action=Index}/{id?}");
+//app.MapControllerRoute(
+//    name: "roles",
+//    pattern: "roles",
+//    defaults: new { area = "Identity", controller = "Roles", action = "Index" });
+//app.MapAreaControllerRoute(
+//    name: "Identity",
+//    areaName: "Identity",
+//    pattern: "Identity/{controller=Roles}/{action=Index}/{id?}");
 
-app.MapControllerRoute(
-    name: "roles",
-    pattern: "roles/{action=Index}/{id?}",
-    defaults: new { area = "Identity", controller = "Roles" });
+//app.MapControllerRoute(
+//    name: "roles",
+//    pattern: "roles/{action=Index}/{id?}",
+//    defaults: new { area = "Identity", controller = "Roles" });
 app.MapRazorPages(); // Ensure this line is present to map Razor Pages
 
 app.Run();
