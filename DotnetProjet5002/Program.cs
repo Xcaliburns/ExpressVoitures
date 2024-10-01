@@ -15,18 +15,21 @@ builder.Services.AddDbContext<ApplicationDbContext>(options =>
     options.UseSqlServer(connectionString));
 builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
-builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false) // Désactiver la confirmation de compte par email
-    .AddRoles<IdentityRole>() // Add this line to include role management
+// Désactiver la confirmation de compte par email
+builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
+    // Add this line to include role management
+    .AddRoles<IdentityRole>() 
     .AddEntityFrameworkStores<ApplicationDbContext>();
 
 builder.Services.Configure<IdentityOptions>(options =>
 {
-    // Password settings to meet OWASP criteria.
+    //Configuration du mot de passe pour répondre aux critères OWASP .
     options.Password.RequireDigit = true;
     options.Password.RequireLowercase = true;
     options.Password.RequireNonAlphanumeric = true;
     options.Password.RequireUppercase = true;
-    options.Password.RequiredLength = 12; // Minimum length of 12 characters
+    // Longueur minimale du mot de passe
+    options.Password.RequiredLength = 12; 
     options.Password.RequiredUniqueChars = 1;
 
     // Lockout settings.
@@ -100,7 +103,7 @@ app.UseStatusCodePagesWithReExecute("/Home/NotFound", "?statusCode={0}");
 using (var scope = app.Services.CreateScope())
 {
     var services = scope.ServiceProvider;
-    // Create default vehicle list and default admin user
+    // Creation d'une liste de vehicules et d'un administrateur par default 
     await SeedData.Initialize(services);
 }
 
@@ -117,19 +120,6 @@ app.MapControllerRoute(
     name: "default",
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
-//app.MapControllerRoute(
-//    name: "roles",
-//    pattern: "roles",
-//    defaults: new { area = "Identity", controller = "Roles", action = "Index" });
-//app.MapAreaControllerRoute(
-//    name: "Identity",
-//    areaName: "Identity",
-//    pattern: "Identity/{controller=Roles}/{action=Index}/{id?}");
-
-//app.MapControllerRoute(
-//    name: "roles",
-//    pattern: "roles/{action=Index}/{id?}",
-//    defaults: new { area = "Identity", controller = "Roles" });
 app.MapRazorPages(); // Ensure this line is present to map Razor Pages
 
 app.Run();

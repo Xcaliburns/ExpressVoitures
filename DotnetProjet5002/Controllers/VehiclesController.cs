@@ -22,14 +22,14 @@ namespace DotnetProjet5.Controllers
             _fileUploadHelper = fileUploadHelper;
         }
 
-        // GET: Vehicles
-        [Authorize(Roles = "Admin,Developer")]
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
             return RedirectToAction("Index", "Home");
         }
 
-        // GET: Vehicles/Details/5
+        
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
@@ -42,14 +42,14 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        // GET: Vehicles/Create
+        
         [Authorize(Roles = "Admin,Developer")]
         public IActionResult Create()
         {
             return View(new VehicleViewModel());
         }
 
-        // POST: Vehicles/Create
+        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -64,7 +64,7 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        // GET: Vehicles/Edit/5
+       
         [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -76,7 +76,7 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        // POST: Vehicles/Edit/5
+      
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -119,7 +119,7 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        // GET: Vehicles/Delete/5
+      
         [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -132,7 +132,7 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        // POST: Vehicles/Delete/5
+        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -144,12 +144,12 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            // Set ViewBag properties before deleting the vehicle
+            // reglages des viewbags
             ViewBag.Brand = vehicle.Brand;
             ViewBag.Model = vehicle.Model;
             ViewBag.Year = vehicle.Year.Year;
 
-            // Call the DeleteVehicleAsync method to delete the vehicle
+            // suppression du vehicule
             await _vehicleService.DeleteVehicleAsync(VehicleId);
 
             return View("DeleteConfirmation");

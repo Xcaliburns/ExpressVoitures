@@ -29,8 +29,7 @@ namespace DotnetProjet5.Controllers
 
 
 
-        // GET: Repairs/5
-
+        [AllowAnonymous]
         public async Task<IActionResult> Index(int? vehicleId)
         {
             if (vehicleId == null)
@@ -58,7 +57,7 @@ namespace DotnetProjet5.Controllers
         }
 
 
-        // GET: Repairs/Create     
+         
         [HttpGet]
         public async Task<IActionResult> Create(int id)
         {
@@ -94,14 +93,13 @@ namespace DotnetProjet5.Controllers
             return View(model);
         }
 
-        // POST: Repairs/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+        
+       
         public async Task<IActionResult> Create(RepairViewModel repairViewModel)
         {
             if (ModelState.IsValid)
             {
-                // Retrieve the associated vehicle using the vehicle service
+                // retrover le véhicule par associé
                 var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
                 if (vehicle == null)
                 {
@@ -116,13 +114,13 @@ namespace DotnetProjet5.Controllers
                     Vehicle = repairViewModel.Vehicle // Ensure Vehicle is not null
                 };
 
-                // Use the repair service to add the repair
+                // Utiliser RepairService pour ajouter une réparation
                 await _repairService.AddRepairAsync(repair);
 
                 // Update the vehicle's sell price
                 vehicle.SellPrice += repair.RepairCost;
 
-                // Use the vehicle service to update the vehicle
+                // Utiliser VehicleService pour mettre à jour le véhicule
                 await _vehicleService.UpdateVehicleAsync(vehicle);
 
                 return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
@@ -130,7 +128,7 @@ namespace DotnetProjet5.Controllers
             return View(repairViewModel);
         }
 
-        // GET: Repairs/Edit/5
+        
 
         public async Task<IActionResult> Edit(int? id)
         {
@@ -149,9 +147,7 @@ namespace DotnetProjet5.Controllers
             return View(repairViewModel);
         }
 
-        // POST: Repairs/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
+       
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize]
@@ -166,25 +162,25 @@ namespace DotnetProjet5.Controllers
             {
                 try
                 {
-                    // Retrieve the old repair using the repair service
+                    // retouver l'id de l'ancienne réparation
                     var oldRepair = await _repairService.GetRepairByIdAsync(id);
                     if (oldRepair == null)
                     {
                         return NotFound();
                     }
 
-                    // Update the repair
+                    // Mise à jour de la réparation
                     var updatedRepair = RepairViewModel.ToEntity(repairViewModel);
                     await _repairService.UpdateRepairAsync(updatedRepair);
 
-                    // Retrieve the associated vehicle using the vehicle service
+                    // Retrouver le véhicule associé
                     var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
                     if (vehicle != null)
                     {
-                        // Adjust the vehicle's sell price
+                        // Ajuster le nouveau prix de vente du véhicule
                         vehicle.SellPrice += (updatedRepair.RepairCost - oldRepair.RepairCost);
 
-                        // Use the vehicle service to update the vehicle
+                        // Mise à jour du véhicule
                         await _vehicleService.UpdateVehicleAsync(vehicle);
                     }
                 }
@@ -204,14 +200,14 @@ namespace DotnetProjet5.Controllers
                     throw;
                 }
 
-                // Redirect to the Index action with the vehicleId
+               
                 return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
             }
             return View(repairViewModel);
         }
 
 
-        // GET: Repairs/Delete/5
+       
 
         public async Task<IActionResult> Delete(int? id)
         {
@@ -236,25 +232,25 @@ namespace DotnetProjet5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Utiliser le service de réparation pour obtenir la réparation par ID
+            // Utiliser RepairService pour obtenir la réparation par ID
             var repair = await _repairService.GetRepairByIdAsync(id);
             if (repair == null)
             {
                 return NotFound("Repair not found.");
             }
 
-            // Utiliser le service de véhicule pour obtenir le véhicule associé
+            // Utiliser VehicleService pour obtenir le véhicule associé
             var vehicle = await _vehicleService.GetVehicleByIdAsync(repair.VehicleId);
             if (vehicle != null)
             {
                 // Réduire le prix de vente du véhicule du coût de la réparation
                 vehicle.SellPrice -= repair.RepairCost;
 
-                // Utiliser le service de véhicule pour mettre à jour le véhicule
+                // Utiliser le vehicleService pour mettre à jour le prix du véhicule
                 await _vehicleService.UpdateVehicleAsync(vehicle);
             }
 
-            // Utiliser le service de réparation pour supprimer la réparation
+            // Utiliser  RepairService pour supprimer la réparation
             
             await _repairService.DeleteRepairByIdAsync(id);
 
