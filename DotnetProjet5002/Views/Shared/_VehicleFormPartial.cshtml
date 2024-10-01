@@ -84,7 +84,8 @@
                     </label>
                     <input id="file-upload" asp-for="ImageFile" type="file" class="d-none" aria-describedby="Aide pour le fichier image" aria-invalid="true" />
                 </div>
-                <span id="file-name" class="form-text text-muted mt-2"></span> <!-- Element to display the file name -->
+                <!-- Element to display the file name -->
+                <span id="file-name" class="form-text text-muted mt-2"></span> 
                 <span id="imageFileError" asp-validation-for="ImageFile" class="text-danger" role="alert"></span>
             </div>
         </div>
