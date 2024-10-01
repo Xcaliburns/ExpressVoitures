@@ -97,7 +97,7 @@ namespace DotnetProjet5.Data
 
             string adminRole = "Admin";
             string adminEmail = "admin@example.com";
-            string adminPassword = "Admin@123";
+            string adminPassword = "Admin@123456";
 
             // Check if the admin role exists, if not, create it
             if (!await roleManager.RoleExistsAsync(adminRole))
