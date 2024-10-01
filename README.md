@@ -3,26 +3,40 @@
 ### Présentation
 
 **Express Voitures** est une application web qui permet de gérer un parc automobile . 
-##Index :##
+
+### Index 
 
 -[Fonctionnalités]
+
 -[Technologies utilisées]
+
 -[Mode d'emploi]
+
 
 ### Fonctionnalités
 
-**Gérer les vehicules **
-Il est possible de :
-  -ajouter des vehicules
-  -modifier les données d'un vehicule
-  -marquer les vehicules comme vendus ou indisponibles
-  -supprimer un vehicule
-  -ajouter des réparations
-  -modifier les réparations
-  -supprimer les réparations
+**Gérer les vehicules**
 
-  Bien sûr toutes ces fonctionnalités ne sont disponibles qu'à un profil administrateur
-  Seule la lecture est disponibles pour les autres utilisateurs.
+Il est possible de :
+
+  - **ajouter** des vehicules
+  
+  - **modifier** les données d'un vehicule
+  
+  - **marquer** les vehicules comme vendus ou indisponibles
+  
+  - **supprimer** un vehicule
+  
+  - **ajouter** des réparations
+  
+  - **modifier** les réparations
+  
+  - **supprimer** les réparations
+  
+
+  Bien sûr toutes ces fonctionnalités ne sont disponibles qu'à un profil administrateur.
+  
+  Seule la lecture est disponible pour les autres utilisateurs.
 
   
 ### Technologies utilsées :
@@ -37,7 +51,8 @@ Il est possible de :
 
 ### Mode d'emploi :
 
-[1] ##IMPORTANT##
+#### IMPORTANT
+
 Pour lancer ce projet, vous devez avoir installé :
 
 -Visual Studio 2022 : https://visualstudio.microsoft.com/fr/downloads/
@@ -46,34 +61,40 @@ Pour lancer ce projet, vous devez avoir installé :
 
 -mssql : https://learn.microsoft.com/en-us/sql/ssms/download-sql-server-management-studio-ssms?view=sql-server-ver16
 
-[2] ##Utilisation##
 
--[Cloner le dépot] :
+ #### Utilisation
+
+- [ Cloner le dépot ] :
+  
  Depuis votre terminal, placez vous à l'emplacement désiré , puis entrez la commande: 
  https://github.com/Xcaliburns/ExpressVoitures.git  ou clonez le repository directement depuis l'interface de visual studio
  
- -[Mettre à jour les packages]
+ - [ Mettre à jour les packages ]
  
  Executez la commande : dotnet restore
  
- -[Executer le projet] :
+ - [ Executer le projet ] :
  
- Depuis visual studio f5 (mode debug) ou bouton démarrer,
+ Depuis visual studio f5 (mode debug) ou bouton démarrer.
  
  Depuis un terminal : dotnet build  puis dotnet run
 
- [Administration]
+ [ Administration ]
 
  La base de données Server=localhost;Database=express_voitures est créée et peuplée depuis un fichier d'exemple, vous aurez quelques vehicules fictifs que vous pourrer gérer à titre d'exemple. Pour toute mise en production , la création par défaut doit etre supprimée.
  Un administrateur par défaut sera également créé avec les logs suivants :
  
- adresse mail ##admin@example.com##
+ adresse mail:
+ **admin@example.com**
  
- Mot de passe : ##Admin@123456##
+ Mot de passe :
+ **Admin@123456**
 
  Vous pourrez créer d'autres utilisateurs, mais ils auront le role de USER et ne pourrons que consulter les annonces.
 
- La modification des rôles se fera depuis ms sql server management par soucis de sécurité.
+ La modification des rôles se fera depuis ms sql server management studio par soucis de sécurité.
+
+ Les feedbacks et les suggestions sont bienvenues
 
  
 
