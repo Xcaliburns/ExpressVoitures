@@ -19,7 +19,7 @@ namespace DotnetProjet5.Data
                 // Look for any vehicle.
                 if (context.Vehicle.Any())
                 {
-                    return;   
+                    return;
                 }
                 context.Vehicle.AddRange(
                     new Vehicle
@@ -86,7 +86,7 @@ namespace DotnetProjet5.Data
                 context.SaveChanges();
             }
 
-            
+
             await CreateDefaultAdmin(serviceProvider);
         }
 
@@ -96,16 +96,26 @@ namespace DotnetProjet5.Data
             var roleManager = serviceProvider.GetRequiredService<RoleManager<IdentityRole>>();
 
             string adminRole = "Admin";
+            string userRole = "User";
+            string devRole = "Developer";
             string adminEmail = "admin@example.com";
             string adminPassword = "Admin@123456";
 
-           
+
             if (!await roleManager.RoleExistsAsync(adminRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
             }
+            if (!await roleManager.RoleExistsAsync(userRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(userRole));
+            }
+            if (!await roleManager.RoleExistsAsync(devRole))
+            {
+                await roleManager.CreateAsync(new IdentityRole(devRole));
+            }
 
-            
+
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
@@ -121,5 +131,6 @@ namespace DotnetProjet5.Data
                 }
             }
         }
+
     }
 }
