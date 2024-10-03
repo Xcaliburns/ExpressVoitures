@@ -11,7 +11,7 @@
 
 -[Technologies utilisées](#technos)
 
--[Mode d'emploi]
+-[Mode d'emploi](#howTo)
 
 
 
@@ -54,6 +54,7 @@ Il est possible de :
 - **JavaScript** : pour un event listener
 
 ### Mode d'emploi :
+<a id="howTo"></a>
 
 #### IMPORTANT
 
