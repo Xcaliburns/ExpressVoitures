@@ -1,171 +1,173 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Mvc;
 using DotnetProjet5.Data;
-using DotnetProjet5.Models;
-using DotnetProjet5.Models.ViewModels;
+using DotnetProjet5.ViewModels;
 
+using DotnetProjet5.Models.Services;
+using Microsoft.AspNetCore.Authorization;
 
 namespace DotnetProjet5.Controllers
 {
     public class VehiclesController : Controller
     {
         private readonly ApplicationDbContext _context;
+        private readonly IVehicleService _vehicleService;
+        private readonly IRepairService _repairService;
+        private readonly IFileUploadHelper _fileUploadHelper;
 
-        public VehiclesController(ApplicationDbContext context)
+        public VehiclesController(ApplicationDbContext context, IVehicleService vehicleService, IRepairService repairService, IFileUploadHelper fileUploadHelper)
         {
             _context = context;
+            _vehicleService = vehicleService;
+            _repairService = repairService;
+            _fileUploadHelper = fileUploadHelper;
         }
 
-        // GET: Vehicles
+
+        [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            var vehicles = await _context.Vehicle.ToListAsync();
-            var vehicleViewModels = vehicles.Select(v => new VehicleViewModel
-            {
-                Year = v.Year,
-                Brand = v.Brand,
-                Model = v.Model,
-                Finish = v.Finish,
-                Availability = v.Availability,
-                AvailabilityDate = v.AvailabilityDate ?? DateTime.MinValue, 
-                CodeVin = v.CodeVin
-            }).ToList();
-
-            return View(vehicleViewModels);
+            return RedirectToAction("Index", "Home");
         }
 
-        // GET: Vehicles/Details/5
-        public async Task<IActionResult> Details(string id)
+        
+        [AllowAnonymous]
+        public async Task<IActionResult> Details(int id)
         {
-            if (id == null)
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
+            if (vehicleViewModel == null)
             {
                 return NotFound();
             }
 
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.CodeVin == id);
+            return View(vehicleViewModel);
+        }
+
+        
+        [Authorize(Roles = "Admin,Developer")]
+        public IActionResult Create()
+        {
+            return View(new VehicleViewModel());
+        }
+
+        
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Developer")]
+        public async Task<IActionResult> Create(VehicleViewModel vehicleViewModel, IFormFile imageFile)
+        {
+            if (ModelState.IsValid)
+            {
+                await _vehicleService.CreateVehicleAsync(vehicleViewModel);
+                return RedirectToAction(nameof(CreateConfirmed));
+            }
+
+            return View(vehicleViewModel);
+        }
+
+       
+        [Authorize(Roles = "Admin,Developer")]
+        public async Task<IActionResult> Edit(int id)
+        {
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
+            if (vehicleViewModel == null)
+            {
+                return NotFound();
+            }
+            return View(vehicleViewModel);
+        }
+
+      
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Developer")]
+        public async Task<IActionResult> Edit(int vehicleid, VehicleViewModel vehicleViewModel)
+        {
+            if (vehicleid != vehicleViewModel.VehicleId)
+            {
+                return NotFound();
+            }
+
+            if (ModelState.IsValid)
+            {
+                if (vehicleViewModel.ImageFile != null)
+                {
+                    var existingImageUrl = _context.Vehicle
+                        .Where(v => v.VehicleId == vehicleViewModel.VehicleId)
+                        .Select(v => v.ImageUrl)
+                        .FirstOrDefault();
+
+                    if (!string.IsNullOrEmpty(existingImageUrl))
+                    {
+                        var oldImagePath = Path.Combine("wwwroot/images", Path.GetFileName(existingImageUrl));
+                        await _fileUploadHelper.DeleteFileIfExistsAsync(oldImagePath);
+                    }
+
+                    vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
+                }
+                else
+                {
+                    vehicleViewModel.ImageUrl = _context.Vehicle
+                        .Where(v => v.VehicleId == vehicleViewModel.VehicleId)
+                        .Select(v => v.ImageUrl)
+                        .FirstOrDefault();
+                }
+
+                await _vehicleService.UpdateVehicleAsync(vehicleViewModel);
+                return RedirectToAction("Index","Home");
+            }
+
+            return View(vehicleViewModel);
+        }
+
+      
+        [Authorize(Roles = "Admin,Developer")]
+        public async Task<IActionResult> Delete(int id)
+        {
+            var vehicleViewModel = await _vehicleService.GetVehicleByIdAsync(id);
+            if (vehicleViewModel == null)
+            {
+                return NotFound();
+            }
+
+            return View(vehicleViewModel);
+        }
+
+        
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        [Authorize(Roles = "Admin,Developer")]
+        public async Task<IActionResult> DeleteConfirmed(int VehicleId)
+        {
+            var vehicle = await _context.Vehicle.FindAsync(VehicleId);
             if (vehicle == null)
             {
                 return NotFound();
             }
 
-            return View(vehicle);
+            
+            ViewBag.Brand = vehicle.Brand;
+            ViewBag.Model = vehicle.Model;
+            ViewBag.Year = vehicle.Year.Year;
+
+            
+            await _vehicleService.DeleteVehicleAsync(VehicleId);
+
+            return View("DeleteConfirmation");
         }
 
-        // GET: Vehicles/Create
-        public IActionResult Create()
+        [Authorize(Roles = "Admin,Developer")]
+        public IActionResult DeleteConfirmation()
         {
+            ViewBag.Brand = TempData["Brand"];
+            ViewBag.Model = TempData["Model"];
+            ViewBag.Year = TempData["Year"];
             return View();
         }
 
-        // POST: Vehicles/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] Vehicle vehicle)
+        [Authorize(Roles = "Admin,Developer")]
+        public IActionResult CreateConfirmed()
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(vehicle);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            return View(vehicle);
-        }
-
-        // GET: Vehicles/Edit/5
-        public async Task<IActionResult> Edit(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
-            return View(vehicle);
-        }
-
-        // POST: Vehicles/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(string id, [Bind("CodeVin,Year,Brand,Model,Finish,Availability,AvailabilityDate")] Vehicle vehicle)
-        {
-            if (id != vehicle.CodeVin)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(vehicle);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!VehicleExists(vehicle.CodeVin))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            return View(vehicle);
-        }
-
-        // GET: Vehicles/Delete/5
-        public async Task<IActionResult> Delete(string id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var vehicle = await _context.Vehicle
-                .FirstOrDefaultAsync(m => m.CodeVin == id);
-            if (vehicle == null)
-            {
-                return NotFound();
-            }
-
-            return View(vehicle);
-        }
-
-        // POST: Vehicles/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(string id)
-        {
-            var vehicle = await _context.Vehicle.FindAsync(id);
-            if (vehicle != null)
-            {
-                _context.Vehicle.Remove(vehicle);
-            }
-
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
-        }
-
-        private bool VehicleExists(string id)
-        {
-            return _context.Vehicle.Any(e => e.CodeVin == id);
+            return View();
         }
     }
 }

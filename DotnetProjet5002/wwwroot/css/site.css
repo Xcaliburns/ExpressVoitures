@@ -1,3 +1,58 @@
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Regular.ttf') format('ttf'), url('/fonts/LibreBaskerville-Regular.ttf') format('ttf');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Italic.ttf') format('ttf'), url('/fonts/LibreBaskerville-Italic.ttf') format('ttf');
+    font-weight: 400;
+    font-style: italic;
+}
+
+@font-face {
+    font-family: 'Libre Baskerville';
+    src: url('../fonts/LibreBaskerville-Bold.ttf') format('ttf'), url('/fonts/LibreBaskerville-Bold.ttf') format('ttf');
+    font-weight: bold;
+    font-style: normal;
+}
+
+:root {
+    --bs-baseBrown-100: #F5E4C7;
+    --bs-baseBrown-200: #EED1A3;
+    --bs-baseBrown-300: #E7BE7F;
+    --bs-baseBrown-400: #E0AB5B;
+    --bs-baseBrown-500: #D9A963;
+    --bs-baseBrown-600: #C28E4F;
+    --bs-baseBrown-700: #AB733B;
+    --bs-baseBrown-800: #945826;
+    --bs-baseBrown-900: #7D3D12;
+    
+}
+
+
+ /*Custom Font*/
+h1 {
+    font-family: 'Libre Baskerville', serif;
+    font-size: 44px;
+    font-style: italic;
+    font-weight: 400;
+    line-height: 54.56px;
+    text-align: center;
+    color: var(--bs-baseBrown-900);
+}
+
+/*Custom Margin-top*/
+.custom-mt {
+    margin-top: 100px; 
+}
+/*Custom margin-left*/
+.custom-margin-left {
+    margin-left: 25%; 
+}
+
 html {
   font-size: 14px;
 }
@@ -11,6 +66,29 @@ html {
 .btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
   box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
 }
+.btn-custom {
+    background-color: var(--bs-baseBrown-500) !important;
+}
+
+.file-button-custom {
+    width: 372px;
+    height: 147px;
+    padding: 8px 16px;
+    font-size: 20px;
+    border-radius: 5px;
+    background-color: white;
+    border: 1px solid black;
+    color: black;
+    padding: 10px 20px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+}
+
+.no-border {
+    border: none;
+    box-shadow: none;
+}
 
 html {
   position: relative;
@@ -19,4 +97,12 @@ html {
 
 body {
   margin-bottom: 60px;
+}
+
+.hover-bold:hover {
+    font-weight: bold;
+    
+}
+.form-control {
+    border: 1px solid black;
 }

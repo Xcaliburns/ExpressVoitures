@@ -1,4 +1,4 @@
-namespace DotnetProjet5 .Models
+namespace DotnetProjet5.Models
 {
     public class ErrorViewModel
     {

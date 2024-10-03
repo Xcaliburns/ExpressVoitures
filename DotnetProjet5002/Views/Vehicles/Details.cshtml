@@ -1,54 +1,72 @@
-﻿@model Vehicle
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
     ViewData["Title"] = "Details";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Details</h1>
+@{
+    ViewData["Title"] = "Détails du véhicule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
 
-<div>
-    <h4>Vehicle</h4>
-    <hr />
-    <dl class="row">
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Year)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Year)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Brand)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Brand)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Model)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Model)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Finish)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Finish)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.Availability)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.Availability)
-        </dd>
-        <dt class = "col-sm-2">
-            @Html.DisplayNameFor(model => model.AvailabilityDate)
-        </dt>
-        <dd class = "col-sm-10">
-            @Html.DisplayFor(model => model.AvailabilityDate)
-        </dd>
-    </dl>
-</div>
-<div>
-    <a asp-action="Edit" asp-route-id="@Model?.CodeVin">Edit</a> |
-    <a asp-action="Index">Back to List</a>
-</div>
+
+<body>
+    <main class="container align-items-center custom-mt" aria-labelledby="vehicle-details-title">
+        <div class="row justify-content-center">
+            <div class="col mt-5">
+           
+            @if (Model != null)
+            {
+               
+                    <div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.VehicleId">
+                        <div class="row mx-auto">
+                            <div class="col-md-7">
+                               
+                                <a href="javascript:history.back()" class="text-muted text-start  col-12 col-md-7 mb-5 ">
+                                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour
+                                </a>
+                                <img src="@Model.ImageUrl" alt="Photo de la voiture @Model.Brand @Model.Model, année @Model.Year" class="img-fluid rounded mt-4" style="object-fit: cover;width:625px; height: 356px;">
+                            </div>
+                            <div class="col-md-5 mt-5">
+                                
+                                @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+                                {
+                                    <p class="mt-5">  Vous avez publié cette annonce , vous pouvez la :</p>
+                                    <div class="mt-2 col-md-12 d-flex justify-content-start">
+
+                                        
+                                        <a asp-action="Edit" asp-route-id="@Model.VehicleId" class="btn  no-border text-dark  text-decoration-underline " aria-label="Modifier @Model.Model">Modifier</a>
+
+
+                                       
+                                        <a asp-action="Create" asp-controller="Repairs" asp-route-id="@Model.VehicleId" class="btn no-border text-dark text-decoration-underline" aria-label="Ajouter une réparation à @Model.Model">Réparation</a>
+                                        
+                                        <a asp-action="Delete" asp-controller="Vehicles" asp-route-id="@Model.VehicleId" class="btn no-border text-danger text-decoration-underline         " aria-label="Supprimer @Model.Model">Supprimer</a>
+                                    </div>
+                                }
+                                <div class="card-body lh-sm text-start">
+                                    <p id="vehicle-details-@Model.VehicleId" class="card-text" style="font-size: 28px">@Html.DisplayFor(modelItem => modelItem.SellPrice) €</p>
+                                    <p class="card-text fw-light" style="font-size: 24px">@Model.Year</p>
+                                    <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Brand)</p>
+                                    <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Model)</p>
+                                    <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Finish)</p>
+                                    <p class="card-text fw-light" style="font-size: 24px">@Html.DisplayFor(modelItem => modelItem.Description)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                
+            }
+            else
+            {
+                    
+                    <a href="javascript:history.back()" class="text-muted text-start  col-12 col-md-7 mb-5 ">
+                    <i class="fa-solid fa-arrow-left" aria-hidden="true"></i> retour
+                </a>
+                <p>Les détails du véhicule ne sont pas disponibles.</p>
+            }
+
+        </div>
+    </main>
+</body>

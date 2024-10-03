@@ -1,0 +1,26 @@
+﻿@page
+@model LogoutModel
+@{
+    ViewData["Title"] = "Déconnexion";
+}
+
+<div class="container mt-5">
+    <header class="text-center" role="banner">
+        <h1 class="display-4" id="page-title">@ViewData["Title"]</h1>
+        <hr class="my-4" aria-hidden="true">
+        <main role="main">
+            @{
+                if (User.Identity?.IsAuthenticated ?? false)
+                {
+                    <form class="form-inline justify-content-center" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" aria-labelledby="logout-button">
+                        <button type="submit" class="btn btn-custom btn-lg" id="logout-button">Appuyez ici pour vous deconnecter</button>
+                    </form>
+                }
+                else
+                {
+                    <p class="lead" role="alert">Vous vous êtes déconnecté avec succès.</p>
+                }
+            }
+        </main>
+    </header>
+</div>

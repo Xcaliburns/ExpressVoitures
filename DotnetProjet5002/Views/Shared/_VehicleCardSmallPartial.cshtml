@@ -1,0 +1,30 @@
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
+
+@if (Model != null)
+{
+    <div class="col">
+        @if (Model.Selled)
+        {
+            @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+            {
+                <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir les détails du véhicule @Model.Model">
+                    @Html.Partial("_VehicleCardBase", Model)
+                </a>
+            }
+            else
+            {
+                @Html.Partial("_VehicleCardBase", Model)
+            }
+        }
+        else
+        {
+            <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir les détails du véhicule @Model.Model">
+                @Html.Partial("_VehicleCardBase", Model)
+            </a>
+        }
+    </div>
+}
+else
+{
+    <p>Les détails du véhicule ne sont pas disponibles.</p>
+}

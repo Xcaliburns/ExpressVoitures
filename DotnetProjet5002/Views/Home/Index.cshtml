@@ -1,8 +1,36 @@
-﻿@{
-    ViewData["Title"] = "Home Page";
+﻿@using DotnetProjet5.ViewModels
+@model IEnumerable<VehicleViewModel>
+
+@{
+    ViewData["Title"] = "Nos Voitures";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://learn.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+<h1 class="custom-mt" role="heading" aria-level="1">@ViewData["Title"]</h1>
+
+<body>
+    <div class="container align-items-center" role="main">
+
+        
+        <div class="d-flex justify-content-center mb-5" role="banner">
+
+            <div class="container">
+                <div class="row justify-content-center">
+                    <div class="col-md-6 text-center">
+                        @if (User.IsInRole("Admin") || User.IsInRole("Developer"))
+                        {
+                            <a asp-action="Create" asp-controller="vehicles" class="btn btn-custom mt-3" aria-label="Ajouter une nouvelle voiture">Ajouter une Voiture</a>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+       
+        <div class="row row-cols-1 row-cols-lg-2 g-3" role="list" alt="liste des véhicules disponibles">
+            @foreach (var item in Model)
+            {
+                <partial name="~/Views/Shared/_VehicleCardSmallPartial.cshtml" model="item" />
+            }
+        </div>
+    </div>
+</body>

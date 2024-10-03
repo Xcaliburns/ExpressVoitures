@@ -1,58 +1,49 @@
-﻿@model Vehicle
+﻿@model DotnetProjet5.ViewModels.VehicleViewModel
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Modifier un véhicule";
+    Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<h1>Edit</h1>
+@if (Model != null)
+{
+    <h1 class="custom-mt" id="edit-vehicle-title">@ViewData["Title"] </h1>
 
-<h4>Vehicle</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="Edit">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="CodeVin" />
-            <div class="form-group">
-                <label asp-for="Year" class="control-label"></label>
-                <input asp-for="Year" class="form-control" />
-                <span asp-validation-for="Year" class="text-danger"></span>
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 order-2 order-md-1">
+                <form asp-action="Edit" enctype="multipart/form-data" aria-labelledby="edit-vehicle-title" alt="Formulaire pour modifier un véhicule">
+                    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                    @Html.Partial("~/Views/Shared/_VehicleFormPartial.cshtml", Model)
+                    <div class="form-group mx-auto d-flex justify-content-center" style="width: 372px;">
+                        <input type="submit" value="Modifier" class="btn btn-custom" aria-label="Modifier les changements" />
+                    </div>
+                </form>
             </div>
-            <div class="form-group">
-                <label asp-for="Brand" class="control-label"></label>
-                <input asp-for="Brand" class="form-control" />
-                <span asp-validation-for="Brand" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Model" class="control-label"></label>
-                <input asp-for="Model" class="form-control" />
-                <span asp-validation-for="Model" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Finish" class="control-label"></label>
-                <input asp-for="Finish" class="form-control" />
-                <span asp-validation-for="Finish" class="text-danger"></span>
-            </div>
-            <div class="form-group form-check">
-                <label class="form-check-label">
-                    <input class="form-check-input" asp-for="Availability" /> @Html.DisplayNameFor(model => model.Availability)
-                </label>
-            </div>
-            <div class="form-group">
-                <label asp-for="AvailabilityDate" class="control-label"></label>
-                <input asp-for="AvailabilityDate" class="form-control" />
-                <span asp-validation-for="AvailabilityDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Save" class="btn btn-primary" />
-            </div>
-        </form>
+            @if (Model.ImageUrl != null)
+            {
+                <div class="col-md-6 order-1 order-md-2 d-flex justify-content-center mb-3 mb-md-0">
+                    <img src="@Model.ImageUrl" alt="Image de @Model.Model" class="img-fluid rounded" style="object-fit: cover; width: 250px; height: 250px;">
+                </div>
+            }
+        </div>
     </div>
-</div>
 
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
+    <div>
+        <a class="text-black" asp-action="Index" asp-controller="Vehicles" aria-label="retour à la liste">retour à la liste de vehicules</a>
+    </div>
+}
+else
+{
+    <div class="container">
+        <div class="row justify-content-center">
+            <div class="col-md-6 text-center">
+                <h1 id="edit-vehicle-title">Les détails du véhicule ne sont pas disponibles.</h1>
+                <a class="text-black" asp-action="Index" asp-controller="Home" aria-label="retour à la liste">retour à la liste de vehicules</a>
+            </div>
+        </div>
+    </div>
+}
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}

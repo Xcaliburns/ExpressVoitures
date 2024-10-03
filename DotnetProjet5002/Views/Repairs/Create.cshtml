@@ -1,0 +1,69 @@
+﻿@model DotnetProjet5.Models.ViewModels.RepairViewModel
+
+@{
+    ViewData["Title"] = "Create";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="custom-mt" role="heading" aria-level="1">Ajouter une réparation</h1> 
+
+<div class="d-flex justify-content-center">
+    <div class="col-md-6">
+        <section aria-labelledby="vehicle-info-title"> 
+            <h2 id="vehicle-info-title" role="heading" aria-level="2">Informations sur le véhicule à réparer</h2> 
+            <div class="col">
+                <a href="@Url.Action("Details", "Vehicles", new { id = Model.VehicleId })" class="text-decoration-none text-dark" aria-label="Voir la liste des reparations @Model.Vehicle.Model"> 
+                    <div class="card border-0" role="region" aria-labelledby="vehicle-details-@Model.Vehicle.VehicleId"> 
+                        <div class="row">
+                            <div class="col-md-7">
+                                <img src="@Model.Vehicle.ImageUrl" alt="Photo de la voiture @Model.Vehicle.Brand @Model.Vehicle.Model, année @Model.Vehicle.Year" class="img-fluid rounded" style="object-fit: cover;width:594px; height: 316px;" role="img" aria-label="Photo de la voiture @Model.Vehicle.Brand @Model.Vehicle.Model, année @Model.Vehicle.Year"> @* Image avec étiquette pour l'accessibilité *@
+                            </div>
+                            <div class="col-md-3">
+                                <div class="card-body lh-sm">
+                                    <p id="vehicle-details-@Model.VehicleId" class="card-text text-nowrap" style="font-size: 22px">@Html.DisplayFor(modelItem => modelItem.Vehicle.SellPrice) €</p>
+                                    <p class="card-text fw-light" style="font-size: 18px">@Model.Vehicle.Year.Year</p>
+                                    <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Vehicle.Brand)</p>
+                                    <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Vehicle.Model)</p>
+                                    <p class="card-text fw-light" style="font-size: 18px">@Html.DisplayFor(modelItem => modelItem.Vehicle.Finish)</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </a>
+            </div>
+        </section>
+        <div class="mt-3">
+            <a href="@Url.Action("Index", "Repairs", new { vehicleId = Model.VehicleId })" class="btn btn-custom" aria-label="Voir la liste des réparations du véhicule">Voir la liste des réparations du véhicule</a> @* Lien avec étiquette pour l'accessibilité *@
+        </div>
+        <form asp-action="Create" asp-controller="Repairs" method="post" aria-labelledby="form-title"> 
+            <fieldset>
+                <legend id="form-title" role="heading" aria-level="2">Détails de la réparation</legend> 
+                <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" aria-required="true" /> 
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="RepairCost" class="control-label"></label>
+                    <input asp-for="RepairCost" class="form-control" aria-required="true" /> 
+                    <span asp-validation-for="RepairCost" class="text-danger"></span>
+                </div>
+                <div class="form-group mt-5">
+                    <input type="hidden" asp-for="VehicleId" /> 
+                    <input type="submit" value="Validation" class="btn btn-custom" aria-label="Ajouter la réparation" /> 
+                </div>
+            </fieldset>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a class="text-black" asp-action="Index" asp-controller="Home" aria-label="Retour à la liste des véhicules">Retour à la liste des véhicules</a> 
+</div>
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

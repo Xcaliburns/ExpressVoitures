@@ -1,0 +1,24 @@
+﻿@{
+    ViewData["Title"] = "Delete Confirmation";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@if (ViewBag.Year != null && ViewBag.Brand != null && ViewBag.Model != null)
+{
+    <div class="d-flex justify-content-center align-items-center vh-100" alt="confirmation de suppression du vehicule @ViewBag.Year @ViewBag.Brand @ViewBag.Model">
+        <div class="text-center">
+            <h1 id="delete-confirmation-title">@ViewBag.Year @ViewBag.Brand @ViewBag.Model</h1>
+            <p class="mb-5">a bien été supprimée</p>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour à l'accueil</a>
+        </div>
+    </div>
+}
+else
+{
+    <div class="d-flex justify-content-center align-items-center vh-100">
+        <div class="text-center">
+            <h1 id="delete-confirmation-title">Les détails du véhicule ne sont pas disponibles.</h1>
+            <a asp-action="Index" asp-controller="Home" class="btn btn-custom mt-5" aria-label="Retour à l'accueil">retour </a>
+        </div>
+    </div>
+}
