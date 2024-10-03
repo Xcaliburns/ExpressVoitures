@@ -13,6 +13,9 @@
 
 -[Mode d'emploi](#howTo)
 
+-[Accessibilité](#accessibility)
+
+
 
 
 ### Fonctionalités
@@ -86,7 +89,12 @@ Pour lancer ce projet, vous devez avoir installé :
 
  [ Administration ]
 
- La base de données Server=localhost;Database=express_voitures est créée et peuplée depuis un fichier d'exemple, vous aurez quelques vehicules fictifs que vous pourrer gérer à titre d'exemple. Pour toute mise en production , la création par défaut doit etre supprimée.
+ La base de données Server=localhost;Database=express_voitures est créée et peuplée depuis un fichier d'exemple:
+  - vous aurez quelques vehicules fictifs que vous pourrer gérer à titre d'exemple.
+  - 3 roles seront créés (user,admin et developer)
+ 
+ Pour toute mise en production , la création par défaut doit etre supprimée, et les roles créés directement dans la BDD de préférence . 
+ 
  Un administrateur par défaut sera également créé avec les logs suivants :
  
  adresse mail:
@@ -98,6 +106,12 @@ Pour lancer ce projet, vous devez avoir installé :
  Vous pourrez créer d'autres utilisateurs, mais ils auront le role de USER et ne pourrons que consulter les annonces.
 
  La modification des rôles se fera depuis ms sql server management studio par soucis de sécurité.
+
+ [ Accessibilité ]
+ <a id="accessibility"></a>
+
+ L'accessibilté à également été prise en compte , et l'utilisation de lecteur d'écran est possible.
+ Le lecteur utilisé pour tester l'application est https://www.nvda.fr/c2  , mais vous pouvez en utiliser d'autres.
 
  Les feedbacks et les suggestions sont bienvenues
 
