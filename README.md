@@ -6,7 +6,7 @@
 
 ### Index 
 
--[Fonctionnalités]
+-[Fonctionnalités](### Fonctionalités)
 
 -[Technologies utilisées]
 
@@ -14,7 +14,7 @@
 [see above](#login-optional-fields)
 
 
-### Fonctionnalités
+### Fonctionalités
 
 **Gérer les vehicules**
 
