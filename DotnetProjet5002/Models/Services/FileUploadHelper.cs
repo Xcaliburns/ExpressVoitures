@@ -27,29 +27,29 @@ namespace DotnetProjet5.Models.Services
                     return string.Empty;
                 }
 
-                // Generate a unique file name
+                
                 var uniqueFileName = $"{Guid.NewGuid()}_{file.FileName}";
                 var uploadsFolder = Path.Combine(_webHostEnvironment.WebRootPath, "images");
                 var filePath = Path.Combine(uploadsFolder, uniqueFileName);
 
-                // Create the directory if it doesn't exist
+                
                 if (!Directory.Exists(uploadsFolder))
                 {
                     Directory.CreateDirectory(uploadsFolder);
                 }
 
-                // Upload the file
+                
                 using (var stream = new FileStream(filePath, FileMode.Create))
                 {
                     await file.CopyToAsync(stream);
                 }
 
-                // Return the relative URL of the file
+                
                 return $"/images/{uniqueFileName}";
             }
             catch (Exception ex)
             {
-                // Log the exception
+                
                 _logger.LogError(ex, $"Une erreur s'est produite lors du téléchargement du fichier : {ex.Message}");
                 return string.Empty;
             }
@@ -66,7 +66,7 @@ namespace DotnetProjet5.Models.Services
             }
             catch (Exception ex)
             {
-                // Log the exception
+                
                 _logger.LogError(ex, $"Une erreur s'est produite lors de la suppression du fichier : {ex.Message}");
             }
         }

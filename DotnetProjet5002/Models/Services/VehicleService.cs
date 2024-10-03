@@ -169,11 +169,7 @@ namespace DotnetProjet5.Models.Services
                 {
                     throw new Exception("Vehicle not found");
                 }
-                if (vehicleViewModel.ImageFile != null)
-                {
-                    vehicleViewModel.ImageUrl = await _fileUploadHelper.UploadFileAsync(vehicleViewModel.ImageFile);
-                }
-
+               
                 var totalRepairCost = await CalculateTotalRepairCostAsync(vehicleViewModel.VehicleId);
                 var sellPrice = vehicleViewModel.PurchasePrice + totalRepairCost + 500;
                 var yearAsDateTime = new DateTime(vehicleViewModel.Year, 1, 1);
@@ -213,7 +209,7 @@ namespace DotnetProjet5.Models.Services
 
                     if (!string.IsNullOrEmpty(vehicle.ImageUrl))
                     {
-                        var imagePath = Path.Combine("wwwroot/images", Path.GetFileName(vehicle.ImageUrl));
+                        var imagePath = Path.Combine("wwwroot", Path.GetFileName(vehicle.ImageUrl));
                         if (System.IO.File.Exists(imagePath))
                         {
                             System.IO.File.Delete(imagePath);

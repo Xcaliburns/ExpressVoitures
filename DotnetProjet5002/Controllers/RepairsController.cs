@@ -37,10 +37,10 @@ namespace DotnetProjet5.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            // Utiliser le service de réparation pour obtenir les réparations par ID de véhicule
+           
             var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId.Value);
 
-            // Utiliser le service de véhicule pour obtenir le véhicule par ID
+            
             var vehicle = await _vehicleService.GetVehicleByIdAsync(vehicleId.Value);
 
             if (vehicle == null)
@@ -48,7 +48,7 @@ namespace DotnetProjet5.Controllers
                 return NotFound("Vehicule non trouvé.");
             }
 
-            // Passer le véhicule et l'ID du véhicule à la vue
+           
             ViewBag.Vehicle = vehicle;
             ViewBag.VehicleId = vehicleId.Value;
             ViewBag.VehicleYear = vehicle.Year;
@@ -99,7 +99,7 @@ namespace DotnetProjet5.Controllers
         {
             if (ModelState.IsValid)
             {
-                // retrover le véhicule par associé
+               
                 var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
                 if (vehicle == null)
                 {
@@ -111,16 +111,16 @@ namespace DotnetProjet5.Controllers
                     Description = repairViewModel.Description,
                     RepairCost = repairViewModel.RepairCost,
                     VehicleId = repairViewModel.VehicleId,
-                    Vehicle = repairViewModel.Vehicle // Ensure Vehicle is not null
+                    Vehicle = repairViewModel.Vehicle 
                 };
 
-                // Utiliser RepairService pour ajouter une réparation
+                
                 await _repairService.AddRepairAsync(repair);
 
-                // Update the vehicle's sell price
+                
                 vehicle.SellPrice += repair.RepairCost;
 
-                // Utiliser VehicleService pour mettre à jour le véhicule
+                
                 await _vehicleService.UpdateVehicleAsync(vehicle);
 
                 return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
@@ -162,25 +162,25 @@ namespace DotnetProjet5.Controllers
             {
                 try
                 {
-                    // retouver l'id de l'ancienne réparation
+                    
                     var oldRepair = await _repairService.GetRepairByIdAsync(id);
                     if (oldRepair == null)
                     {
                         return NotFound();
                     }
 
-                    // Mise à jour de la réparation
+                    
                     var updatedRepair = RepairViewModel.ToEntity(repairViewModel);
                     await _repairService.UpdateRepairAsync(updatedRepair);
 
-                    // Retrouver le véhicule associé
+                    
                     var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
                     if (vehicle != null)
                     {
-                        // Ajuster le nouveau prix de vente du véhicule
+                        
                         vehicle.SellPrice += (updatedRepair.RepairCost - oldRepair.RepairCost);
 
-                        // Mise à jour du véhicule
+                        
                         await _vehicleService.UpdateVehicleAsync(vehicle);
                     }
                 }
@@ -216,14 +216,14 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            // Utiliser le service de réparation pour obtenir la réparation par ID
+            
             var repair = await _repairService.GetRepairByIdAsync(id.Value);
             if (repair == null)
             {
                 return NotFound();
             }
 
-            // Convertir l'entité Repair en RepairViewModel
+            
             var repairViewModel = RepairViewModel.ToViewModel(repair);
             return View(repairViewModel);
         }
@@ -232,25 +232,25 @@ namespace DotnetProjet5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            // Utiliser RepairService pour obtenir la réparation par ID
+            
             var repair = await _repairService.GetRepairByIdAsync(id);
             if (repair == null)
             {
                 return NotFound("Repair not found.");
             }
 
-            // Utiliser VehicleService pour obtenir le véhicule associé
+            
             var vehicle = await _vehicleService.GetVehicleByIdAsync(repair.VehicleId);
             if (vehicle != null)
             {
-                // Réduire le prix de vente du véhicule du coût de la réparation
+                
                 vehicle.SellPrice -= repair.RepairCost;
 
-                // Utiliser le vehicleService pour mettre à jour le prix du véhicule
+                
                 await _vehicleService.UpdateVehicleAsync(vehicle);
             }
 
-            // Utiliser  RepairService pour supprimer la réparation
+            
             
             await _repairService.DeleteRepairByIdAsync(id);
 

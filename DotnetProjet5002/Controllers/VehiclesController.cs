@@ -144,12 +144,12 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            // reglages des viewbags
+            
             ViewBag.Brand = vehicle.Brand;
             ViewBag.Model = vehicle.Model;
             ViewBag.Year = vehicle.Year.Year;
 
-            // suppression du vehicule
+            
             await _vehicleService.DeleteVehicleAsync(VehicleId);
 
             return View("DeleteConfirmation");

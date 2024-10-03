@@ -7,11 +7,11 @@ namespace DotnetProjet5.Models.ViewModels
     {
         public int RepairId { get; set; }
 
-        public int VehicleId { get; set; }  // Initialize to avoid nullability issues
+        public int VehicleId { get; set; }  
 
         [Required(ErrorMessage = "la description est obligatoire")]
         [Display(Name = "Description")]
-        public string Description { get; set; } = string.Empty; // Initialize to avoid nullability issues
+        public string Description { get; set; } = string.Empty; 
 
         [Required(ErrorMessage = "le coût de la réparation est obligatoire")]
         [Range(0.01, float.MaxValue, ErrorMessage = "le coût de la réparation doit être supérieur à 0")]
@@ -20,7 +20,7 @@ namespace DotnetProjet5.Models.ViewModels
 
         public Vehicle? Vehicle { get; set; }
 
-        // Add this property to hold the list of repairs
+        
         public List<RepairViewModel> Repairs { get; set; } = new List<RepairViewModel>();
 
         public static RepairViewModel ToViewModel(Repair repair)

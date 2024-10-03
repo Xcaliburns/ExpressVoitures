@@ -16,7 +16,7 @@ namespace DotnetProjet5.Models
         public string Description { get; set; }
         public float RepairCost { get; set; }
 
-        // Navigation property
+        
         public Vehicle Vehicle { get; set; }
     }
 }

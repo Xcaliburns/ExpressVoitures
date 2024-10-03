@@ -19,7 +19,7 @@ namespace DotnetProjet5.Data
                 // Look for any vehicle.
                 if (context.Vehicle.Any())
                 {
-                    return;   // DB has been seeded
+                    return;   
                 }
                 context.Vehicle.AddRange(
                     new Vehicle
@@ -99,13 +99,13 @@ namespace DotnetProjet5.Data
             string adminEmail = "admin@example.com";
             string adminPassword = "Admin@123456";
 
-            // Check if the admin role exists, if not, create it
+           
             if (!await roleManager.RoleExistsAsync(adminRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
             }
 
-            // Check if the admin user exists, if not, create it
+            
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
             {
