@@ -6,15 +6,17 @@
 
 ### Index 
 
--[Fonctionnalités](### Fonctionalités)
+-[Fonctionnalités](#fonctionalités)
 
--[Technologies utilisées]
+
+-[Technologies utilisées](#technos)
 
 -[Mode d'emploi]
-[see above](#login-optional-fields)
+
 
 
 ### Fonctionalités
+<a id="fonctionalités"></a>
 
 **Gérer les vehicules**
 
@@ -41,6 +43,7 @@ Il est possible de :
 
   
 ### Technologies utilsées :
+<a id="technos"></a>
 
 - **ASP.NET Core mvc** :pour créer la base de l'application 
 - **Entity Framework Core** : pour permetre les interactions avec la base de données.
