@@ -16,11 +16,15 @@ namespace DotnetProjet5.Data
                 serviceProvider.GetRequiredService<
                     DbContextOptions<ApplicationDbContext>>()))
             {
-                // Look for any vehicle.
+                
+                context.Database.EnsureCreated();
+
+                
                 if (context.Vehicle.Any())
                 {
-                    return;
+                    return;   
                 }
+
                 context.Vehicle.AddRange(
                     new Vehicle
                     {
@@ -86,7 +90,6 @@ namespace DotnetProjet5.Data
                 context.SaveChanges();
             }
 
-
             await CreateDefaultAdmin(serviceProvider);
         }
 
@@ -101,7 +104,6 @@ namespace DotnetProjet5.Data
             string adminEmail = "admin@example.com";
             string adminPassword = "Admin@123456";
 
-
             if (!await roleManager.RoleExistsAsync(adminRole))
             {
                 await roleManager.CreateAsync(new IdentityRole(adminRole));
@@ -114,7 +116,6 @@ namespace DotnetProjet5.Data
             {
                 await roleManager.CreateAsync(new IdentityRole(devRole));
             }
-
 
             var adminUser = await userManager.FindByEmailAsync(adminEmail);
             if (adminUser == null)
@@ -131,6 +132,5 @@ namespace DotnetProjet5.Data
                 }
             }
         }
-
     }
 }
