@@ -34,13 +34,10 @@ namespace DotnetProjet5.Controllers
         {
             if (vehicleId == null)
             {
-                return RedirectToAction("Index", "Home");
+                return SafeRedirect(Url.Action("Index", "Home"));
             }
 
-           
             var repairs = await _repairService.GetRepairsByVehicleIdAsync(vehicleId.Value);
-
-            
             var vehicle = await _vehicleService.GetVehicleByIdAsync(vehicleId.Value);
 
             if (vehicle == null)
@@ -48,7 +45,6 @@ namespace DotnetProjet5.Controllers
                 return NotFound("Vehicule non trouvé.");
             }
 
-           
             ViewBag.Vehicle = vehicle;
             ViewBag.VehicleId = vehicleId.Value;
             ViewBag.VehicleYear = vehicle.Year;
@@ -162,25 +158,19 @@ namespace DotnetProjet5.Controllers
             {
                 try
                 {
-                    
                     var oldRepair = await _repairService.GetRepairByIdAsync(id);
                     if (oldRepair == null)
                     {
                         return NotFound();
                     }
 
-                    
                     var updatedRepair = RepairViewModel.ToEntity(repairViewModel);
                     await _repairService.UpdateRepairAsync(updatedRepair);
 
-                    
                     var vehicle = await _vehicleService.GetVehicleByIdAsync(repairViewModel.VehicleId);
                     if (vehicle != null)
                     {
-                        
                         vehicle.SellPrice += (updatedRepair.RepairCost - oldRepair.RepairCost);
-
-                        
                         await _vehicleService.UpdateVehicleAsync(vehicle);
                     }
                 }
@@ -200,8 +190,7 @@ namespace DotnetProjet5.Controllers
                     throw;
                 }
 
-               
-                return RedirectToAction(nameof(Index), new { vehicleId = repairViewModel.VehicleId });
+                return SafeRedirect(Url.Action(nameof(Index), new { vehicleId = repairViewModel.VehicleId }));
             }
             return View(repairViewModel);
         }
@@ -232,32 +221,44 @@ namespace DotnetProjet5.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            
             var repair = await _repairService.GetRepairByIdAsync(id);
             if (repair == null)
             {
                 return NotFound("Repair not found.");
             }
 
-            
             var vehicle = await _vehicleService.GetVehicleByIdAsync(repair.VehicleId);
             if (vehicle != null)
             {
-                
                 vehicle.SellPrice -= repair.RepairCost;
-
-                
                 await _vehicleService.UpdateVehicleAsync(vehicle);
             }
 
-            
-            
             await _repairService.DeleteRepairByIdAsync(id);
 
-            return RedirectToAction(nameof(Index), new { vehicleId = repair.VehicleId });
+            return SafeRedirect(Url.Action(nameof(Index), new { vehicleId = repair.VehicleId }));
+        }
+
+        // Méthode SafeRedirect pour redirections sécurisées
+        private IActionResult SafeRedirect(string url)
+        {
+            if (IsValidRedirectUrl(url))
+            {
+                return Redirect(url);
+            }
+            else
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        // Méthode pour valider les URL de redirection
+        private bool IsValidRedirectUrl(string url)
+        {
+            // Vérifier si l'URL est un chemin relatif
+            return Uri.TryCreate(url, UriKind.Relative, out _);
         }
 
 
-      
     }
 }

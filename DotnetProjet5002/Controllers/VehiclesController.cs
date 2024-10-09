@@ -22,14 +22,12 @@ namespace DotnetProjet5.Controllers
             _fileUploadHelper = fileUploadHelper;
         }
 
-
         [AllowAnonymous]
         public async Task<IActionResult> Index()
         {
-            return RedirectToAction("Index", "Home");
+            return SafeRedirect("/Home/Index");
         }
 
-        
         [AllowAnonymous]
         public async Task<IActionResult> Details(int id)
         {
@@ -42,14 +40,12 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        
         [Authorize(Roles = "Admin,Developer")]
         public IActionResult Create()
         {
             return View(new VehicleViewModel());
         }
 
-        
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -58,13 +54,12 @@ namespace DotnetProjet5.Controllers
             if (ModelState.IsValid)
             {
                 await _vehicleService.CreateVehicleAsync(vehicleViewModel);
-                return RedirectToAction(nameof(CreateConfirmed));
+                return SafeRedirect(nameof(CreateConfirmed));
             }
 
             return View(vehicleViewModel);
         }
 
-       
         [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Edit(int id)
         {
@@ -76,7 +71,6 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-      
         [HttpPost]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -113,13 +107,12 @@ namespace DotnetProjet5.Controllers
                 }
 
                 await _vehicleService.UpdateVehicleAsync(vehicleViewModel);
-                return RedirectToAction("Index","Home");
+                return SafeRedirect("/Home/Index");
             }
 
             return View(vehicleViewModel);
         }
 
-      
         [Authorize(Roles = "Admin,Developer")]
         public async Task<IActionResult> Delete(int id)
         {
@@ -132,7 +125,6 @@ namespace DotnetProjet5.Controllers
             return View(vehicleViewModel);
         }
 
-        
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         [Authorize(Roles = "Admin,Developer")]
@@ -144,12 +136,10 @@ namespace DotnetProjet5.Controllers
                 return NotFound();
             }
 
-            
             ViewBag.Brand = vehicle.Brand;
             ViewBag.Model = vehicle.Model;
             ViewBag.Year = vehicle.Year.Year;
 
-            
             await _vehicleService.DeleteVehicleAsync(VehicleId);
 
             return View("DeleteConfirmation");
@@ -168,6 +158,26 @@ namespace DotnetProjet5.Controllers
         public IActionResult CreateConfirmed()
         {
             return View();
+        }
+
+        // Méthode SafeRedirect pour redirections sécurisées
+        private IActionResult SafeRedirect(string url)
+        {
+            if (IsValidRedirectUrl(url))
+            {
+                return Redirect(url);
+            }
+            else
+            {
+                return RedirectToAction("Error", "Home");
+            }
+        }
+
+        // Méthode pour valider les URL de redirection
+        private bool IsValidRedirectUrl(string url)
+        {
+            // Vérifier si l'URL est un chemin relatif
+            return Uri.TryCreate(url, UriKind.Relative, out _);
         }
     }
 }
